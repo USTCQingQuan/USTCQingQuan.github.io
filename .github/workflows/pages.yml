@@ -1,0 +1,43 @@
+name: Deploy to GitHub Pages
+
+# 为什么用 Actions 而不是 Pages 的 legacy 构建：
+# 2026-10-14 legacy 构建连续 4 次失败，duration=0ms（构建从未真正执行），
+# 且日志只有一句 "Page build failed."，无法定位。Actions 有可见日志、无队列。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时刻只跑一个部署；新的推送不打断正在进行的部署
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # 仓库根目录即站点根目录（纯静态 HTML/JSON，无构建步骤）
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
