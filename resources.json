@@ -1,7 +1,7 @@
 {
   "_note": "阶段 1 抽离 + 阶段 2 改造产物。字段名 name→title 对齐规范。URL 修复、language_support、tags、source、cost 有实测/规则依据；account_requirement / student_requirement / network_requirement / hardware_requirement / verification_status 一律标为「未核验」，未做任何猜测，待人工复核。",
   "_generatedFrom": "index.html (git-blob-sha1 e3464d9c8110731477f3c9ffe165a1c8afa0fafb)",
-  "_count": 157,
+  "_count": 170,
   "resources": [
     {
       "title": "USTC 评课社区",
@@ -24,7 +24,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "选课与课程评价"
     },
     {
       "title": "瀚海星云 BBS",
@@ -47,7 +48,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "bbs.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "社区与活动"
     },
     {
       "title": "USTC 开源镜像站",
@@ -70,7 +72,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "mirrors.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "软件源镜像"
     },
     {
       "title": "LUG@USTC",
@@ -93,7 +96,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "lug.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "社区与活动"
     },
     {
       "title": "Hackergame",
@@ -116,7 +120,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "hack.lug.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "社区与活动"
     },
     {
       "title": "USTC 图书馆",
@@ -139,7 +144,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "lib.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献与工具"
     },
     {
       "title": "USTC-Course",
@@ -162,7 +168,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "CS 自学指南",
@@ -185,7 +192,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "csdiy.wiki",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "cs-self-learning",
@@ -208,7 +216,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "菜鸟教程",
@@ -230,7 +239,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.runoob.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程入门教程"
     },
     {
       "title": "廖雪峰的官方网站",
@@ -253,7 +263,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "liaoxuefeng.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程入门教程"
     },
     {
       "title": "中国大学 MOOC",
@@ -276,7 +287,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.icourse163.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "慕课平台"
     },
     {
       "title": "哔哩哔哩",
@@ -298,7 +310,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.bilibili.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "短视频学习"
     },
     {
       "title": "学堂在线",
@@ -321,7 +334,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.xuetangx.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "慕课平台"
     },
     {
       "title": "MIT OpenCourseWare",
@@ -344,7 +358,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ocw.mit.edu",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "公开课与单课"
     },
     {
       "title": "CS50",
@@ -367,7 +382,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "cs50.harvard.edu",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "公开课与单课"
     },
     {
       "title": "Khan Academy",
@@ -390,7 +406,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.khanacademy.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "公开课与单课"
     },
     {
       "title": "网易公开课",
@@ -412,7 +429,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "open.163.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "慕课平台"
     },
     {
       "title": "Coursera",
@@ -435,7 +453,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.coursera.org",
-      "cost": "付费或部分免费"
+      "cost": "付费或部分免费",
+      "subcategory": "慕课平台"
     },
     {
       "title": "GitHub",
@@ -458,7 +477,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "代码托管与开源"
     },
     {
       "title": "力扣 LeetCode",
@@ -481,7 +501,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "leetcode.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "算法与刷题"
     },
     {
       "title": "MDN Web Docs",
@@ -504,7 +525,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "developer.mozilla.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程文档与参考"
     },
     {
       "title": "freeCodeCamp",
@@ -527,7 +549,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.freecodecamp.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开发教程与课程"
     },
     {
       "title": "The Odin Project",
@@ -550,7 +573,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.theodinproject.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开发教程与课程"
     },
     {
       "title": "Kaggle",
@@ -573,12 +597,13 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.kaggle.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数据科学"
     },
     {
       "title": "动手学深度学习",
       "description": "李沐开源深度学习教材,配视频讲解与可运行代码。",
-      "category": "编程开发",
+      "category": "AI 与数据科学",
       "url": "https://zh.d2l.ai",
       "icon": "🤖",
       "free": true,
@@ -596,7 +621,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "zh.d2l.ai",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "Google 学术",
@@ -618,7 +644,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "scholar.google.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献检索"
     },
     {
       "title": "arXiv",
@@ -641,7 +668,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "arxiv.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "论文阅读与管理"
     },
     {
       "title": "Connected Papers",
@@ -663,7 +691,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.connectedpapers.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "论文阅读与管理"
     },
     {
       "title": "Zotero",
@@ -685,7 +714,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.zotero.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "论文阅读与管理"
     },
     {
       "title": "Overleaf",
@@ -708,7 +738,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.overleaf.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "写作与排版"
     },
     {
       "title": "中国知网",
@@ -731,7 +762,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.cnki.net",
-      "cost": "付费或部分免费"
+      "cost": "付费或部分免费",
+      "subcategory": "文献检索"
     },
     {
       "title": "Notion",
@@ -754,7 +786,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.notion.so",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "笔记与知识管理"
     },
     {
       "title": "Obsidian",
@@ -777,7 +810,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "obsidian.md",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "笔记与知识管理"
     },
     {
       "title": "Anki",
@@ -800,7 +834,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "apps.ankiweb.net",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "记忆与学习"
     },
     {
       "title": "Excalidraw",
@@ -823,7 +858,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "excalidraw.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "绘图与可视化"
     },
     {
       "title": "USTC 虚拟机平台",
@@ -846,7 +882,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "vlab.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "学习与实验平台"
     },
     {
       "title": "蜗壳学社",
@@ -868,7 +905,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ot.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献与工具"
     },
     {
       "title": "USTC LaTeX 平台",
@@ -891,7 +929,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "latex.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "学习与实验平台"
     },
     {
       "title": "希冀平台",
@@ -914,7 +953,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "cscourse.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "学习与实验平台"
     },
     {
       "title": "我的科大 wdkd",
@@ -937,7 +977,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "wdkd.feixu.site",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "资源导航"
     },
     {
       "title": "USTC Guide",
@@ -960,7 +1001,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ustcguide.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "资源导航"
     },
     {
       "title": "USTC 导航",
@@ -982,7 +1024,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ustc.life",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "资源导航"
     },
     {
       "title": "科大 PPT 模板",
@@ -1005,7 +1048,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.teach.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献与工具"
     },
     {
       "title": "网安大礼包",
@@ -1028,7 +1072,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "gitee.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程笔记与讲义"
     },
     {
       "title": "网安课程往年 PPT",
@@ -1051,7 +1096,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "home.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程笔记与讲义"
     },
     {
       "title": "SDS 进阶指南",
@@ -1075,7 +1121,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.advancedguide.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "软院冒险者指南",
@@ -1098,7 +1145,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ustcse.wolai.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "USTCPhysExpData",
@@ -1121,7 +1169,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "实验报告与数据"
     },
     {
       "title": "大物实验报告:PVD 原理与技术",
@@ -1143,7 +1192,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "home.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "实验报告与数据"
     },
     {
       "title": "大物实验报告:锁相放大器",
@@ -1165,7 +1215,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "home.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "实验报告与数据"
     },
     {
       "title": "大物实验报告:拉曼光谱",
@@ -1187,7 +1238,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "home.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "实验报告与数据"
     },
     {
       "title": "免费编程书籍汇总",
@@ -1210,7 +1262,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "免费编程书籍·中文",
@@ -1233,7 +1286,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "凸优化(Boyd 经典教材)",
@@ -1256,7 +1310,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "web.stanford.edu",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "科大网络资源汇总",
@@ -1279,7 +1334,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "计算机学院课程资源",
@@ -1302,7 +1358,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "科大资源链接汇总",
@@ -1324,7 +1381,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "科大数学往年试卷",
@@ -1347,7 +1405,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ustcmathexam.github.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "试卷与真题"
     },
     {
       "title": "科大物理往年试卷",
@@ -1370,7 +1429,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "ustcphyexam.github.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "试卷与真题"
     },
     {
       "title": "数学分析真题",
@@ -1393,7 +1453,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "试卷与真题"
     },
     {
       "title": "线性代数 B1 真题",
@@ -1416,7 +1477,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "试卷与真题"
     },
     {
       "title": "人工智能数学原理与算法互助手册",
@@ -1439,7 +1501,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "量子物理讲义",
@@ -1461,7 +1524,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程笔记与讲义"
     },
     {
       "title": "电磁学 C 总结与习题答案",
@@ -1484,7 +1548,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程笔记与讲义"
     },
     {
       "title": "Stack Overflow",
@@ -1506,7 +1571,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "stackoverflow.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程问答社区"
     },
     {
       "title": "DevDocs",
@@ -1528,7 +1594,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "devdocs.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程文档与参考"
     },
     {
       "title": "Hugging Face",
@@ -1551,7 +1618,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "huggingface.co",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数据科学"
     },
     {
       "title": "牛客网",
@@ -1574,7 +1642,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.nowcoder.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "算法与刷题"
     },
     {
       "title": "Gitee",
@@ -1596,7 +1665,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "gitee.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "代码托管与开源"
     },
     {
       "title": "清华开源镜像站",
@@ -1619,7 +1689,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "mirrors.tuna.tsinghua.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "软件源镜像"
     },
     {
       "title": "浙大开源镜像站",
@@ -1641,7 +1712,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "mirrors.zju.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "软件源镜像"
     },
     {
       "title": "北外开源镜像站",
@@ -1663,7 +1735,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "mirrors.bfsu.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "软件源镜像"
     },
     {
       "title": "Maic 虚拟课堂",
@@ -1685,7 +1758,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "open.maic.chat",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "公开课与单课"
     },
     {
       "title": "alphaXiv",
@@ -1707,7 +1781,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.alphaxiv.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "论文阅读与管理"
     },
     {
       "title": "ProcessOn",
@@ -1729,7 +1804,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.processon.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "绘图与可视化"
     },
     {
       "title": "全国大学生数学竞赛",
@@ -1751,7 +1827,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.cmathc.org.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数学建模"
     },
     {
       "title": "全国大学生数学建模竞赛",
@@ -1774,7 +1851,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.mcm.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数学建模"
     },
     {
       "title": "数模竞赛报名系统",
@@ -1796,7 +1874,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "cumcm.cnki.net",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数学建模"
     },
     {
       "title": "美国大学生数学建模竞赛",
@@ -1819,7 +1898,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.contest.comap.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数学建模"
     },
     {
       "title": "ICPC 国际大学生程序设计竞赛",
@@ -1841,7 +1921,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icpc.global",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "程序设计竞赛"
     },
     {
       "title": "洛谷",
@@ -1864,7 +1945,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.luogu.com.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "程序设计竞赛"
     },
     {
       "title": "心理健康专题",
@@ -1886,7 +1968,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "icourse.club",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "校园生活与心理健康"
     },
     {
       "title": "计算机保研信息汇总",
@@ -1909,7 +1992,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "升学与就业指导"
     },
     {
       "title": "形势与政策课程预告",
@@ -1931,7 +2015,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "marx.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "官方通知"
     },
     {
       "title": "导师评价网测评",
@@ -1953,7 +2038,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "zhuanlan.zhihu.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "升学与就业指导"
     },
     {
       "title": "2025 招生导师一览",
@@ -1976,7 +2062,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "dslx.ustc.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "官方通知"
     },
     {
       "title": "四级听力真题合集",
@@ -1999,7 +2086,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "pan.quark.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "六级听力真题合集",
@@ -2022,7 +2110,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "pan.quark.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "U 校园答案(公众号)",
@@ -2045,7 +2134,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "mp.weixin.qq.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "四六级真题全套",
@@ -2068,7 +2158,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "四六级听力在线版",
@@ -2091,7 +2182,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.bilibili.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "OpenStax 免费大学教材",
@@ -2114,7 +2206,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "openstax.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "OpenStax 微积分(全三册)",
@@ -2137,7 +2230,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "openstax.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "OpenStax 大学物理(全三册)",
@@ -2160,7 +2254,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "openstax.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "费曼物理学讲义(在线版)",
@@ -2183,7 +2278,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "www.feynmanlectures.caltech.edu",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "LibreTexts 开放教材库",
@@ -2206,7 +2302,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "libretexts.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "线性代数(Hefferon 免费教材)",
@@ -2229,7 +2326,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "hefferon.net",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "Beej's C 语言指南",
@@ -2252,7 +2350,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "beej.us",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "科学文库",
@@ -2275,7 +2374,8 @@
       "verification_status": "未核验",
       "last_verified": "待复核",
       "source": "book.sciencereading.cn",
-      "cost": "付费或部分免费"
+      "cost": "付费或部分免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "动手学深度学习（PyTorch 版）",
@@ -2298,7 +2398,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "zh-v2.d2l.ai",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "南瓜书",
@@ -2321,7 +2422,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "李宏毅机器学习 2023",
@@ -2344,7 +2446,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "speech.ee.ntu.edu.tw",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "Datawhale 开源学习社区",
@@ -2367,7 +2470,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "吴恩达机器学习（B站）",
@@ -2390,7 +2494,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.bilibili.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "蘑菇书（李宏毅深度学习笔记）",
@@ -2413,7 +2518,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 基础学习"
     },
     {
       "title": "DeepSeek 开放平台文档",
@@ -2436,7 +2542,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "api-docs.deepseek.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "智谱 AI 开放平台",
@@ -2459,7 +2566,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "open.bigmodel.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "阿里云百炼（通义）",
@@ -2482,7 +2590,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "help.aliyun.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "Dify 开源 LLM 应用平台",
@@ -2505,7 +2614,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "Model Context Protocol 文档",
@@ -2528,7 +2638,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "modelcontextprotocol.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "LangChain 官方文档",
@@ -2551,7 +2662,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "python.langchain.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "n8n 自动化",
@@ -2573,7 +2685,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "OpenAI 官方文档",
@@ -2596,7 +2709,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "platform.openai.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     },
     {
       "title": "ModelScope 魔搭社区",
@@ -2619,7 +2733,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.modelscope.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开源模型与数据集"
     },
     {
       "title": "Qwen 通义千问开源",
@@ -2641,7 +2756,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开源模型与数据集"
     },
     {
       "title": "OpenBMB 面壁智能",
@@ -2663,7 +2779,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开源模型与数据集"
     },
     {
       "title": "智源研究院 BAAI",
@@ -2685,7 +2802,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "hub.baai.ac.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开源模型与数据集"
     },
     {
       "title": "Ollama",
@@ -2708,7 +2826,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "本地 AI 部署"
     },
     {
       "title": "llama.cpp",
@@ -2731,7 +2850,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "本地 AI 部署"
     },
     {
       "title": "LM Studio",
@@ -2753,7 +2873,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "lmstudio.ai",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "本地 AI 部署"
     },
     {
       "title": "vLLM",
@@ -2775,7 +2896,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "本地 AI 部署"
     },
     {
       "title": "Hugging Face Daily Papers",
@@ -2797,7 +2919,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "huggingface.co",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 科研与社区"
     },
     {
       "title": "和鲸社区",
@@ -2820,7 +2943,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.heywhale.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 科研与社区"
     },
     {
       "title": "中国计算机学会 CCF",
@@ -2842,7 +2966,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.ccf.org.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 科研与社区"
     },
     {
       "title": "即梦 AI",
@@ -2864,7 +2989,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "jimeng.jianying.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 应用"
     },
     {
       "title": "通义万相",
@@ -2886,7 +3012,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "tongyi.aliyun.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 应用"
     },
     {
       "title": "ComfyUI",
@@ -2908,7 +3035,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 应用"
     },
     {
       "title": "Stable Diffusion WebUI",
@@ -2930,7 +3058,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "AI 应用"
     },
     {
       "title": "cppreference 中文",
@@ -2953,7 +3082,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "zh.cppreference.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程文档与参考"
     },
     {
       "title": "Learn C++",
@@ -2976,7 +3106,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.learncpp.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程语言与工具"
     },
     {
       "title": "计算机教育中缺失的一课（中文版）",
@@ -2999,7 +3130,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "missing-semester-cn.github.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "开发教程与课程"
     },
     {
       "title": "Pro Git 中文版",
@@ -3022,7 +3154,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "git-scm.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "编程语言与工具"
     },
     {
       "title": "Hello 算法",
@@ -3045,7 +3178,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "算法与刷题"
     },
     {
       "title": "清华计算机课程共享计划",
@@ -3068,7 +3202,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "课程资源合集"
     },
     {
       "title": "Semantic Scholar",
@@ -3090,7 +3225,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.semanticscholar.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献检索"
     },
     {
       "title": "PubMed",
@@ -3112,7 +3248,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "pubmed.ncbi.nlm.nih.gov",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "文献检索"
     },
     {
       "title": "Zotero 中文社区",
@@ -3135,7 +3272,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "zotero-chinese.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "论文阅读与管理"
     },
     {
       "title": "COMSOL 官方文档",
@@ -3157,7 +3295,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.comsol.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "计算与仿真"
     },
     {
       "title": "MATLAB 官方文档",
@@ -3179,7 +3318,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.mathworks.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "计算与仿真"
     },
     {
       "title": "SciPy 官方文档",
@@ -3202,7 +3342,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "scipy.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数据分析"
     },
     {
       "title": "pandas 官方文档",
@@ -3224,7 +3365,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "pandas.pydata.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数据分析"
     },
     {
       "title": "Jupyter 官方",
@@ -3246,7 +3388,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "jupyter.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "数据分析"
     },
     {
       "title": "全国大学英语四六级考试官网",
@@ -3269,7 +3412,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "cet.neea.edu.cn",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "四六级"
     },
     {
       "title": "可汗学院中文",
@@ -3292,12 +3436,13 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "zh.khanacademy.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "公开课与单课"
     },
     {
       "title": "线性代数的本质（3Blue1Brown）",
       "description": "用几何直觉讲解线性代数的经典系列,理解矩阵与特征值的本质。",
-      "category": "视频课程",
+      "category": "课程资料",
       "url": "https://www.bilibili.com/video/BV1ys411472E",
       "icon": "📐",
       "free": true,
@@ -3315,7 +3460,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.bilibili.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "教材与参考书"
     },
     {
       "title": "Attention Is All You Need（Transformer 原论文）",
@@ -3338,7 +3484,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "arxiv.org",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "The Illustrated Transformer",
@@ -3361,7 +3508,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "jalammar.github.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "Learn NLP With Transformers（中文）",
@@ -3384,7 +3532,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "Hugging Face Transformers 文档",
@@ -3407,7 +3556,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "huggingface.co",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "Hugging Face NLP 课程（中文版）",
@@ -3430,7 +3580,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "huggingface.co",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "Transformer Explainer（交互可视化）",
@@ -3453,7 +3604,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "poloclub.github.io",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "李沐：Transformer 论文逐段精读",
@@ -3476,7 +3628,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "www.bilibili.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "动手学深度学习：注意力机制",
@@ -3499,7 +3652,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "zh-v2.d2l.ai",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "nanoGPT",
@@ -3522,7 +3676,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "build-nanogpt（视频+代码）",
@@ -3545,7 +3700,8 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "github.com",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
     },
     {
       "title": "The Annotated Transformer",
@@ -3568,7 +3724,325 @@
       "verification_status": "链接已实测可达（2026-10-14）",
       "last_verified": "2026-10-14",
       "source": "nlp.seas.harvard.edu",
-      "cost": "免费"
+      "cost": "免费",
+      "subcategory": "Transformer 与 NLP"
+    },
+    {
+      "title": "IELTS Online Tests 雅思真题库（中文版）",
+      "description": "雅思在线真题库简体中文入口,含听力、阅读、写作、口语全套免费模拟题与答案,可在线做题并自动批改客观题。站内另有付费的考官评分与视频课。",
+      "category": "英语备考",
+      "url": "https://ieltsonlinetests.com/zh-hans/ielts-exam-library",
+      "icon": "🇬🇧",
+      "free": false,
+      "language_support": "zh",
+      "tags": [
+        "英语",
+        "雅思",
+        "IELTS",
+        "真题题库",
+        "出国留学"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "ieltsonlinetests.com",
+      "cost": "免费（部分高级功能付费）",
+      "subcategory": "雅思"
+    },
+    {
+      "title": "IELTS Online Tests 雅思真题库（英文原版）",
+      "description": "同站英文原版入口,题库更新通常早于各语言版本,适合适应英文界面的考生。",
+      "category": "英语备考",
+      "url": "https://ieltsonlinetests.com/ielts-exam-library",
+      "icon": "🌐",
+      "free": false,
+      "language_support": "en",
+      "tags": [
+        "英语",
+        "雅思",
+        "IELTS",
+        "真题题库"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "ieltsonlinetests.com",
+      "cost": "免费（部分高级功能付费）",
+      "subcategory": "雅思"
+    },
+    {
+      "title": "雅思听力练习题库",
+      "description": "按听力单项筛选的真题练习,含音频与题目,可反复重做。",
+      "category": "英语备考",
+      "url": "https://ieltsonlinetests.com/ielts-exam-library?skill=listening",
+      "icon": "🎧",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "英语",
+        "雅思",
+        "听力",
+        "真题题库"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "ieltsonlinetests.com",
+      "cost": "免费",
+      "subcategory": "雅思"
+    },
+    {
+      "title": "雅思阅读练习题库",
+      "description": "按阅读单项筛选的真题练习,含三篇文章与题型解析。",
+      "category": "英语备考",
+      "url": "https://ieltsonlinetests.com/ielts-exam-library?skill=reading",
+      "icon": "📖",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "英语",
+        "雅思",
+        "阅读",
+        "真题题库"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "ieltsonlinetests.com",
+      "cost": "免费",
+      "subcategory": "雅思"
+    },
+    {
+      "title": "雅思写作与口语备考技巧",
+      "description": "写作与口语的评分标准解读、范文与答题思路,配合题库使用。",
+      "category": "英语备考",
+      "url": "https://ieltsonlinetests.com/ielts-tips",
+      "icon": "✍️",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "英语",
+        "雅思",
+        "写作",
+        "口语",
+        "备考技巧"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "ieltsonlinetests.com",
+      "cost": "免费",
+      "subcategory": "雅思"
+    },
+    {
+      "title": "国家高等教育智慧教育平台",
+      "description": "教育部委托建设运行的全国性在线开放课程平台,汇聚各高校优质慕课,可免费学习。权威性最高的中文慕课入口。",
+      "category": "视频课程",
+      "url": "https://higher.smartedu.cn/",
+      "icon": "🏛️",
+      "free": true,
+      "language_support": "zh",
+      "tags": [
+        "慕课",
+        "高校课程",
+        "官方平台",
+        "免费",
+        "国内可用"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "国内直连",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "higher.smartedu.cn",
+      "cost": "免费",
+      "subcategory": "慕课平台"
+    },
+    {
+      "title": "中国高校外语慕课平台 UMOOCs",
+      "description": "中国高校外语慕课联盟平台,汇聚各高校外语课程,含学术英语写作、出国英语等方向。",
+      "category": "学术科研",
+      "url": "https://moocs.unipus.cn/",
+      "icon": "🗣️",
+      "free": true,
+      "language_support": "zh",
+      "tags": [
+        "英语",
+        "慕课",
+        "学术英语",
+        "高校课程"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "国内直连",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "moocs.unipus.cn",
+      "cost": "免费",
+      "subcategory": "写作与排版"
+    },
+    {
+      "title": "全国大学生电子设计竞赛培训网",
+      "description": "电子设计竞赛官方技术交流平台(站点自述为组委会授权),含信息发布、培训资源与往届回顾。硬件类竞赛目前仅此一条。",
+      "category": "竞赛信息",
+      "url": "https://www.nuedc-training.com.cn/",
+      "icon": "🔌",
+      "free": true,
+      "language_support": "zh",
+      "tags": [
+        "竞赛",
+        "电子设计",
+        "硬件",
+        "官方信息"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "国内直连",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "www.nuedc-training.com.cn",
+      "cost": "免费",
+      "subcategory": "其他学科竞赛（电子设计等）"
+    },
+    {
+      "title": "Wolfram Alpha",
+      "description": "计算型知识引擎,支持符号求导积分、方程求解、矩阵运算与单位换算,可显示解题步骤。中文界面。",
+      "category": "课程资料",
+      "url": "https://www.wolframalpha.com/",
+      "icon": "🧮",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "数学工具",
+        "计算引擎",
+        "符号运算",
+        "解题步骤"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "www.wolframalpha.com",
+      "cost": "免费",
+      "subcategory": "数学工具"
+    },
+    {
+      "title": "MATLAB Onramp 免费入门课",
+      "description": "MathWorks 官方免费入门课程,交互式学习 MATLAB 基础语法与工作流,配套已收录的 MATLAB 文档使用。",
+      "category": "学术科研",
+      "url": "https://matlabacademy.mathworks.com/details/matlab-onramp/gettingstarted",
+      "icon": "📈",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "MATLAB",
+        "入门课程",
+        "官方",
+        "交互式学习"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "matlabacademy.mathworks.com",
+      "cost": "免费",
+      "subcategory": "计算与仿真"
+    },
+    {
+      "title": "物理学习 Wiki",
+      "description": "社区维护的物理学习 wiki,含学习方法、科研绘图工具与各方向经验整理,适合物理方向学生。",
+      "category": "课程资料",
+      "url": "https://github.com/Physics-Learning-Wiki/Physics-Learning-Wiki",
+      "icon": "🔭",
+      "free": true,
+      "language_support": "zh",
+      "tags": [
+        "物理",
+        "Wiki",
+        "学习方法",
+        "科研工具",
+        "开源"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "github.com",
+      "cost": "免费",
+      "subcategory": "课程笔记与讲义"
+    },
+    {
+      "title": "build-your-own-xxx",
+      "description": "从零实现各种经典系统的教程合集:Web 服务器、数据库、解释器等,适合进阶理解底层原理。",
+      "category": "编程开发",
+      "url": "https://github.com/XiaomingX/build-your-own-xxx",
+      "icon": "🔨",
+      "free": true,
+      "language_support": "zh+en",
+      "tags": [
+        "编程",
+        "进阶",
+        "底层原理",
+        "开源",
+        "项目实战"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "github.com",
+      "cost": "免费",
+      "subcategory": "开发教程与课程"
+    },
+    {
+      "title": "动手学大模型 Dive into LLMs",
+      "description": "大模型编程实践教程,面向动手复现与微调,适合已有深度学习基础后进入大模型实战。",
+      "category": "AI 与数据科学",
+      "url": "https://github.com/Jerrykooo/dive-into-llms",
+      "icon": "🧗",
+      "free": true,
+      "language_support": "zh",
+      "tags": [
+        "AI",
+        "大语言模型",
+        "实战教程",
+        "开源"
+      ],
+      "account_requirement": "未核验",
+      "student_requirement": "未核验",
+      "network_requirement": "实测可达（本机网络）",
+      "hardware_requirement": "未核验",
+      "verification_status": "链接已实测可达（2026-10-14）",
+      "last_verified": "2026-10-14",
+      "source": "github.com",
+      "cost": "免费",
+      "subcategory": "AI 编程与工具"
     }
   ],
   "_stage2": {
@@ -3588,5 +4062,89 @@
     "date": "2026-10-14",
     "added": 11,
     "note": "补充 Transformer/注意力机制基础资源,全部经真实 HTTP 实测。已排除: 3Blue1Brown B站链接(返回 200 但标题为「视频去哪了呢?」,内容已失效)、知乎图解(403 反爬)、Kyubyong/transformer(实为 TensorFlow 实现而非图文教程,避免描述错误)。"
+  },
+  "_batch4": {
+    "date": "2026-10-14",
+    "added": 5,
+    "source": "用户提供的 https://ieltsonlinetests.com/ielts-exam-library",
+    "note": "该站子路径未按常见命名规则(实测 /ielts-listening-practice-tests 等 6 条猜测路径全部 404)，故改用从页面抓取真实链接的方式确定 URL，避免收录死链。站点含付费项（考官评分、PDF Pack、视频课），故 cost 如实标注为「免费（部分高级功能付费）」。"
+  },
+  "_batch5": {
+    "date": "2026-10-14",
+    "added": 8,
+    "note": "经联网搜索发现线索后逐条实测。注意: 电子设计竞赛站点自述为\"组委会唯一官方技术交流平台\"，此为站点自身表述，未经独立核实。MATLAB Onramp 收录的是实测的真实跳转地址(matlabacademy.mathworks.com)，非 mathworks.com 原始入口。搜索过程发现: 该类\"有哪些好资源\"的查询返回结果多为内容农场/应用商店/百度百科，可靠度低，故只收录实测通过项。"
+  },
+  "_subcategories": {
+    "date": "2026-10-14",
+    "scheme": {
+      "AI 与数据科学": [
+        "AI 基础学习",
+        "Transformer 与 NLP",
+        "AI 编程与工具",
+        "开源模型与数据集",
+        "本地 AI 部署",
+        "AI 应用",
+        "AI 科研与社区"
+      ],
+      "课程资料": [
+        "试卷与真题",
+        "教材与参考书",
+        "课程资源合集",
+        "课程笔记与讲义",
+        "实验报告与数据",
+        "编程入门教程",
+        "数学工具"
+      ],
+      "编程开发": [
+        "编程文档与参考",
+        "开发教程与课程",
+        "算法与刷题",
+        "代码托管与开源",
+        "软件源镜像",
+        "数据科学",
+        "编程问答社区",
+        "编程语言与工具"
+      ],
+      "学术科研": [
+        "文献检索",
+        "论文阅读与管理",
+        "写作与排版",
+        "计算与仿真",
+        "数据分析"
+      ],
+      "校内平台": [
+        "选课与课程评价",
+        "学习与实验平台",
+        "资源导航",
+        "社区与活动",
+        "文献与工具",
+        "软件源镜像"
+      ],
+      "视频课程": [
+        "慕课平台",
+        "公开课与单课",
+        "短视频学习"
+      ],
+      "英语备考": [
+        "四六级",
+        "雅思"
+      ],
+      "竞赛信息": [
+        "数学建模",
+        "程序设计竞赛",
+        "其他学科竞赛（电子设计等）"
+      ],
+      "效率工具": [
+        "笔记与知识管理",
+        "记忆与学习",
+        "绘图与可视化"
+      ],
+      "校园信息": [
+        "升学与就业指导",
+        "校园生活与心理健康",
+        "官方通知"
+      ]
+    },
+    "note": "两级分类：category 为大方类，subcategory 为其下的子分类。试卷作为「课程资料」下的独立子分类保留，不删除。Wolfram Alpha 由效率工具移入课程资料/数学工具；中国高校外语慕课平台 UMOOCs 由视频课程移入学术科研/写作与排版。"
   }
 }
