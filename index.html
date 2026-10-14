@@ -222,108 +222,114 @@
 </footer>
 
 <script>
+/* ===== 资源数据 =====
+   本区块由 tools/build-index.mjs 自 resources.json 生成，请勿手工编辑；
+   要增删资源请改 resources.json 后运行该脚本。
+   内嵌数据用于兜底：file:// 直接打开或网络异常时页面依然可正常显示。
+   /* ===== DATA:BEGIN ===== */
 const RESOURCES = [
-  { name: "USTC 评课社区", url: "https://icourse.club", description: "中科大课程评价与选课参考,含历年学习经验分享。", category: "校内平台", icon: "📋", free: true },
-  { name: "瀚海星云 BBS", url: "https://bbs.ustc.edu.cn", description: "中科大官方论坛,课程讨论、失物招领与校园信息集散地。", category: "校内平台", icon: "💬", free: true },
-  { name: "USTC 开源镜像站", url: "https://mirrors.ustc.edu.cn", description: "国内速度领先的开源镜像,含 PyPI、npm、CTAN、Linux 发行版。", category: "校内平台", icon: "🪞", free: true },
-  { name: "LUG@USTC", url: "https://lug.ustc.edu.cn", description: "中科大 Linux 用户协会,技术讲座、开源项目与社团活动。", category: "校内平台", icon: "🐧", free: true },
-  { name: "Hackergame", url: "https://hack.lug.ustc.edu.cn", description: "中科大信息安全竞赛,题目对新手友好,适合入门 CTF。", category: "校内平台", icon: "🚩", free: true },
-  { name: "USTC 图书馆", url: "https://lib.ustc.edu.cn", description: "馆藏检索、电子数据库导航与文献传递服务。", category: "校内平台", icon: "📚", free: true },
-  { name: "USTC-Course", url: "https://github.com/ustc-resource/USTC-Course", description: "中科大课程资源 GitHub 汇总,含课件、作业、试卷与复习资料。", category: "课程资料", icon: "📂", free: true },
-  { name: "CS 自学指南", url: "https://csdiy.wiki", description: "北大同学维护的计算机自学路线,覆盖 CS 核心课程与参考书籍。", category: "课程资料", icon: "🗺️", free: true },
-  { name: "cs-self-learning", url: "https://github.com/PKUFlyingPig/cs-self-learning", description: "计算机系统自学资源合集,以国外名校公开课为主线。", category: "课程资料", icon: "💻", free: true },
-  { name: "菜鸟教程", url: "https://www.runoob.com", description: "中文编程入门文档,适合语法速查与快速上手。", category: "课程资料", icon: "🐦", free: true },
-  { name: "廖雪峰的官方网站", url: "https://liaoxuefeng.com", description: "Python、JavaScript、Git 等高质量中文教程。", category: "课程资料", icon: "🐍", free: true },
-  { name: "中国大学 MOOC", url: "https://www.icourse163.org", description: "含中科大等多所高校的免费慕课,部分课程可认证。", category: "视频课程", icon: "🎓", free: true },
-  { name: "哔哩哔哩", url: "https://www.bilibili.com", description: "大量高校公开课录像与 UP 主课程讲解,搜课名常有惊喜。", category: "视频课程", icon: "📺", free: true },
-  { name: "学堂在线", url: "https://www.xuetangx.com", description: "清华大学发起的慕课平台,理工科课程丰富。", category: "视频课程", icon: "🏫", free: true },
-  { name: "MIT OpenCourseWare", url: "https://ocw.mit.edu", description: "MIT 免费公开课程,讲义、作业与考试资料齐全。", category: "视频课程", icon: "📐", free: true },
-  { name: "CS50", url: "https://cs50.harvard.edu/x/", description: "哈佛大学计算机科学导论公开课,配套实验与社区。", category: "视频课程", icon: "💡", free: true },
-  { name: "Khan Academy", url: "https://www.khanacademy.org", description: "数学、物理等基础学科免费课程,适合补基础。", category: "视频课程", icon: "➗", free: true },
-  { name: "网易公开课", url: "https://open.163.com", description: "国内外名校公开课的中文翻译版本。", category: "视频课程", icon: "🎬", free: true },
-  { name: "Coursera", url: "https://www.coursera.org", description: "国际慕课平台,部分课程可免费旁听,证书需付费。", category: "视频课程", icon: "🌐", free: false },
-  { name: "GitHub", url: "https://github.com", description: "全球最大开源社区,找项目、读源码、交作业必备。", category: "编程开发", icon: "🐙", free: true },
-  { name: "力扣 LeetCode", url: "https://leetcode.cn", description: "算法刷题与面试准备,核心题库免费。", category: "编程开发", icon: "🧩", free: true },
-  { name: "MDN Web Docs", url: "https://developer.mozilla.org", description: "Web 前端技术权威文档,HTML/CSS/JavaScript 查询首选。", category: "编程开发", icon: "📖", free: true },
-  { name: "freeCodeCamp", url: "https://www.freecodecamp.org", description: "免费编程课程与项目实战认证。", category: "编程开发", icon: "🔥", free: true },
-  { name: "The Odin Project", url: "https://www.theodinproject.com", description: "开源全栈 Web 开发课程,项目驱动学习。", category: "编程开发", icon: "⚒️", free: true },
-  { name: "Kaggle", url: "https://www.kaggle.com", description: "数据科学竞赛、公开数据集与免费微课程。", category: "编程开发", icon: "📊", free: true },
-  { name: "动手学深度学习", url: "https://zh.d2l.ai", description: "李沐开源深度学习教材,配视频讲解与可运行代码。", category: "编程开发", icon: "🤖", free: true },
-  { name: "Google 学术", url: "https://scholar.google.com", description: "论文检索与引用追踪,科研工作入口。", category: "学术科研", icon: "🔍", free: true },
-  { name: "arXiv", url: "https://arxiv.org", description: "物理、数学、计算机科学预印本论文库,跟踪最新研究。", category: "学术科研", icon: "📄", free: true },
-  { name: "Connected Papers", url: "https://www.connectedpapers.com", description: "论文关联图谱工具,快速理清研究领域脉络。", category: "学术科研", icon: "🕸️", free: true },
-  { name: "Zotero", url: "https://www.zotero.org", description: "免费开源文献管理工具,支持浏览器抓取与引用导出。", category: "学术科研", icon: "🗂️", free: true },
-  { name: "Overleaf", url: "https://www.overleaf.com", description: "在线 LaTeX 协作编辑器,写论文、报告与幻灯片常用。", category: "学术科研", icon: "✍️", free: true },
-  { name: "中国知网", url: "https://www.cnki.net", description: "中文学术文献数据库,校园网内可免费访问。", category: "学术科研", icon: "📰", free: false },
-  { name: "Notion", url: "https://www.notion.so", description: "一体化笔记与知识管理工具,适合整理课程笔记。", category: "效率工具", icon: "📝", free: true },
-  { name: "Obsidian", url: "https://obsidian.md", description: "本地优先的双链笔记软件,插件生态丰富。", category: "效率工具", icon: "💎", free: true },
-  { name: "Anki", url: "https://apps.ankiweb.net", description: "间隔重复记忆卡片,背单词、记公式利器。", category: "效率工具", icon: "🃏", free: true },
-  { name: "Excalidraw", url: "https://excalidraw.com", description: "手绘风格在线白板,画示意图、做展示都方便。", category: "效率工具", icon: "🎨", free: true },
-  { name: "USTC 虚拟机平台", url: "https://vlab.ustc.edu.cn/", description: "学校云桌面,随时随地远程使用专业软件与实验环境。", category: "校内平台", icon: "🖥️", free: true },
-  { name: "蜗壳学社", url: "https://ot.ustc.edu.cn/", description: "科大人自己的在线学习交流平台,课程答疑与经验分享。", category: "校内平台", icon: "🐌", free: true },
-  { name: "USTC LaTeX 平台", url: "https://latex.ustc.edu.cn/", description: "校内在线 LaTeX,写报告论文免装环境、校园网直达。", category: "校内平台", icon: "🖊️", free: true },
-  { name: "希冀平台", url: "https://cscourse.ustc.edu.cn/", description: "计算机课程作业提交与在线实验、自动评测平台。", category: "校内平台", icon: "🧪", free: true },
-  { name: "我的科大 wdkd", url: "https://wdkd.feixu.site/", description: "学生自建的科大助手站,课程资料模块汇集各科资料。", category: "校内平台", icon: "🎒", free: true },
-  { name: "USTC Guide", url: "https://ustcguide.cn/", description: "科大学生指南,课程资料簿收录各课程资料与经验。", category: "校内平台", icon: "🧭", free: true },
-  { name: "USTC 导航", url: "https://ustc.life/", description: "科大常用网站一站式导航,找官网不再翻收藏夹。", category: "校内平台", icon: "🧷", free: true },
-  { name: "科大 PPT 模板", url: "https://www.teach.ustc.edu.cn/document/doc-misc/10319.html", description: "官方出品的科大风格 PPT 模板,课堂展示与答辩可用。", category: "校内平台", icon: "📽️", free: true },
-  { name: "网安大礼包", url: "https://gitee.com/yssickjgd/ustc_cyber_security", description: "网络空间安全学院课程笔记、总结与教辅,预习复习都能用。", category: "课程资料", icon: "📦", free: true },
-  { name: "网安课程往年 PPT", url: "http://home.ustc.edu.cn/~yssickjgd", description: "网安学院课程往年参考 PPT,配合大礼包使用。", category: "课程资料", icon: "📑", free: true },
-  { name: "SDS 进阶指南", url: "https://www.advancedguide.cn/", description: "人工智能与数据科学学院学长姐经验集:选课、保研、实习,超 110 篇。", category: "课程资料", icon: "🚀", free: true },
-  { name: "软院冒险者指南", url: "https://ustcse.wolai.com", description: "软件学院通关指南:校园生活、课程经验到就业分享。", category: "课程资料", icon: "🏕️", free: true },
-  { name: "USTCPhysExpData", url: "https://github.com/regymm/USTCPhysExpData", description: "一至四级大物实验数据、处理脚本与作图结果。", category: "课程资料", icon: "⚗️", free: true },
-  { name: "大物实验报告:PVD 原理与技术", url: "http://home.ustc.edu.cn/~lr_ustc/report26.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true },
-  { name: "大物实验报告:锁相放大器", url: "http://home.ustc.edu.cn/~lr_ustc/report27.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true },
-  { name: "大物实验报告:拉曼光谱", url: "http://home.ustc.edu.cn/~lr_ustc/report28.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true },
-  { name: "免费编程书籍汇总", url: "https://github.com/EbookFoundation/free-programming-books", description: "开源组织整理的免费编程书籍,多语言多方向。", category: "课程资料", icon: "📚", free: true },
-  { name: "免费编程书籍·中文", url: "https://github.com/EbookFoundation/free-programming-books/blob/main/books/free-programming-books-zh.md", description: "上面的中文书单专页,中文教材一次找齐。", category: "课程资料", icon: "📕", free: true },
-  { name: "凸优化(Boyd 经典教材)", url: "https://web.stanford.edu/~boyd/cvxbook/", description: "斯坦福凸优化教材官网,PDF 免费下载。", category: "课程资料", icon: "➗", free: true },
-  { name: "科大网络资源汇总", url: "https://github.com/zzh1996/USTC-Network-Resources", description: "学长整理的科大网络资源大列表,持续多年更新。", category: "课程资料", icon: "🗃️", free: true },
-  { name: "计算机学院课程资源", url: "https://github.com/ustcwpz/USTC-CS-Courses-Resource", description: "计算机学院课程资料汇总:课件、作业与复习材料。", category: "课程资料", icon: "💾", free: true },
-  { name: "科大资源链接汇总", url: "https://github.com/ktwu01/USTC-resource-links", description: "另一位同学整理的科大资源链接合集,互为补充。", category: "课程资料", icon: "🗂️", free: true },
-  { name: "科大数学往年试卷", url: "https://ustcmathexam.github.io/", description: "数学课程往年试卷整理,考前刷题必备。", category: "课程资料", icon: "🧮", free: true },
-  { name: "科大物理往年试卷", url: "https://ustcphyexam.github.io", description: "物理课程往年试卷整理,配套答案参考。", category: "课程资料", icon: "🔭", free: true },
-  { name: "数学分析真题", url: "https://icourse.club/course/25661/#review-95007", description: "评课社区内的数分真题分享(评论中)。", category: "课程资料", icon: "📝", free: true },
-  { name: "线性代数 B1 真题", url: "https://icourse.club/course/5492/#review-87834", description: "评课社区内的线代 B1 真题分享(评论中)。", category: "课程资料", icon: "📝", free: true },
-  { name: "人工智能数学原理与算法互助手册", url: "https://icourse.club/course/26225/#review-101942", description: "评课社区该课程评论内的互助手册,需学生登录可见。", category: "课程资料", icon: "🤝", free: true },
-  { name: "量子物理讲义", url: "https://icourse.club/course/25423/#review-91859", description: "评课社区内分享的量子物理讲义(评论中)。", category: "课程资料", icon: "⚛️", free: true },
-  { name: "电磁学 C 总结与习题答案", url: "https://icourse.club/course/23768/#review-75011", description: "期中期末知识总结、交叉学科电磁学习题答案。", category: "课程资料", icon: "🧲", free: true },
-  { name: "Stack Overflow", url: "https://stackoverflow.com/", description: "全球最大技术问答社区,报错信息一搜多半有答案。", category: "编程开发", icon: "🙋", free: true },
-  { name: "DevDocs", url: "https://devdocs.io/", description: "各编程语言与框架官方文档合集,一个页面查全部。", category: "编程开发", icon: "🗒️", free: true },
-  { name: "Hugging Face", url: "https://huggingface.co/", description: "机器学习模型与数据集社区,AI 学习实践入口。", category: "编程开发", icon: "🤗", free: true },
-  { name: "牛客网", url: "https://www.nowcoder.com/", description: "刷题、面经与校招求职一站式平台。", category: "编程开发", icon: "🐮", free: true },
-  { name: "Gitee", url: "https://gitee.com/", description: "国内代码托管平台,访问快,也能搜到不少学习资料。", category: "编程开发", icon: "🔧", free: true },
-  { name: "清华开源镜像站", url: "https://mirrors.tuna.tsinghua.edu.cn/", description: "TUNA 镜像站,软件源与安装包下载加速。", category: "编程开发", icon: "🪞", free: true },
-  { name: "浙大开源镜像站", url: "https://mirrors.zju.edu.cn/", description: "浙大镜像站,常用发行版与软件源齐全。", category: "编程开发", icon: "🪞", free: true },
-  { name: "北外开源镜像站", url: "https://mirrors.bfsu.edu.cn/", description: "北外镜像站,TUNA 的姊妹站,速度同样不错。", category: "编程开发", icon: "🪞", free: true },
-  { name: "Maic 虚拟课堂", url: "https://open.maic.chat/", description: "清华出品的 AI 课堂:告诉它你想学的内容,自动生成一节虚拟课。", category: "视频课程", icon: "🧑‍🏫", free: true },
-  { name: "alphaXiv", url: "https://www.alphaxiv.org/", description: "arXiv 论文阅读与讨论平台,看论文还能看别人的笔记。", category: "学术科研", icon: "🧾", free: true },
-  { name: "ProcessOn", url: "https://www.processon.com/", description: "在线流程图与思维导图,画技术路线图很方便。", category: "效率工具", icon: "🧠", free: true },
-  { name: "全国大学生数学竞赛", url: "https://www.cmathc.org.cn/", description: "数学竞赛官方信息,报名与通知以学校发布为准。", category: "竞赛信息", icon: "🏆", free: true },
-  { name: "全国大学生数学建模竞赛", url: "http://www.mcm.edu.cn", description: "国赛官网,赛题、通知与获奖名单发布处。", category: "竞赛信息", icon: "🏆", free: true },
-  { name: "数模竞赛报名系统", url: "https://cumcm.cnki.net", description: "全国大学生数学建模竞赛报名入口。", category: "竞赛信息", icon: "📮", free: true },
-  { name: "美国大学生数学建模竞赛", url: "https://www.contest.comap.com/undergraduate/contests/", description: "MCM/ICM 美赛官网,寒假期间举行。", category: "竞赛信息", icon: "🌎", free: true },
-  { name: "ICPC 国际大学生程序设计竞赛", url: "https://icpc.global/", description: "程序设计竞赛最高殿堂,赛程与规则官方发布。", category: "竞赛信息", icon: "🥇", free: true },
-  { name: "洛谷", url: "https://www.luogu.com.cn/", description: "算法竞赛在线评测平台,题单与比赛丰富,新手友好。", category: "竞赛信息", icon: "🧗", free: true },
-  { name: "心理健康专题", url: "https://icourse.club/mental-health/", description: "评课社区的心理健康资源页,需要时可以看看。", category: "校园信息", icon: "💚", free: true },
-  { name: "计算机保研信息汇总", url: "https://github.com/CS-BAOYAN", description: "CS 保研信息汇总:导师招生、夏令营与经验帖。", category: "校园信息", icon: "🧑‍🎓", free: true },
-  { name: "形势与政策课程预告", url: "https://marx.ustc.edu.cn/2023/0606/c30320a605104/page.htm", description: "马克思主义学院发布的课程安排预告。", category: "校园信息", icon: "📢", free: true },
-  { name: "导师评价网测评", url: "https://zhuanlan.zhihu.com/p/514592085", description: "知乎文章:盘点还能用的导师评价网站,选导师前可参考。", category: "校园信息", icon: "🕵️", free: true },
-  { name: "2025 招生导师一览", url: "https://dslx.ustc.edu.cn/?menu=expertlist&year=2025", description: "科大各院系招生导师名单查询。", category: "校园信息", icon: "👨‍🏫", free: true },
-  { name: "四级听力真题合集", url: "https://pan.quark.cn/s/955dda75cfa7", description: "B 站 UP 主「圣诞节南瓜灯」整理,历年四级听力真题带中英字幕。", category: "英语备考", icon: "🎧", free: true },
-  { name: "六级听力真题合集", url: "https://pan.quark.cn/s/67a2c6dcf10b", description: "同 UP 主的六级听力合集,网盘持续更新。", category: "英语备考", icon: "🎧", free: true },
-  { name: "U 校园答案(公众号)", url: "https://mp.weixin.qq.com/mp/homepage?__biz=MzA5Mjc0NDk3MQ==&hid=5", description: "微信公众号提供的 U 校园参考答案,请注意甄别。", category: "英语备考", icon: "📱", free: true },
-  { name: "四六级真题全套", url: "https://github.com/0609x/CET46-Resources", description: "历年四六级真题 PDF/Word、答案解析与听力音频,覆盖 2013–2026 共 55 个考次。", category: "英语备考", icon: "✏️", free: true },
-  { name: "四六级听力在线版", url: "https://www.bilibili.com/video/BV1Zu411x7k4/", description: "整套四六级听力音频 B 站在线试听,配合真题刷题使用。", category: "英语备考", icon: "🔊", free: true },
-  { name: "OpenStax 免费大学教材", url: "https://openstax.org/subjects", description: "莱斯大学官方出版的正版免费教材:数学、物理、化学、经济等,PDF 直接下载。", category: "课程资料", icon: "🏛️", free: true },
-  { name: "OpenStax 微积分(全三册)", url: "https://openstax.org/details/books/calculus-volume-1", description: "免费微积分教材,覆盖高数/微积分全部内容,配习题与答案。", category: "课程资料", icon: "📗", free: true },
-  { name: "OpenStax 大学物理(全三册)", url: "https://openstax.org/details/books/university-physics-volume-1", description: "免费物理教材:力学、热学、电磁学、光学、量子物理全覆盖。", category: "课程资料", icon: "🌡️", free: true },
-  { name: "费曼物理学讲义(在线版)", url: "https://www.feynmanlectures.caltech.edu/", description: "加州理工官方免费在线版,力学、热学、电磁学、量子力学,物理学圣经。", category: "课程资料", icon: "🍎", free: true },
-  { name: "LibreTexts 开放教材库", url: "https://libretexts.org/", description: "全球最大开放教材平台,数分、电磁学、量子力学等都有专门书库。", category: "课程资料", icon: "🗄️", free: true },
-  { name: "线性代数(Hefferon 免费教材)", url: "https://hefferon.net/linearalgebra/", description: "免费线代教材 PDF,习题带详细解答,适合自学。", category: "课程资料", icon: "✖️", free: true },
-  { name: "Beej's C 语言指南", url: "https://beej.us/guide/bgc/", description: "经典免费 C 语言教程,在线阅读+PDF,从指针到网络编程。", category: "课程资料", icon: "📟", free: true },
-  { name: "科学文库", url: "https://book.sciencereading.cn/", description: "科学出版社正版电子书平台,数分、线代、物理中文教材丰富,校园网内可访问。", category: "课程资料", icon: "🔬", free: false }
+  { name: "USTC 评课社区", url: "https://icourse.club", description: "中科大课程评价与选课参考,含历年学习经验分享。", category: "校内平台", icon: "📋", free: true, tags: ["中科大", "选课参考", "课程评价", "经验分享"], source: "icourse.club" },
+  { name: "瀚海星云 BBS", url: "http://bbs.ustc.edu.cn/", description: "中科大官方论坛,课程讨论、失物招领与校园信息集散地。", category: "校内平台", icon: "💬", free: true, tags: ["中科大", "论坛", "校园生活", "信息交流"], source: "bbs.ustc.edu.cn" },
+  { name: "USTC 开源镜像站", url: "https://mirrors.ustc.edu.cn", description: "国内速度领先的开源镜像,含 PyPI、npm、CTAN、Linux 发行版。", category: "校内平台", icon: "🪞", free: true, tags: ["中科大", "镜像站", "软件源", "下载加速"], source: "mirrors.ustc.edu.cn" },
+  { name: "LUG@USTC", url: "https://lug.ustc.edu.cn", description: "中科大 Linux 用户协会,技术讲座、开源项目与社团活动。", category: "校内平台", icon: "🐧", free: true, tags: ["中科大", "Linux", "开源社区", "技术讲座"], source: "lug.ustc.edu.cn" },
+  { name: "Hackergame", url: "https://hack.lug.ustc.edu.cn", description: "中科大信息安全竞赛,题目对新手友好,适合入门 CTF。", category: "校内平台", icon: "🚩", free: true, tags: ["中科大", "网络安全", "CTF", "竞赛"], source: "hack.lug.ustc.edu.cn" },
+  { name: "USTC 图书馆", url: "https://lib.ustc.edu.cn", description: "馆藏检索、电子数据库导航与文献传递服务。", category: "校内平台", icon: "📚", free: true, tags: ["中科大", "图书馆", "文献检索", "数据库"], source: "lib.ustc.edu.cn" },
+  { name: "USTC-Course", url: "https://github.com/ustc-resource/USTC-Course", description: "中科大课程资源 GitHub 汇总,含课件、作业、试卷与复习资料。", category: "课程资料", icon: "📂", free: true, tags: ["中科大", "课程资料", "课件", "历年试卷"], source: "github.com" },
+  { name: "CS 自学指南", url: "https://csdiy.wiki", description: "北大同学维护的计算机自学路线,覆盖 CS 核心课程与参考书籍。", category: "课程资料", icon: "🗺️", free: true, tags: ["计算机", "自学路线", "公开课", "开源"], source: "csdiy.wiki" },
+  { name: "cs-self-learning", url: "https://github.com/PKUFlyingPig/cs-self-learning", description: "计算机系统自学资源合集,以国外名校公开课为主线。", category: "课程资料", icon: "💻", free: true, tags: ["计算机", "自学路线", "公开课", "系统方向"], source: "github.com" },
+  { name: "菜鸟教程", url: "https://www.runoob.com", description: "中文编程入门文档,适合语法速查与快速上手。", category: "课程资料", icon: "🐦", free: true, tags: ["编程入门", "中文文档", "语法速查"], source: "www.runoob.com" },
+  { name: "廖雪峰的官方网站", url: "https://liaoxuefeng.com", description: "Python、JavaScript、Git 等高质量中文教程。", category: "课程资料", icon: "🐍", free: true, tags: ["编程教程", "Python", "JavaScript", "Git"], source: "liaoxuefeng.com" },
+  { name: "中国大学 MOOC", url: "https://www.icourse163.org", description: "含中科大等多所高校的免费慕课,部分课程可认证。", category: "视频课程", icon: "🎓", free: true, tags: ["慕课", "高校课程", "中文", "可认证"], source: "www.icourse163.org" },
+  { name: "哔哩哔哩", url: "https://www.bilibili.com", description: "大量高校公开课录像与 UP 主课程讲解,搜课名常有惊喜。", category: "视频课程", icon: "📺", free: true, tags: ["视频", "公开课录像", "学习 UP 主"], source: "www.bilibili.com" },
+  { name: "学堂在线", url: "https://www.xuetangx.com", description: "清华大学发起的慕课平台,理工科课程丰富。", category: "视频课程", icon: "🏫", free: true, tags: ["慕课", "理工科", "中文", "清华大学"], source: "www.xuetangx.com" },
+  { name: "MIT OpenCourseWare", url: "https://ocw.mit.edu", description: "MIT 免费公开课程,讲义、作业与考试资料齐全。", category: "视频课程", icon: "📐", free: true, tags: ["公开课", "MIT", "英文", "讲义齐全"], source: "ocw.mit.edu" },
+  { name: "CS50", url: "https://cs50.harvard.edu/x/", description: "哈佛大学计算机科学导论公开课,配套实验与社区。", category: "视频课程", icon: "💡", free: true, tags: ["公开课", "计算机导论", "哈佛", "英文"], source: "cs50.harvard.edu" },
+  { name: "Khan Academy", url: "https://www.khanacademy.org", description: "数学、物理等基础学科免费课程,适合补基础。", category: "视频课程", icon: "➗", free: true, tags: ["公开课", "数学", "基础补习", "英文"], source: "www.khanacademy.org" },
+  { name: "网易公开课", url: "https://open.163.com", description: "国内外名校公开课的中文翻译版本。", category: "视频课程", icon: "🎬", free: true, tags: ["公开课", "中文翻译", "名校课程"], source: "open.163.com" },
+  { name: "Coursera", url: "https://www.coursera.org", description: "国际慕课平台,部分课程可免费旁听,证书需付费。", category: "视频课程", icon: "🌐", free: false, tags: ["慕课", "国际课程", "英文", "证书付费"], source: "www.coursera.org" },
+  { name: "GitHub", url: "https://github.com", description: "全球最大开源社区,找项目、读源码、交作业必备。", category: "编程开发", icon: "🐙", free: true, tags: ["开源", "代码托管", "源码", "协作"], source: "github.com" },
+  { name: "力扣 LeetCode", url: "https://leetcode.cn", description: "算法刷题与面试准备,核心题库免费。", category: "编程开发", icon: "🧩", free: true, tags: ["算法", "刷题", "面试准备", "在线评测"], source: "leetcode.cn" },
+  { name: "MDN Web Docs", url: "https://developer.mozilla.org", description: "Web 前端技术权威文档,HTML/CSS/JavaScript 查询首选。", category: "编程开发", icon: "📖", free: true, tags: ["Web 开发", "前端", "官方文档", "HTML/CSS/JS"], source: "developer.mozilla.org" },
+  { name: "freeCodeCamp", url: "https://www.freecodecamp.org", description: "免费编程课程与项目实战认证。", category: "编程开发", icon: "🔥", free: true, tags: ["编程", "免费课程", "项目实战", "认证"], source: "www.freecodecamp.org" },
+  { name: "The Odin Project", url: "https://www.theodinproject.com", description: "开源全栈 Web 开发课程,项目驱动学习。", category: "编程开发", icon: "⚒️", free: true, tags: ["Web 开发", "全栈", "开源课程", "项目驱动"], source: "www.theodinproject.com" },
+  { name: "Kaggle", url: "https://www.kaggle.com", description: "数据科学竞赛、公开数据集与免费微课程。", category: "编程开发", icon: "📊", free: true, tags: ["数据科学", "竞赛", "数据集", "微课程"], source: "www.kaggle.com" },
+  { name: "动手学深度学习", url: "https://zh.d2l.ai", description: "李沐开源深度学习教材,配视频讲解与可运行代码。", category: "编程开发", icon: "🤖", free: true, tags: ["AI", "深度学习", "开源教材", "可运行代码"], source: "zh.d2l.ai" },
+  { name: "Google 学术", url: "https://scholar.google.com", description: "论文检索与引用追踪,科研工作入口。", category: "学术科研", icon: "🔍", free: true, tags: ["论文", "文献检索", "引用追踪"], source: "scholar.google.com" },
+  { name: "arXiv", url: "https://arxiv.org", description: "物理、数学、计算机科学预印本论文库,跟踪最新研究。", category: "学术科研", icon: "📄", free: true, tags: ["论文", "预印本", "理工科", "免费"], source: "arxiv.org" },
+  { name: "Connected Papers", url: "https://www.connectedpapers.com", description: "论文关联图谱工具,快速理清研究领域脉络。", category: "学术科研", icon: "🕸️", free: true, tags: ["论文", "文献图谱", "研究脉络"], source: "www.connectedpapers.com" },
+  { name: "Zotero", url: "https://www.zotero.org", description: "免费开源文献管理工具,支持浏览器抓取与引用导出。", category: "学术科研", icon: "🗂️", free: true, tags: ["文献管理", "引用导出", "开源工具"], source: "www.zotero.org" },
+  { name: "Overleaf", url: "https://www.overleaf.com", description: "在线 LaTeX 协作编辑器,写论文、报告与幻灯片常用。", category: "学术科研", icon: "✍️", free: true, tags: ["LaTeX", "在线协作", "论文写作", "模板"], source: "www.overleaf.com" },
+  { name: "中国知网", url: "https://www.cnki.net", description: "中文学术文献数据库,校园网内可免费访问。", category: "学术科研", icon: "📰", free: false, tags: ["论文", "中文文献", "数据库", "校园网"], source: "www.cnki.net" },
+  { name: "Notion", url: "https://www.notion.so", description: "一体化笔记与知识管理工具,适合整理课程笔记。", category: "效率工具", icon: "📝", free: true, tags: ["笔记", "知识管理", "协作", "一体化"], source: "www.notion.so" },
+  { name: "Obsidian", url: "https://obsidian.md", description: "本地优先的双链笔记软件,插件生态丰富。", category: "效率工具", icon: "💎", free: true, tags: ["笔记", "双链", "本地优先", "插件生态"], source: "obsidian.md" },
+  { name: "Anki", url: "https://apps.ankiweb.net", description: "间隔重复记忆卡片,背单词、记公式利器。", category: "效率工具", icon: "🃏", free: true, tags: ["记忆卡片", "间隔重复", "背单词", "记公式"], source: "apps.ankiweb.net" },
+  { name: "Excalidraw", url: "https://excalidraw.com", description: "手绘风格在线白板,画示意图、做展示都方便。", category: "效率工具", icon: "🎨", free: true, tags: ["白板", "示意图", "手绘风格", "在线工具"], source: "excalidraw.com" },
+  { name: "USTC 虚拟机平台", url: "https://vlab.ustc.edu.cn/", description: "学校云桌面,随时随地远程使用专业软件与实验环境。", category: "校内平台", icon: "🖥️", free: true, tags: ["中科大", "云桌面", "实验环境", "远程使用"], source: "vlab.ustc.edu.cn" },
+  { name: "蜗壳学社", url: "https://ot.ustc.edu.cn/", description: "科大人自己的在线学习交流平台,课程答疑与经验分享。", category: "校内平台", icon: "🐌", free: true, tags: ["中科大", "在线学习", "课程答疑"], source: "ot.ustc.edu.cn" },
+  { name: "USTC LaTeX 平台", url: "https://latex.ustc.edu.cn/", description: "校内在线 LaTeX,写报告论文免装环境、校园网直达。", category: "校内平台", icon: "🖊️", free: true, tags: ["中科大", "LaTeX", "在线编辑", "论文写作"], source: "latex.ustc.edu.cn" },
+  { name: "希冀平台", url: "https://cscourse.ustc.edu.cn/", description: "计算机课程作业提交与在线实验、自动评测平台。", category: "校内平台", icon: "🧪", free: true, tags: ["中科大", "作业提交", "在线评测", "实验"], source: "cscourse.ustc.edu.cn" },
+  { name: "我的科大 wdkd", url: "https://wdkd.feixu.site/", description: "学生自建的科大助手站,课程资料模块汇集各科资料。", category: "校内平台", icon: "🎒", free: true, tags: ["中科大", "学生自建", "课程资料", "校园助手"], source: "wdkd.feixu.site" },
+  { name: "USTC Guide", url: "https://ustcguide.cn/", description: "科大学生指南,课程资料簿收录各课程资料与经验。", category: "校内平台", icon: "🧭", free: true, tags: ["中科大", "学生指南", "课程资料", "经验分享"], source: "ustcguide.cn" },
+  { name: "USTC 导航", url: "https://ustc.life/", description: "科大常用网站一站式导航,找官网不再翻收藏夹。", category: "校内平台", icon: "🧷", free: true, tags: ["中科大", "网址导航", "校园服务"], source: "ustc.life" },
+  { name: "科大 PPT 模板", url: "https://www.teach.ustc.edu.cn/document/doc-misc/10319.html", description: "官方出品的科大风格 PPT 模板,课堂展示与答辩可用。", category: "校内平台", icon: "📽️", free: true, tags: ["中科大", "PPT 模板", "课堂展示", "答辩"], source: "www.teach.ustc.edu.cn" },
+  { name: "网安大礼包", url: "https://gitee.com/yssickjgd/ustc_cyber_security", description: "网络空间安全学院课程笔记、总结与教辅,预习复习都能用。", category: "课程资料", icon: "📦", free: true, tags: ["中科大", "网络安全", "课程笔记", "教辅"], source: "gitee.com" },
+  { name: "网安课程往年 PPT", url: "http://home.ustc.edu.cn/~yssickjgd", description: "网安学院课程往年参考 PPT,配合大礼包使用。", category: "课程资料", icon: "📑", free: true, tags: ["中科大", "网络安全", "课件", "往年资料"], source: "home.ustc.edu.cn" },
+  { name: "SDS 进阶指南", url: "https://www.advancedguide.cn/", description: "人工智能与数据科学学院学长姐经验集:选课、保研、实习,超 110 篇。", category: "课程资料", icon: "🚀", free: true, tags: ["中科大", "数据科学", "AI", "选课经验", "升学"], source: "www.advancedguide.cn" },
+  { name: "软院冒险者指南", url: "https://ustcse.wolai.com", description: "软件学院通关指南:校园生活、课程经验到就业分享。", category: "课程资料", icon: "🏕️", free: true, tags: ["中科大", "软件学院", "课程经验", "就业"], source: "ustcse.wolai.com" },
+  { name: "USTCPhysExpData", url: "https://github.com/regymm/USTCPhysExpData", description: "一至四级大物实验数据、处理脚本与作图结果。", category: "课程资料", icon: "⚗️", free: true, tags: ["中科大", "大学物理", "实验数据", "数据处理"], source: "github.com" },
+  { name: "大物实验报告:PVD 原理与技术", url: "http://home.ustc.edu.cn/~lr_ustc/report26.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true, tags: ["大学物理", "实验报告", "四级实验"], source: "home.ustc.edu.cn" },
+  { name: "大物实验报告:锁相放大器", url: "http://home.ustc.edu.cn/~lr_ustc/report27.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true, tags: ["大学物理", "实验报告", "四级实验"], source: "home.ustc.edu.cn" },
+  { name: "大物实验报告:拉曼光谱", url: "http://home.ustc.edu.cn/~lr_ustc/report28.pdf", description: "四级大物实验参考报告(PDF)。", category: "课程资料", icon: "📄", free: true, tags: ["大学物理", "实验报告", "四级实验"], source: "home.ustc.edu.cn" },
+  { name: "免费编程书籍汇总", url: "https://github.com/EbookFoundation/free-programming-books", description: "开源组织整理的免费编程书籍,多语言多方向。", category: "课程资料", icon: "📚", free: true, tags: ["编程", "电子书", "开源", "多语言"], source: "github.com" },
+  { name: "免费编程书籍·中文", url: "https://github.com/EbookFoundation/free-programming-books/blob/main/books/free-programming-books-zh.md", description: "上面的中文书单专页,中文教材一次找齐。", category: "课程资料", icon: "📕", free: true, tags: ["编程", "电子书", "中文资料", "开源"], source: "github.com" },
+  { name: "凸优化(Boyd 经典教材)", url: "https://web.stanford.edu/~boyd/cvxbook/", description: "斯坦福凸优化教材官网,PDF 免费下载。", category: "课程资料", icon: "➗", free: true, tags: ["数学", "凸优化", "教材", "研究生课程"], source: "web.stanford.edu" },
+  { name: "科大网络资源汇总", url: "https://github.com/zzh1996/USTC-Network-Resources", description: "学长整理的科大网络资源大列表,持续多年更新。", category: "课程资料", icon: "🗃️", free: true, tags: ["中科大", "资源合集", "开源", "长期维护"], source: "github.com" },
+  { name: "计算机学院课程资源", url: "https://github.com/ustcwpz/USTC-CS-Courses-Resource", description: "计算机学院课程资料汇总:课件、作业与复习材料。", category: "课程资料", icon: "💾", free: true, tags: ["中科大", "计算机", "课程资料", "课件"], source: "github.com" },
+  { name: "科大资源链接汇总", url: "https://github.com/ktwu01/USTC-resource-links", description: "另一位同学整理的科大资源链接合集,互为补充。", category: "课程资料", icon: "🗂️", free: true, tags: ["中科大", "资源合集", "链接导航"], source: "github.com" },
+  { name: "科大数学往年试卷", url: "https://ustcmathexam.github.io/", description: "数学课程往年试卷整理,考前刷题必备。", category: "课程资料", icon: "🧮", free: true, tags: ["中科大", "数学", "历年试卷", "刷题"], source: "ustcmathexam.github.io" },
+  { name: "科大物理往年试卷", url: "https://ustcphyexam.github.io", description: "物理课程往年试卷整理,配套答案参考。", category: "课程资料", icon: "🔭", free: true, tags: ["中科大", "物理", "历年试卷", "刷题"], source: "ustcphyexam.github.io" },
+  { name: "数学分析真题", url: "https://icourse.club/course/25661/#review-95007", description: "评课社区内的数分真题分享(评论中)。", category: "课程资料", icon: "📝", free: true, tags: ["中科大", "数学分析", "历年试卷", "评课社区"], source: "icourse.club" },
+  { name: "线性代数 B1 真题", url: "https://icourse.club/course/5492/#review-87834", description: "评课社区内的线代 B1 真题分享(评论中)。", category: "课程资料", icon: "📝", free: true, tags: ["中科大", "线性代数", "历年试卷", "评课社区"], source: "icourse.club" },
+  { name: "人工智能数学原理与算法互助手册", url: "https://icourse.club/course/26225/#review-101942", description: "评课社区该课程评论内的互助手册,需学生登录可见。", category: "课程资料", icon: "🤝", free: true, tags: ["中科大", "人工智能", "数学基础", "互助手册"], source: "icourse.club" },
+  { name: "量子物理讲义", url: "https://icourse.club/course/25423/#review-91859", description: "评课社区内分享的量子物理讲义(评论中)。", category: "课程资料", icon: "⚛️", free: true, tags: ["物理", "量子力学", "讲义"], source: "icourse.club" },
+  { name: "电磁学 C 总结与习题答案", url: "https://icourse.club/course/23768/#review-75011", description: "期中期末知识总结、交叉学科电磁学习题答案。", category: "课程资料", icon: "🧲", free: true, tags: ["物理", "电磁学", "知识点总结", "习题答案"], source: "icourse.club" },
+  { name: "Stack Overflow", url: "https://stackoverflow.com/", description: "全球最大技术问答社区,报错信息一搜多半有答案。", category: "编程开发", icon: "🙋", free: true, tags: ["编程问答", "报错排查", "英文社区"], source: "stackoverflow.com" },
+  { name: "DevDocs", url: "https://devdocs.io/", description: "各编程语言与框架官方文档合集,一个页面查全部。", category: "编程开发", icon: "🗒️", free: true, tags: ["编程文档", "文档聚合", "离线可用"], source: "devdocs.io" },
+  { name: "Hugging Face", url: "https://huggingface.co/", description: "机器学习模型与数据集社区,AI 学习实践入口。", category: "编程开发", icon: "🤗", free: true, tags: ["AI", "模型库", "数据集", "开源社区"], source: "huggingface.co" },
+  { name: "牛客网", url: "https://www.nowcoder.com/", description: "刷题、面经与校招求职一站式平台。", category: "编程开发", icon: "🐮", free: true, tags: ["刷题", "面经", "校招", "求职"], source: "www.nowcoder.com" },
+  { name: "Gitee", url: "https://gitee.com/", description: "国内代码托管平台,访问快,也能搜到不少学习资料。", category: "编程开发", icon: "🔧", free: true, tags: ["开源", "代码托管", "国内平台"], source: "gitee.com" },
+  { name: "清华开源镜像站", url: "https://mirrors.tuna.tsinghua.edu.cn/", description: "TUNA 镜像站,软件源与安装包下载加速。", category: "编程开发", icon: "🪞", free: true, tags: ["镜像站", "软件源", "下载加速", "TUNA"], source: "mirrors.tuna.tsinghua.edu.cn" },
+  { name: "浙大开源镜像站", url: "https://mirrors.zju.edu.cn/", description: "浙大镜像站,常用发行版与软件源齐全。", category: "编程开发", icon: "🪞", free: true, tags: ["镜像站", "软件源", "下载加速"], source: "mirrors.zju.edu.cn" },
+  { name: "北外开源镜像站", url: "https://mirrors.bfsu.edu.cn/", description: "北外镜像站,TUNA 的姊妹站,速度同样不错。", category: "编程开发", icon: "🪞", free: true, tags: ["镜像站", "软件源", "下载加速"], source: "mirrors.bfsu.edu.cn" },
+  { name: "Maic 虚拟课堂", url: "https://open.maic.chat/", description: "清华出品的 AI 课堂:告诉它你想学的内容,自动生成一节虚拟课。", category: "视频课程", icon: "🧑‍🏫", free: true, tags: ["AI 课堂", "清华大学", "自动生成课程"], source: "open.maic.chat" },
+  { name: "alphaXiv", url: "https://www.alphaxiv.org/", description: "arXiv 论文阅读与讨论平台,看论文还能看别人的笔记。", category: "学术科研", icon: "🧾", free: true, tags: ["论文", "arXiv", "阅读讨论"], source: "www.alphaxiv.org" },
+  { name: "ProcessOn", url: "https://www.processon.com/", description: "在线流程图与思维导图,画技术路线图很方便。", category: "效率工具", icon: "🧠", free: true, tags: ["流程图", "思维导图", "在线工具"], source: "www.processon.com" },
+  { name: "全国大学生数学竞赛", url: "https://www.cmathc.org.cn/", description: "数学竞赛官方信息,报名与通知以学校发布为准。", category: "竞赛信息", icon: "🏆", free: true, tags: ["数学", "竞赛", "官方信息"], source: "www.cmathc.org.cn" },
+  { name: "全国大学生数学建模竞赛", url: "https://www.mcm.edu.cn/", description: "国赛官网,赛题、通知与获奖名单发布处。", category: "竞赛信息", icon: "🏆", free: true, tags: ["数学建模", "竞赛", "国赛", "官方信息"], source: "www.mcm.edu.cn" },
+  { name: "数模竞赛报名系统", url: "https://cumcm.cnki.net", description: "全国大学生数学建模竞赛报名入口。", category: "竞赛信息", icon: "📮", free: true, tags: ["数学建模", "竞赛", "报名入口"], source: "cumcm.cnki.net" },
+  { name: "美国大学生数学建模竞赛", url: "https://www.contest.comap.com/undergraduate/contests/", description: "MCM/ICM 美赛官网,寒假期间举行。", category: "竞赛信息", icon: "🌎", free: true, tags: ["数学建模", "竞赛", "美赛", "官方信息"], source: "www.contest.comap.com" },
+  { name: "ICPC 国际大学生程序设计竞赛", url: "https://icpc.global/", description: "程序设计竞赛最高殿堂,赛程与规则官方发布。", category: "竞赛信息", icon: "🥇", free: true, tags: ["算法竞赛", "ICPC", "官方信息"], source: "icpc.global" },
+  { name: "洛谷", url: "https://www.luogu.com.cn/", description: "算法竞赛在线评测平台,题单与比赛丰富,新手友好。", category: "竞赛信息", icon: "🧗", free: true, tags: ["算法竞赛", "在线评测", "题单", "新手友好"], source: "www.luogu.com.cn" },
+  { name: "心理健康专题", url: "https://icourse.club/mental-health/", description: "评课社区的心理健康资源页,需要时可以看看。", category: "校园信息", icon: "💚", free: true, tags: ["中科大", "心理健康", "学生支持"], source: "icourse.club" },
+  { name: "计算机保研信息汇总", url: "https://github.com/CS-BAOYAN", description: "CS 保研信息汇总:导师招生、夏令营与经验帖。", category: "校园信息", icon: "🧑‍🎓", free: true, tags: ["升学", "保研", "夏令营", "计算机"], source: "github.com" },
+  { name: "形势与政策课程预告", url: "https://marx.ustc.edu.cn/2023/0606/c30320a605104/page.htm", description: "马克思主义学院发布的课程安排预告。", category: "校园信息", icon: "📢", free: true, tags: ["中科大", "课程安排", "官方通知"], source: "marx.ustc.edu.cn" },
+  { name: "导师评价网测评", url: "https://zhuanlan.zhihu.com/p/514592085", description: "知乎文章:盘点还能用的导师评价网站,选导师前可参考。", category: "校园信息", icon: "🕵️", free: true, tags: ["导师评价", "选导师", "经验参考"], source: "zhuanlan.zhihu.com" },
+  { name: "2025 招生导师一览", url: "https://dslx.ustc.edu.cn/?menu=expertlist&year=2025", description: "科大各院系招生导师名单查询。", category: "校园信息", icon: "👨‍🏫", free: true, tags: ["中科大", "导师名单", "招生", "查询"], source: "dslx.ustc.edu.cn" },
+  { name: "四级听力真题合集", url: "https://pan.quark.cn/s/955dda75cfa7", description: "B 站 UP 主「圣诞节南瓜灯」整理,历年四级听力真题带中英字幕。", category: "英语备考", icon: "🎧", free: true, tags: ["英语", "四级", "听力", "真题"], source: "pan.quark.cn" },
+  { name: "六级听力真题合集", url: "https://pan.quark.cn/s/67a2c6dcf10b", description: "同 UP 主的六级听力合集,网盘持续更新。", category: "英语备考", icon: "🎧", free: true, tags: ["英语", "六级", "听力", "真题"], source: "pan.quark.cn" },
+  { name: "U 校园答案(公众号)", url: "https://mp.weixin.qq.com/mp/homepage?__biz=MzA5Mjc0NDk3MQ==&hid=5", description: "微信公众号提供的 U 校园参考答案,请注意甄别。", category: "英语备考", icon: "📱", free: true, tags: ["英语", "U 校园", "参考答案", "需甄别"], source: "mp.weixin.qq.com" },
+  { name: "四六级真题全套", url: "https://github.com/0609x/CET46-Resources", description: "历年四六级真题 PDF/Word、答案解析与听力音频,覆盖 2013–2026 共 55 个考次。", category: "英语备考", icon: "✏️", free: true, tags: ["英语", "四六级", "真题", "真题解析"], source: "github.com" },
+  { name: "四六级听力在线版", url: "https://www.bilibili.com/video/BV1Zu411x7k4/", description: "整套四六级听力音频 B 站在线试听,配合真题刷题使用。", category: "英语备考", icon: "🔊", free: true, tags: ["英语", "四六级", "听力", "在线试听"], source: "www.bilibili.com" },
+  { name: "OpenStax 免费大学教材", url: "https://openstax.org/subjects", description: "莱斯大学官方出版的正版免费教材:数学、物理、化学、经济等,PDF 直接下载。", category: "课程资料", icon: "🏛️", free: true, tags: ["教材", "免费", "英文", "多学科"], source: "openstax.org" },
+  { name: "OpenStax 微积分(全三册)", url: "https://openstax.org/details/books/calculus-volume-1", description: "免费微积分教材,覆盖高数/微积分全部内容,配习题与答案。", category: "课程资料", icon: "📗", free: true, tags: ["数学", "微积分", "教材", "免费"], source: "openstax.org" },
+  { name: "OpenStax 大学物理(全三册)", url: "https://openstax.org/details/books/university-physics-volume-1", description: "免费物理教材:力学、热学、电磁学、光学、量子物理全覆盖。", category: "课程资料", icon: "🌡️", free: true, tags: ["物理", "大学物理", "教材", "免费"], source: "openstax.org" },
+  { name: "费曼物理学讲义(在线版)", url: "https://www.feynmanlectures.caltech.edu/", description: "加州理工官方免费在线版,力学、热学、电磁学、量子力学,物理学圣经。", category: "课程资料", icon: "🍎", free: true, tags: ["物理", "费曼讲义", "经典教材", "在线版"], source: "www.feynmanlectures.caltech.edu" },
+  { name: "LibreTexts 开放教材库", url: "https://libretexts.org/", description: "全球最大开放教材平台,数分、电磁学、量子力学等都有专门书库。", category: "课程资料", icon: "🗄️", free: true, tags: ["教材", "开放资源", "多学科", "英文"], source: "libretexts.org" },
+  { name: "线性代数(Hefferon 免费教材)", url: "https://hefferon.net/linearalgebra/", description: "免费线代教材 PDF,习题带详细解答,适合自学。", category: "课程资料", icon: "✖️", free: true, tags: ["数学", "线性代数", "教材", "免费"], source: "hefferon.net" },
+  { name: "Beej's C 语言指南", url: "https://beej.us/guide/bgc/", description: "经典免费 C 语言教程,在线阅读+PDF,从指针到网络编程。", category: "课程资料", icon: "📟", free: true, tags: ["编程", "C 语言", "系统编程", "网络编程"], source: "beej.us" },
+  { name: "科学文库", url: "https://book.sciencereading.cn/", description: "科学出版社正版电子书平台,数分、线代、物理中文教材丰富,校园网内可访问。", category: "课程资料", icon: "🔬", free: false, tags: ["教材", "电子书", "中文教材", "校园网"], source: "book.sciencereading.cn" }
 ];
+/* ===== DATA:END ===== */
 
 const CATEGORIES = ["全部", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "校园信息", "英语备考"];
 const CAT_COLORS = {
@@ -361,12 +367,24 @@ for (const cat of CATEGORIES) {
   chips.insertBefore(btn, chips.querySelector(".free-toggle"));
 }
 
+function searchText(r) {
+  // 检索范围：名称 + 简介 + 标签 + 分类 + 来源站点。
+  // 标签参与检索是"标签搜索"的基础；分类与来源一起纳入，方便直接搜"论文""镜像站""校内平台"。
+  return [
+    r.name,
+    r.description,
+    (r.tags || []).join(" "),
+    r.category,
+    r.source || "",
+  ].join(" ").toLowerCase();
+}
+
 function render() {
   const keyword = q.value.trim().toLowerCase();
   const list = RESOURCES.filter((r) => {
     if (activeCategory !== "全部" && r.category !== activeCategory) return false;
     if (freeOnly.checked && !r.free) return false;
-    if (keyword && !(r.name.toLowerCase().includes(keyword) || r.description.toLowerCase().includes(keyword))) return false;
+    if (keyword && !searchText(r).includes(keyword)) return false;
     return true;
   });
   grid.innerHTML = "";
@@ -395,6 +413,30 @@ function render() {
 q.addEventListener("input", render);
 freeOnly.addEventListener("change", render);
 render();
+
+/* ===== 资源数据加载 =====
+   以 resources.json 为准；加载成功则原地替换内嵌数据并重绘。
+   file:// 打开（fetch 不可用）或网络异常时静默降级，继续用内嵌数据，
+   因此页面在任何情况下都有内容可显示。 */
+function applyResources(list) {
+  if (!Array.isArray(list) || !list.length) return false;
+  RESOURCES.length = 0;
+  for (const r of list) RESOURCES.push(Object.assign({}, r));
+  document.getElementById("total").textContent = RESOURCES.length;
+  document.getElementById("freeCount").textContent = RESOURCES.filter((r) => r.free).length;
+  render();
+  return true;
+}
+
+function loadResources() {
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("resources.json", { cache: "no-cache" })
+    .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function (doc) { applyResources(doc && doc.resources); })
+    .catch(function () { /* 静默降级到内嵌数据 */ });
+}
+
+loadResources();
 </script>
 </body>
 </html>
