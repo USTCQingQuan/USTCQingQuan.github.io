@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="拾学集:为中科大同学精选的网络学习资源,课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考。" />
+<meta name="description" content="拾学集:为中科大同学精选的网络学习资源,覆盖 AI 与数据科学、课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考。" />
 <title>拾学集 · 中科大学习资源</title>
 <style>
   :root {
@@ -24,6 +24,7 @@
     --c-jingsai: #b91c1c;
     --c-xiaoyuan: #be185d;
     --c-yingyu: #4d7c0f;
+    --c-ai: #1d4ed8;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -192,11 +193,11 @@
     <div>
       <span class="hero-badge">USTC LEARNING HUB</span>
       <h1>拾<em>学</em>集</h1>
-      <p class="sub">为中科大同学精选的网络学习资源——课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考,一站式直达。</p>
+      <p class="sub">为中科大同学精选的网络学习资源——AI 与数据科学、课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考,一站式直达。</p>
     </div>
     <div class="hero-stats">
       <div class="stat"><b id="total"></b><span>精选资源</span></div>
-      <div class="stat"><b>9</b><span>个分类</span></div>
+      <div class="stat"><b id="catCount"></b><span>个分类</span></div>
       <div class="stat"><b id="freeCount"></b><span>免费</span></div>
     </div>
   </div>
@@ -327,13 +328,71 @@ const RESOURCES = [
   { name: "LibreTexts 开放教材库", url: "https://libretexts.org/", description: "全球最大开放教材平台,数分、电磁学、量子力学等都有专门书库。", category: "课程资料", icon: "🗄️", free: true, tags: ["教材", "开放资源", "多学科", "英文"], source: "libretexts.org" },
   { name: "线性代数(Hefferon 免费教材)", url: "https://hefferon.net/linearalgebra/", description: "免费线代教材 PDF,习题带详细解答,适合自学。", category: "课程资料", icon: "✖️", free: true, tags: ["数学", "线性代数", "教材", "免费"], source: "hefferon.net" },
   { name: "Beej's C 语言指南", url: "https://beej.us/guide/bgc/", description: "经典免费 C 语言教程,在线阅读+PDF,从指针到网络编程。", category: "课程资料", icon: "📟", free: true, tags: ["编程", "C 语言", "系统编程", "网络编程"], source: "beej.us" },
-  { name: "科学文库", url: "https://book.sciencereading.cn/", description: "科学出版社正版电子书平台,数分、线代、物理中文教材丰富,校园网内可访问。", category: "课程资料", icon: "🔬", free: false, tags: ["教材", "电子书", "中文教材", "校园网"], source: "book.sciencereading.cn" }
+  { name: "科学文库", url: "https://book.sciencereading.cn/", description: "科学出版社正版电子书平台,数分、线代、物理中文教材丰富,校园网内可访问。", category: "课程资料", icon: "🔬", free: false, tags: ["教材", "电子书", "中文教材", "校园网"], source: "book.sciencereading.cn" },
+  { name: "动手学深度学习（PyTorch 版）", url: "https://zh-v2.d2l.ai/", description: "李沐团队《动手学深度学习》第二版在线书,含可运行代码与视频,中文。", category: "AI 与数据科学", icon: "📘", free: true, tags: ["AI", "深度学习", "在线教材", "可运行代码"], source: "zh-v2.d2l.ai" },
+  { name: "南瓜书", url: "https://github.com/datawhalechina/pumpkin-book", description: "《机器学习》（西瓜书）公式详细推导,Datawhale 开源,配套西瓜书使用。", category: "AI 与数据科学", icon: "🎃", free: true, tags: ["AI", "机器学习", "公式推导", "开源"], source: "github.com" },
+  { name: "李宏毅机器学习 2023", url: "https://speech.ee.ntu.edu.tw/~hylee/ml/2023-spring.php", description: "台大李宏毅机器学习课程主页,含讲义、作业与视频链接。", category: "AI 与数据科学", icon: "🎓", free: true, tags: ["AI", "机器学习", "高校课程", "讲义"], source: "speech.ee.ntu.edu.tw" },
+  { name: "Datawhale 开源学习社区", url: "https://github.com/datawhalechina", description: "国内开源学习组织,机器学习、数据分析等方向的开源教程与组队学习。", category: "AI 与数据科学", icon: "🐳", free: true, tags: ["AI", "开源社区", "教程", "中文"], source: "github.com" },
+  { name: "吴恩达机器学习（B站）", url: "https://www.bilibili.com/video/BV1Pa411X76s", description: "吴恩达 Machine Learning 课程中英字幕版,入门经典。", category: "AI 与数据科学", icon: "📺", free: true, tags: ["AI", "机器学习", "视频课程", "入门"], source: "www.bilibili.com" },
+  { name: "蘑菇书（李宏毅深度学习笔记）", url: "https://github.com/datawhalechina/leedl-tutorial", description: "李宏毅深度学习课程的中文笔记整理,Datawhale 开源。", category: "AI 与数据科学", icon: "🍄", free: true, tags: ["AI", "深度学习", "笔记", "开源"], source: "github.com" },
+  { name: "DeepSeek 开放平台文档", url: "https://api-docs.deepseek.com/zh-cn/", description: "DeepSeek API 官方文档,含调用方式、价格与模型说明,国内可直连。", category: "AI 与数据科学", icon: "🐋", free: true, tags: ["AI 编程", "API", "国内可用", "官方文档"], source: "api-docs.deepseek.com" },
+  { name: "智谱 AI 开放平台", url: "https://open.bigmodel.cn/dev/api", description: "智谱 GLM 系列模型 API 文档,国内手机号可注册。", category: "AI 与数据科学", icon: "🧠", free: true, tags: ["AI 编程", "API", "国内可用", "官方文档"], source: "open.bigmodel.cn" },
+  { name: "阿里云百炼（通义）", url: "https://help.aliyun.com/zh/model-studio/", description: "阿里云大模型服务平台文档,通义系列模型 API 与应用构建。", category: "AI 与数据科学", icon: "☁️", free: true, tags: ["AI 编程", "API", "国内可用", "官方文档"], source: "help.aliyun.com" },
+  { name: "Dify 开源 LLM 应用平台", url: "https://github.com/langgenius/dify", description: "开源的大模型应用开发平台,可自部署,支持 RAG 与 Agent 编排。", category: "AI 与数据科学", icon: "🛠️", free: true, tags: ["AI 编程", "RAG", "Agent", "开源"], source: "github.com" },
+  { name: "Model Context Protocol 文档", url: "https://modelcontextprotocol.io/", description: "MCP 协议官方文档,统一大模型与外部工具/数据源的接口标准。", category: "AI 与数据科学", icon: "🔌", free: true, tags: ["AI 编程", "MCP", "官方文档", "英文"], source: "modelcontextprotocol.io" },
+  { name: "LangChain 官方文档", url: "https://python.langchain.com/docs/", description: "主流 LLM 应用开发框架文档,覆盖链式调用、检索与 Agent。", category: "AI 与数据科学", icon: "🦜", free: true, tags: ["AI 编程", "框架", "Agent", "英文"], source: "python.langchain.com" },
+  { name: "n8n 自动化", url: "https://github.com/n8n-io/n8n", description: "开源工作流自动化工具,可接入大模型做自动化流程,支持自部署。", category: "AI 与数据科学", icon: "🔀", free: true, tags: ["AI 编程", "自动化工具", "开源"], source: "github.com" },
+  { name: "OpenAI 官方文档", url: "https://platform.openai.com/docs", description: "OpenAI API 官方文档。注意:文档可正常阅读,但 API 调用需海外支付方式,国内可先用 DeepSeek/智谱/百炼替代。", category: "AI 与数据科学", icon: "🤖", free: true, tags: ["AI 编程", "API", "官方文档", "需海外支付"], source: "platform.openai.com" },
+  { name: "ModelScope 魔搭社区", url: "https://www.modelscope.cn/", description: "阿里达摩院模型开源社区,模型、数据集下载与在线体验,国内直连。", category: "AI 与数据科学", icon: "🧩", free: true, tags: ["开源模型", "模型下载", "数据集", "国内可用"], source: "www.modelscope.cn" },
+  { name: "Qwen 通义千问开源", url: "https://github.com/QwenLM/Qwen", description: "通义千问官方开源仓库,含模型权重、技术报告与使用示例。", category: "AI 与数据科学", icon: "🌟", free: true, tags: ["开源模型", "大语言模型", "开源"], source: "github.com" },
+  { name: "OpenBMB 面壁智能", url: "https://github.com/OpenBMB", description: "面壁智能开源组织,MiniCPM 等模型与工具链。", category: "AI 与数据科学", icon: "🧱", free: true, tags: ["开源模型", "大语言模型", "开源"], source: "github.com" },
+  { name: "智源研究院 BAAI", url: "https://hub.baai.ac.cn/", description: "北京智源人工智能研究院社区,含开源模型与论文资源。", category: "AI 与数据科学", icon: "🏛️", free: true, tags: ["开源模型", "研究机构", "论文"], source: "hub.baai.ac.cn" },
+  { name: "Ollama", url: "https://github.com/ollama/ollama", description: "一键在本地运行大语言模型的工具,装好即可离线使用,无需联网调用。", category: "AI 与数据科学", icon: "🦙", free: true, tags: ["本地部署", "推理工具", "开源", "离线可用"], source: "github.com" },
+  { name: "llama.cpp", url: "https://github.com/ggerganov/llama.cpp", description: "纯 C/C++ 实现的大模型推理引擎,可在普通电脑甚至手机运行量化模型。", category: "AI 与数据科学", icon: "⚙️", free: true, tags: ["本地部署", "推理工具", "量化", "开源"], source: "github.com" },
+  { name: "LM Studio", url: "https://lmstudio.ai/", description: "桌面端大模型运行工具,图形界面管理本地模型。注:官网定位已更新为 Agent 方向。", category: "AI 与数据科学", icon: "🖥️", free: true, tags: ["本地部署", "模型管理", "图形界面"], source: "lmstudio.ai" },
+  { name: "vLLM", url: "https://github.com/vllm-project/vllm", description: "高吞吐大模型推理与服务框架,适合多并发部署场景。", category: "AI 与数据科学", icon: "🚀", free: true, tags: ["本地部署", "推理工具", "开源"], source: "github.com" },
+  { name: "Hugging Face Daily Papers", url: "https://huggingface.co/papers", description: "每日 AI 论文精选与讨论,可看社区解读。原 Papers with Code 已并入 Hugging Face。", category: "AI 与数据科学", icon: "📄", free: true, tags: ["AI 论文", "论文阅读", "英文"], source: "huggingface.co" },
+  { name: "和鲸社区", url: "https://www.heywhale.com/", description: "国内数据科学社区,含数据集、开源项目与竞赛。", category: "AI 与数据科学", icon: "🐋", free: true, tags: ["数据分析", "数据集", "竞赛", "国内可用"], source: "www.heywhale.com" },
+  { name: "中国计算机学会 CCF", url: "https://www.ccf.org.cn/", description: "CCF 官方站点,含推荐国际会议与期刊目录,投稿选刊的权威参考。", category: "AI 与数据科学", icon: "🏅", free: true, tags: ["学术评价", "会议期刊", "官方信息"], source: "www.ccf.org.cn" },
+  { name: "即梦 AI", url: "https://jimeng.jianying.com/", description: "字节跳动旗下 AI 图像与视频生成工具,国内手机号可注册。", category: "AI 与数据科学", icon: "🎬", free: true, tags: ["图像生成", "视频生成", "国内可用"], source: "jimeng.jianying.com" },
+  { name: "通义万相", url: "https://tongyi.aliyun.com/wanxiang/", description: "阿里通义系列 AI 图像与视频生成模型,国内直连。", category: "AI 与数据科学", icon: "🖼️", free: true, tags: ["图像生成", "视频生成", "国内可用"], source: "tongyi.aliyun.com" },
+  { name: "ComfyUI", url: "https://github.com/comfyanonymous/ComfyUI", description: "节点式 Stable Diffusion 图形界面,流程可复用,适合进阶图像生成。", category: "AI 与数据科学", icon: "🧵", free: true, tags: ["图像生成", "本地部署", "开源"], source: "github.com" },
+  { name: "Stable Diffusion WebUI", url: "https://github.com/AUTOMATIC1111/stable-diffusion-webui", description: "最流行的本地图像生成界面,支持文生图、图生图与插件扩展。", category: "AI 与数据科学", icon: "🎨", free: true, tags: ["图像生成", "本地部署", "开源"], source: "github.com" },
+  { name: "cppreference 中文", url: "https://zh.cppreference.com/", description: "C/C++ 标准库与语言特性权威参考,查语法与接口首选。", category: "编程开发", icon: "📕", free: true, tags: ["C++", "C 语言", "官方参考", "语法速查"], source: "zh.cppreference.com" },
+  { name: "Learn C++", url: "https://www.learncpp.com/", description: "循序渐进的 C++ 免费教程,从基础到模板与并发。", category: "编程开发", icon: "📗", free: true, tags: ["C++", "教程", "免费", "英文"], source: "www.learncpp.com" },
+  { name: "计算机教育中缺失的一课（中文版）", url: "https://missing-semester-cn.github.io/", description: "MIT 课程中文版:命令行、Git、调试、性能分析等课堂上不教但必需的技能。", category: "编程开发", icon: "🧰", free: true, tags: ["Linux", "命令行", "Git", "工具链"], source: "missing-semester-cn.github.io" },
+  { name: "Pro Git 中文版", url: "https://git-scm.com/book/zh/v2", description: "Git 官方推荐教材中文版,从基础到分支、服务器与内部原理。", category: "编程开发", icon: "🌿", free: true, tags: ["Git", "版本控制", "教材", "官方"], source: "git-scm.com" },
+  { name: "Hello 算法", url: "https://github.com/krahets/hello-algo", description: "动画图解的数据结构与算法教程,支持多语言代码与一键运行。", category: "编程开发", icon: "👋", free: true, tags: ["算法", "数据结构", "开源", "图解"], source: "github.com" },
+  { name: "清华计算机课程共享计划", url: "https://github.com/PKUanonym/REKCARC-TSC-UHT", description: "清华大学计算机系课程资料汇总:课件、作业与实验。", category: "课程资料", icon: "🎒", free: true, tags: ["高校课程", "计算机", "课程资料", "课件"], source: "github.com" },
+  { name: "Semantic Scholar", url: "https://www.semanticscholar.org/", description: "AI 驱动的学术搜索引擎,支持引文脉络与相关论文推荐。", category: "学术科研", icon: "🔎", free: true, tags: ["文献检索", "论文", "引文分析"], source: "www.semanticscholar.org" },
+  { name: "PubMed", url: "https://pubmed.ncbi.nlm.nih.gov/", description: "生物医学文献数据库,生命科学方向检索必备。", category: "学术科研", icon: "🧬", free: true, tags: ["文献检索", "生物医学", "数据库"], source: "pubmed.ncbi.nlm.nih.gov" },
+  { name: "Zotero 中文社区", url: "https://zotero-chinese.com/", description: "Zotero 中文维护小组,提供中文插件、教程与样式下载。", category: "学术科研", icon: "🗂️", free: true, tags: ["文献管理", "Zotero", "中文插件", "教程"], source: "zotero-chinese.com" },
+  { name: "COMSOL 官方文档", url: "https://www.comsol.com/documentation", description: "COMSOL Multiphysics 官方文档与案例下载,多物理场仿真入门与查阅。", category: "学术科研", icon: "🌡️", free: true, tags: ["仿真软件", "多物理场", "官方文档"], source: "www.comsol.com" },
+  { name: "MATLAB 官方文档", url: "https://www.mathworks.com/help/matlab/", description: "MATLAB 官方文档与示例,数值计算与数据可视化。", category: "学术科研", icon: "📊", free: true, tags: ["数值计算", "数据分析", "官方文档"], source: "www.mathworks.com" },
+  { name: "SciPy 官方文档", url: "https://scipy.org/", description: "Python 科学计算基础库文档,覆盖优化、积分、信号处理等。", category: "学术科研", icon: "🐍", free: true, tags: ["数据分析", "科学计算", "Python", "官方文档"], source: "scipy.org" },
+  { name: "pandas 官方文档", url: "https://pandas.pydata.org/docs/", description: "Python 数据处理库官方文档,表格数据分析核心工具。", category: "学术科研", icon: "🐼", free: true, tags: ["数据分析", "Python", "官方文档"], source: "pandas.pydata.org" },
+  { name: "Jupyter 官方", url: "https://jupyter.org/", description: "交互式计算环境,数据分析与教学演示常用,支持多语言。", category: "学术科研", icon: "📓", free: true, tags: ["数据分析", "交互计算", "教学工具"], source: "jupyter.org" },
+  { name: "全国大学英语四六级考试官网", url: "https://cet.neea.edu.cn/", description: "CET 官方报名与成绩查询入口,含考试安排与大纲。", category: "英语备考", icon: "📝", free: true, tags: ["英语", "四六级", "官方信息", "报名入口"], source: "cet.neea.edu.cn" },
+  { name: "可汗学院中文", url: "https://zh.khanacademy.org/", description: "数学、物理、经济等基础学科免费课程中文版,适合补基础。", category: "视频课程", icon: "🧮", free: true, tags: ["公开课", "数学", "基础补习", "中文"], source: "zh.khanacademy.org" },
+  { name: "线性代数的本质（3Blue1Brown）", url: "https://www.bilibili.com/video/BV1ys411472E", description: "用几何直觉讲解线性代数的经典系列,理解矩阵与特征值的本质。", category: "视频课程", icon: "📐", free: true, tags: ["数学", "线性代数", "视频课程", "直观讲解"], source: "www.bilibili.com" },
+  { name: "Attention Is All You Need（Transformer 原论文）", url: "https://arxiv.org/abs/1706.03762", description: "Transformer 架构的原始论文,提出自注意力机制,现代大模型的起点。含摘要、PDF 与引用信息。", category: "AI 与数据科学", icon: "📜", free: true, tags: ["AI", "Transformer", "论文原文", "注意力机制"], source: "arxiv.org" },
+  { name: "The Illustrated Transformer", url: "https://jalammar.github.io/illustrated-transformer/", description: "Jay Alammar 的经典图解文章,用可视化方式讲清自注意力、多头注意力与编码解码结构,公认最好的入门材料。", category: "AI 与数据科学", icon: "🎨", free: true, tags: ["AI", "Transformer", "图解", "注意力机制"], source: "jalammar.github.io" },
+  { name: "Learn NLP With Transformers（中文）", url: "https://github.com/datawhalechina/learn-nlp-with-transformers", description: "Datawhale 开源中文教程,从 NLP 基础讲到 Transformer,含可运行代码,中文读者友好。", category: "AI 与数据科学", icon: "📚", free: true, tags: ["AI", "Transformer", "自然语言处理", "中文教程"], source: "github.com" },
+  { name: "Hugging Face Transformers 文档", url: "https://huggingface.co/docs/transformers/index", description: "主流 Transformer 模型库官方文档,含预训练模型加载、微调与推理示例。", category: "AI 与数据科学", icon: "🤗", free: true, tags: ["AI", "Transformer", "官方文档", "预训练模型"], source: "huggingface.co" },
+  { name: "Hugging Face NLP 课程（中文版）", url: "https://huggingface.co/learn/nlp-course/zh-CN/chapter1/1", description: "Hugging Face 官方 NLP 课程中文版,从 Transformer 原理讲到微调与部署,免费且带练习。", category: "AI 与数据科学", icon: "🎓", free: true, tags: ["AI", "Transformer", "自然语言处理", "中文课程"], source: "huggingface.co" },
+  { name: "Transformer Explainer（交互可视化）", url: "https://poloclub.github.io/transformer-explainer/", description: "佐治亚理工出品的交互式可视化工具,可实时观察 GPT-2 内部注意力如何计算。", category: "AI 与数据科学", icon: "🔍", free: true, tags: ["AI", "Transformer", "可视化", "交互工具"], source: "poloclub.github.io" },
+  { name: "李沐：Transformer 论文逐段精读", url: "https://www.bilibili.com/video/BV1pu411o7BE", description: "《动手学深度学习》作者李沐的论文精读视频,逐段讲解 Transformer 原文与实现细节。", category: "AI 与数据科学", icon: "📺", free: true, tags: ["AI", "Transformer", "论文精读", "视频课程"], source: "www.bilibili.com" },
+  { name: "动手学深度学习：注意力机制", url: "https://zh-v2.d2l.ai/chapter_attention-mechanisms/index.html", description: "《动手学深度学习》注意力机制章节,含注意力评分、Bahdanau 注意力与多头注意力的完整推导与代码。", category: "AI 与数据科学", icon: "🧠", free: true, tags: ["AI", "注意力机制", "在线教材", "可运行代码"], source: "zh-v2.d2l.ai" },
+  { name: "nanoGPT", url: "https://github.com/karpathy/nanoGPT", description: "Karpathy 的极简 GPT 实现,约 300 行代码训练一个字符级 GPT,理解 Transformer 训练流程的最佳实操。", category: "AI 与数据科学", icon: "🧪", free: true, tags: ["AI", "Transformer", "GPT", "开源实现"], source: "github.com" },
+  { name: "build-nanogpt（视频+代码）", url: "https://github.com/karpathy/build-nanogpt", description: "Karpathy 从零手写 GPT 的配套视频与代码,逐行讲解注意力、训练循环与推理。", category: "AI 与数据科学", icon: "🔧", free: true, tags: ["AI", "Transformer", "GPT", "教学视频"], source: "github.com" },
+  { name: "The Annotated Transformer", url: "https://nlp.seas.harvard.edu/annotated-transformer/", description: "哈佛 NLP 组的经典教程,用可运行代码逐段注释 Transformer 论文实现,理论与代码对照。", category: "AI 与数据科学", icon: "📝", free: true, tags: ["AI", "Transformer", "代码注释", "教程"], source: "nlp.seas.harvard.edu" }
 ];
 /* ===== DATA:END ===== */
 
-const CATEGORIES = ["全部", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "校园信息", "英语备考"];
+const CATEGORIES = ["全部", "AI 与数据科学", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "校园信息", "英语备考"];
 const CAT_COLORS = {
   "课程资料": "var(--c-kecheng)",
+  "AI 与数据科学": "var(--c-ai)",
   "视频课程": "var(--c-shipin)",
   "编程开发": "var(--c-biancheng)",
   "学术科研": "var(--c-xueshu)",
@@ -351,8 +410,15 @@ const q = document.getElementById("q");
 const freeOnly = document.getElementById("freeOnly");
 const chips = document.getElementById("chips");
 
-document.getElementById("total").textContent = RESOURCES.length;
-document.getElementById("freeCount").textContent = RESOURCES.filter((r) => r.free).length;
+// 顶部统计数字统一由这里更新：分类数从 CATEGORIES 现算，
+// 避免"新增分类后 Hero 区还写着旧数字"（原先硬编码为 9）。
+function updateStats() {
+  document.getElementById("total").textContent = RESOURCES.length;
+  document.getElementById("catCount").textContent = CATEGORIES.length - 1; // 减去"全部"
+  document.getElementById("freeCount").textContent = RESOURCES.filter((r) => r.free).length;
+}
+
+updateStats();
 
 for (const cat of CATEGORIES) {
   const btn = document.createElement("button");
@@ -422,8 +488,7 @@ function applyResources(list) {
   if (!Array.isArray(list) || !list.length) return false;
   RESOURCES.length = 0;
   for (const r of list) RESOURCES.push(Object.assign({}, r));
-  document.getElementById("total").textContent = RESOURCES.length;
-  document.getElementById("freeCount").textContent = RESOURCES.filter((r) => r.free).length;
+  updateStats();
   render();
   return true;
 }
