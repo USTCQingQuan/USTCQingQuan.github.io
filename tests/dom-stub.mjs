@@ -20,6 +20,10 @@ export function makeEl(tag) {
     set innerHTML(v) { this._html = v; this.children = v === '' ? [] : parseFragment(v); },
     setAttribute(k, v) { this.attrs[k] = String(v); },
     getAttribute(k) { return this.attrs[k]; },
+    // childNodes 是标准 DOM API，真实浏览器里恒存在。
+    // 页面用它判断"有没有插入过子节点"（如高亮时），桩里必须一并提供，
+    // 否则会报 undefined —— 那是桩的能力缺失，不是页面 bug。
+    get childNodes() { return this.children; },
     focus() {}, blur() {},
     appendChild(c) { this.children.push(c); return c; },
     insertBefore(c) { this.children.push(c); return c; },

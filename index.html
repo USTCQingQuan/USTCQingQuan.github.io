@@ -172,6 +172,27 @@
   .badge.paid { background: #f8ecd8; color: #96660f; }
   .empty { text-align: center; color: var(--muted); padding: 72px 0; font-size: 15px; }
 
+  /* 搜索结果计数条：告诉用户"筛完剩几条"以及"为什么这些条目命中" */
+  .result-bar {
+    margin: 0 0 14px; font-size: 13.5px; color: var(--muted);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .result-bar b { color: var(--primary); font-size: 15px; }
+  .result-bar .rb-kw {
+    background: #fdf3d7; color: #8a6100; padding: 1px 7px; border-radius: 5px;
+    font-weight: 600;
+  }
+  .result-bar .rb-clear {
+    margin-left: auto; font-size: 12.5px; color: var(--muted);
+    background: none; border: 1px solid var(--border); border-radius: 999px;
+    padding: 3px 11px; cursor: pointer;
+  }
+  .result-bar .rb-clear:hover { border-color: var(--primary); color: var(--primary); }
+  /* 命中关键词高亮 */
+  mark.hl { background: #fdf3d7; color: #8a6100; padding: 0 2px; border-radius: 3px; font-weight: 600; }
+  /* 匹配位置提示 */
+  .card-why { font-size: 11.5px; color: #a08a5a; margin-top: 6px; }
+
   footer {
     border-top: 1px solid var(--border); padding: 30px 0 46px;
     text-align: center; color: var(--muted); font-size: 13px;
@@ -422,6 +443,7 @@
 
 <main class="wrap">
   <div id="view-resources">
+    <p class="result-bar" id="resultBar" hidden></p>
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>没有找到匹配的资源,换个关键词试试。</p>
   </div>
@@ -1926,6 +1948,97 @@ function searchText(r) {
   ].join(" ").toLowerCase();
 }
 
+/* 判断某条资源在哪些字段命中了关键词 —— 用于卡片上的"匹配位置"提示。
+   为什么需要它：用户搜一个词，结果里出现看起来不相干的条目时会困惑，
+   标明"因为标签里有这个词"就能让他立刻判断要不要点。 */
+function matchReasons(r, keyword) {
+  if (!keyword) return [];
+  const has = (s) => String(s || "").toLowerCase().includes(keyword);
+  const out = [];
+  if (has(r.name)) out.push("名称");
+  const hitTags = (r.tags || []).filter((t) => has(t));
+  if (hitTags.length) out.push("标签「" + hitTags.slice(0, 2).join("、") + "」");
+  if (has(r.description)) out.push("简介");
+  if (has(r.category)) out.push("分类");
+  if (has(r.subcategory)) out.push("子分类");
+  if (has(r.source)) out.push("来源");
+  return out;
+}
+
+/* 把文本里出现的关键词包进 <mark>。必须走 DOM API 而不是拼 HTML 字符串，
+   否则资源标题里的 < > & 等字符会被当成标签解析（名称里确实有 "C++" 这类内容）。 */
+function highlightInto(el, text, keyword) {
+  el.textContent = "";
+  const src = String(text == null ? "" : text);
+  if (!keyword) { el.textContent = src; return; }
+  const lower = src.toLowerCase();
+  let from = 0;
+  for (;;) {
+    const at = lower.indexOf(keyword, from);
+    if (at === -1) break;
+    if (at > from) el.appendChild(document.createTextNode(src.slice(from, at)));
+    const m = document.createElement("mark");
+    m.className = "hl";
+    m.textContent = src.slice(at, at + keyword.length);
+    el.appendChild(m);
+    from = at + keyword.length;
+  }
+  if (from < src.length) el.appendChild(document.createTextNode(src.slice(from)));
+  if (!el.childNodes.length) el.textContent = src;
+}
+
+/* 结果计数条：说清"筛完剩几条、按什么关键词筛的"，并给一个清空按钮。
+   只在用户主动筛选时出现 —— 默认浏览（全部 170 条）时不打扰。 */
+const resultBar = document.getElementById("resultBar");
+let rbClearText = null;   // 桌面端显示"清除筛选"，窄屏显示"清除"
+
+function renderResultBar(keyword, count) {
+  if (!resultBar) return;
+  const filtering = !!(keyword || activeCategory !== "全部" || activeSub || freeOnly.checked);
+  if (!filtering) { resultBar.hidden = true; resultBar.textContent = ""; return; }
+
+  resultBar.hidden = false;
+  resultBar.textContent = "";
+
+  const label = document.createElement("span");
+  label.appendChild(document.createTextNode("找到 "));
+  const b = document.createElement("b");
+  b.textContent = String(count);
+  label.appendChild(b);
+  label.appendChild(document.createTextNode(" 条"));
+
+  // 说清筛选条件
+  const parts = [];
+  if (activeCategory !== "全部") parts.push(activeCategory);
+  if (activeSub) parts.push(activeSub);
+  if (freeOnly.checked) parts.push("只看免费");
+  if (parts.length) label.appendChild(document.createTextNode("　·　" + parts.join(" / ")));
+
+  if (keyword) {
+    label.appendChild(document.createTextNode("　·　关键词 "));
+    const kw = document.createElement("span");
+    kw.className = "rb-kw";
+    kw.textContent = q.value.trim();
+    label.appendChild(kw);
+  }
+  resultBar.appendChild(label);
+
+  const clear = document.createElement("button");
+  clear.type = "button";
+  clear.className = "rb-clear";
+  clear.textContent = rbClearText || "清除筛选";
+  clear.addEventListener("click", () => {
+    q.value = "";
+    freeOnly.checked = false;
+    activeCategory = "全部";
+    activeSub = null;
+    for (const c of chips.querySelectorAll(".chip")) c.classList.toggle("active", c.textContent === "全部");
+    renderSubchips();
+    render();
+  });
+  resultBar.appendChild(clear);
+}
+
 function render() {
   const keyword = q.value.trim().toLowerCase();
   const list = RESOURCES.filter((r) => {
@@ -1936,6 +2049,7 @@ function render() {
     return true;
   });
   grid.innerHTML = "";
+  renderResultBar(keyword, list.length);
   list.forEach((r, i) => {
     const a = document.createElement("a");
     a.className = "card";
@@ -1949,11 +2063,18 @@ function render() {
       '<div class="card-head"><span class="card-icon">' + r.icon + '</span>' +
       '<span class="card-name"></span><span class="card-jump" title="直接打开网站">↗</span></div>' +
       '<p class="card-desc"></p>' +
+      (keyword ? '<div class="card-why"></div>' : '') +
       '<div class="card-foot"><span class="badge cat">' + r.category + "</span>" +
       (r.free ? '<span class="badge free">免费</span>' : '<span class="badge paid">付费/部分免费</span>') +
       "</div>";
-    a.querySelector(".card-name").textContent = r.name;
-    a.querySelector(".card-desc").textContent = r.description;
+    // 高亮命中关键词，并标注命中位置（名称/标签/简介…）
+    highlightInto(a.querySelector(".card-name"), r.name, keyword);
+    highlightInto(a.querySelector(".card-desc"), r.description, keyword);
+    if (keyword) {
+      const why = a.querySelector(".card-why");
+      const reasons = matchReasons(r, keyword);
+      if (why) why.textContent = reasons.length ? "匹配：" + reasons.join(" · ") : "";
+    }
     // 卡片主体 -> 打开详情；右上箭头 -> 直接跳转（阻止冒泡以免同时弹层）
     const jump = a.querySelector(".card-jump");
     if (jump) jump.addEventListener("click", (ev) => {
