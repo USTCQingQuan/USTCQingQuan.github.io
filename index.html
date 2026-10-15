@@ -197,12 +197,99 @@
   }
   #subchips .sub-count { color: var(--muted); font-weight: 400; margin-left: 3px; }
 
+  /* ===== 顶栏模式切换（资源库 / 学习路径 / 技能自查）===== */
+  .modebar {
+    border-bottom: 1px solid var(--border);
+    background: rgba(247, 244, 236, 0.94);
+    backdrop-filter: blur(8px);
+  }
+  .modebar .wrap { display: flex; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+  .mode-btn {
+    padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    border: 1px solid var(--border); background: var(--card); color: var(--muted);
+    cursor: pointer; transition: all .18s;
+  }
+  .mode-btn:hover { color: var(--primary); border-color: var(--primary); }
+  .mode-btn.active { background: var(--primary-deep); border-color: var(--primary-deep); color: #fff; }
+  .mode-btn .n { font-weight: 400; opacity: .75; margin-left: 4px; }
+
+  /* ===== 学习路径 ===== */
+  .guide-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+    padding: 22px 24px; margin-bottom: 14px; cursor: pointer; transition: all .2s;
+  }
+  .guide-card:hover { border-color: rgba(23,94,76,.35); box-shadow: 0 10px 28px rgba(34,48,43,.10); transform: translateY(-2px); }
+  .guide-card .g-top { display: flex; align-items: center; gap: 14px; }
+  .guide-card .g-icon {
+    width: 46px; height: 46px; flex: none; border-radius: 13px; font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--primary) 10%, #fff);
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, #fff);
+  }
+  .guide-card h3 { font-size: 17px; font-weight: 700; }
+  .guide-card .g-sub { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+  .guide-card .g-meta { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
+  .guide-card .g-meta span { background: #f1efe6; padding: 3px 11px; border-radius: 999px; }
+
+  .guide-detail { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 26px 28px; }
+  .guide-detail .gd-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 6px; }
+  .guide-detail h2 { font-size: 22px; font-weight: 800; }
+  .guide-detail .gd-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .back-btn {
+    margin-bottom: 16px; padding: 7px 16px; border-radius: 999px; font-size: 13.5px;
+    border: 1px solid var(--border); background: var(--card); color: var(--ink); cursor: pointer;
+  }
+  .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .gd-step { border-top: 1px solid var(--border); padding: 22px 0 6px; }
+  .gd-step:first-of-type { border-top: 0; }
+  .gd-step h4 { font-size: 16px; font-weight: 700; color: var(--primary-deep); margin-bottom: 12px; display: flex; align-items: center; gap: 9px; }
+  .gd-step h4 .sn {
+    width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--primary); color: #fff;
+    font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .gd-text { font-size: 14px; color: #3d4b45; line-height: 1.8; margin-bottom: 14px; }
+  .gd-res { list-style: none; margin-bottom: 14px; }
+  .gd-res li { display: flex; gap: 11px; padding: 9px 0; border-bottom: 1px dashed var(--border); }
+  .gd-res li:last-child { border-bottom: 0; }
+  .gd-res .ri { flex: none; font-size: 15px; line-height: 1.6; }
+  .gd-res .rt { font-weight: 600; }
+  .gd-res .rt a { color: var(--primary); text-decoration: none; }
+  .gd-res .rt a:hover { text-decoration: underline; }
+  .gd-res .rn { font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.7; }
+  .gd-ck { background: #f8f6ee; border: 1px solid var(--border); border-radius: 12px; padding: 14px 18px; margin-bottom: 6px; }
+  .gd-ck b { font-size: 13px; color: var(--primary-deep); display: block; margin-bottom: 7px; }
+  .gd-ck ul { list-style: none; }
+  .gd-ck li { font-size: 13.5px; color: #4a5852; padding: 3px 0 3px 20px; position: relative; }
+  .gd-ck li::before { content: "○"; position: absolute; left: 4px; color: var(--muted); }
+
+  /* ===== 技能自查表 ===== */
+  .sk-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+  .sk-head .sk-sum { font-size: 14px; color: var(--muted); }
+  .sk-head .sk-sum b { color: var(--primary-deep); font-size: 17px; }
+  .sk-reset { padding: 6px 14px; border-radius: 999px; font-size: 13px; border: 1px solid var(--border); background: var(--card); cursor: pointer; color: var(--muted); }
+  .sk-reset:hover { border-color: #b91c1c; color: #b91c1c; }
+  .sk-group { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; }
+  .sk-group h3 { font-size: 15.5px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
+  .sk-group .g-cnt { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+  .sk-bar { height: 5px; background: #ece8dc; border-radius: 999px; margin: 10px 0 14px; overflow: hidden; }
+  .sk-bar i { display: block; height: 100%; background: var(--primary); border-radius: 999px; transition: width .25s; }
+  .sk-item { display: flex; gap: 11px; padding: 7px 0; cursor: pointer; align-items: flex-start; border-radius: 8px; }
+  .sk-item:hover { background: #faf8f2; }
+  .sk-item input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex: none; }
+  .sk-item .sk-tx { font-size: 14px; line-height: 1.65; }
+  .sk-item.done .sk-tx { color: var(--muted); text-decoration: line-through; }
+  .sk-item .sk-ref { font-size: 12.5px; color: var(--primary); margin-top: 2px; }
+
   @media (max-width: 720px) {
     .hero { padding: 52px 0 64px; }
     .hero-stats { margin-left: 0; gap: 28px; }
     .search { max-width: none; flex-basis: 100%; }
     .free-toggle { margin-left: 0; }
     #subchips .sub-chip { font-size: 12px; padding: 4px 11px; }
+    .modebar .wrap { gap: 6px; }
+    .mode-btn { padding: 7px 14px; font-size: 13px; flex: 1 1 auto; text-align: center; }
+    .guide-detail { padding: 20px 18px; }
+    .gd-res li { gap: 8px; }
   }
 </style>
 </head>
@@ -234,9 +321,17 @@
   <div class="wrap" id="subchips" hidden></div>
 </div>
 
+<div class="modebar">
+  <div class="wrap" id="modebar"></div>
+</div>
+
 <main class="wrap">
-  <div class="grid" id="grid"></div>
-  <p class="empty" id="empty" hidden>没有找到匹配的资源,换个关键词试试。</p>
+  <div id="view-resources">
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>没有找到匹配的资源,换个关键词试试。</p>
+  </div>
+  <div id="view-guides" hidden></div>
+  <div id="view-skills" hidden></div>
 </main>
 
 <footer>
@@ -244,11 +339,11 @@
 </footer>
 
 <script>
-/* ===== 资源数据 =====
-   本区块由 tools/build-index.mjs 自 resources.json 生成，请勿手工编辑；
-   要增删资源请改 resources.json 后运行该脚本。
-   内嵌数据用于兜底：file:// 直接打开或网络异常时页面依然可正常显示。
-   /* ===== DATA:BEGIN ===== */
+/* ===== DATA:BEGIN ===== */
+/* ===== 以下内容由 tools/build-index.mjs 自 resources.json / guides.json / skills.json 生成，请勿手工编辑 ===== */
+/* 要改资源改 resources.json，要改学习路径改 guides.json，要改技能表改 skills.json，然后重新运行该脚本。 */
+
+/* 内嵌数据用于兜底：file:// 直接打开或网络异常时页面依然可正常显示。 */
 const RESOURCES = [
   { name: "USTC 评课社区", url: "https://icourse.club", description: "中科大课程评价与选课参考,含历年学习经验分享。", category: "校内平台", icon: "📋", free: true, tags: ["中科大", "选课参考", "课程评价", "经验分享"], source: "icourse.club", subcategory: "选课与课程评价" },
   { name: "瀚海星云 BBS", url: "http://bbs.ustc.edu.cn/", description: "中科大官方论坛,课程讨论、失物招领与校园信息集散地。", category: "校内平台", icon: "💬", free: true, tags: ["中科大", "论坛", "校园生活", "信息交流"], source: "bbs.ustc.edu.cn", subcategory: "社区与活动" },
@@ -421,6 +516,1208 @@ const RESOURCES = [
   { name: "build-your-own-xxx", url: "https://github.com/XiaomingX/build-your-own-xxx", description: "从零实现各种经典系统的教程合集:Web 服务器、数据库、解释器等,适合进阶理解底层原理。", category: "编程开发", icon: "🔨", free: true, tags: ["编程", "进阶", "底层原理", "开源", "项目实战"], source: "github.com", subcategory: "开发教程与课程" },
   { name: "动手学大模型 Dive into LLMs", url: "https://github.com/Jerrykooo/dive-into-llms", description: "大模型编程实践教程,面向动手复现与微调,适合已有深度学习基础后进入大模型实战。", category: "AI 与数据科学", icon: "🧗", free: true, tags: ["AI", "大语言模型", "实战教程", "开源"], source: "github.com", subcategory: "AI 编程与工具" }
 ];
+
+const GUIDES = [
+  {
+    "id": "foundation",
+    "title": "大一打基础",
+    "subtitle": "数学分析、线性代数、大学物理、程序设计——把地基打牢",
+    "audience": "刚入学或想补基础的本科生",
+    "icon": "🧱",
+    "steps": [
+      {
+        "title": "第一阶段 · 数学",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "数学分析是整个理工科的地基。建议以一本主教材为主线，配合视频建立直觉，再用往年试卷检验掌握程度。不要一上来就刷题，先把定义和定理的来龙去脉搞清楚。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "OpenStax 微积分(全三册)",
+                "note": "免费英文教材，覆盖高数/微积分全部内容，配习题与答案。想打牢概念时读它比中文教材更清楚。"
+              },
+              {
+                "title": "线性代数的本质（3Blue1Brown）",
+                "note": "先用这套视频建立几何直觉，再回去看教材，效果完全不同。"
+              },
+              {
+                "title": "线性代数(Hefferon 免费教材)",
+                "note": "免费线代教材 PDF，习题带详细解答，适合自学。"
+              },
+              {
+                "title": "科大数学往年试卷",
+                "note": "考前用它检验掌握程度，比盲目刷题有效。"
+              },
+              {
+                "title": "数学分析真题",
+                "note": "评课社区内的数分真题，了解考试风格。"
+              },
+              {
+                "title": "Wolfram Alpha",
+                "note": "算不出来的积分、求不出的极限，用它验证答案与看步骤。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能独立写出极限的严格定义并解释它在说什么",
+              "能推导常见求导与积分公式，而不只是背下来",
+              "理解矩阵、特征值、线性变换三者是一回事",
+              "用往年试卷做过一次完整模拟并订正"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第二阶段 · 物理",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "大学物理的关键是把数学工具用起来。费曼讲义适合建立物理图像，计算题则需要动手做实验与习题。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "费曼物理学讲义(在线版)",
+                "note": "建立物理直觉最好的材料。力学与电磁学部分建议通读。"
+              },
+              {
+                "title": "OpenStax 大学物理(全三册)",
+                "note": "免费教材，力学、热学、电磁学、光学、量子全覆盖，配习题。"
+              },
+              {
+                "title": "电磁学 C 总结与习题答案",
+                "note": "中科大课程知识点总结与习题答案，复习时对照使用。"
+              },
+              {
+                "title": "USTCPhysExpData",
+                "note": "一至四级大物实验数据、处理脚本与作图结果，做实验报告时参考。"
+              },
+              {
+                "title": "大物实验报告:PVD 原理与技术",
+                "note": "四级大物实验参考报告样例。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能独立完成一次大物实验并处理数据",
+              "会用 Python 或 MATLAB 作图并做误差分析",
+              "理解麦克斯韦方程组每一项的物理含义"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第三阶段 · 程序设计",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "先选一门语言入门，然后立刻开始做题、用 Git 管理代码、熟悉命令行。这三件事越早开始越省力。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "菜鸟教程",
+                "note": "语法速查。不要通读，遇到不会的查就行。"
+              },
+              {
+                "title": "CS50",
+                "note": "哈佛计算机导论公开课，配套实验与社区，适合零基础建立计算思维。"
+              },
+              {
+                "title": "Hello 算法",
+                "note": "动画图解数据结构与算法，可以一键运行代码，入门算法最友好的一本。"
+              },
+              {
+                "title": "力扣 LeetCode",
+                "note": "刷题主力平台。先做简单题，重点是养成写代码的习惯。"
+              },
+              {
+                "title": "Pro Git 中文版",
+                "note": "Git 是必需技能，第一天就该学。前几章读完即可上手。"
+              },
+              {
+                "title": "计算机教育中缺失的一课（中文版）",
+                "note": "命令行、调试、性能分析——课堂上不教但必须会的东西。"
+              },
+              {
+                "title": "cppreference 中文",
+                "note": "C/C++ 权威参考。写 C 语言作业时随时查。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能用命令行完成文件操作、查找、运行程序",
+              "能用 Git 提交、查看历史、创建分支",
+              "独立完成过至少一个 200 行以上的程序",
+              "刷过 50 道以上算法题"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第四阶段 · 学习方法与工具",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "大学与高中最大的差别是要自己管理知识。选一套笔记工具并坚持用下去，比反复换工具重要得多。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "Obsidian",
+                "note": "本地优先的双链笔记，适合长期积累课程笔记。文件在你自己电脑上，不怕服务关闭。"
+              },
+              {
+                "title": "Notion",
+                "note": "一体化笔记与知识管理，适合做课程规划与资料整理。"
+              },
+              {
+                "title": "Anki",
+                "note": "间隔重复记忆卡片。背单词、记公式、记定理都靠它，越早开始收益越大。"
+              },
+              {
+                "title": "USTC 评课社区",
+                "note": "选课前看评价，避开坑课、找到好课。"
+              },
+              {
+                "title": "USTC 图书馆",
+                "note": "馆藏检索与电子数据库入口，很多教材和文献免费可看。"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ai-path",
+    "title": "AI 入门到进阶",
+    "subtitle": "从数学基础到大模型应用，一条能走通的路",
+    "audience": "想进入 AI 方向、但不知道从哪开始的本科生",
+    "icon": "🤖",
+    "steps": [
+      {
+        "title": "第一阶段 · 数学与编程准备",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "不要跳过这一步。直接上手框架会很快遇到瓶颈——不是不会调库，而是不理解为什么这样调。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "OpenStax 微积分(全三册)",
+                "note": "梯度、链式法则、最优化都建立在这上面。"
+              },
+              {
+                "title": "线性代数的本质（3Blue1Brown）",
+                "note": "矩阵乘法为什么那样定义、特征值意味着什么，这套视频讲得最清楚。"
+              },
+              {
+                "title": "线性代数(Hefferon 免费教材)",
+                "note": "需要严格推导时看它。"
+              },
+              {
+                "title": "凸优化(Boyd 经典教材)",
+                "note": "理解损失函数与优化算法的基础，斯坦福官方免费 PDF。"
+              },
+              {
+                "title": "菜鸟教程",
+                "note": "Python 语法速查。"
+              },
+              {
+                "title": "SciPy 官方文档",
+                "note": "科学计算基础库，数值实验常用。"
+              },
+              {
+                "title": "pandas 官方文档",
+                "note": "处理数据集必备。"
+              },
+              {
+                "title": "Jupyter 官方",
+                "note": "交互式实验环境，做作业和实验最方便。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能用 NumPy 做矩阵运算并解释每个操作的维度变化",
+              "能手推简单函数的梯度",
+              "理解什么是凸函数，以及为什么凸性对优化重要",
+              "能用 pandas 读入并清洗一份真实数据集"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第二阶段 · 机器学习基础",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "这一阶段的目标不是刷完所有算法，而是理解「模型、损失、优化」这套通用框架。西瓜书公式难，南瓜书专门给它做推导，两本配合看。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "吴恩达机器学习（B站）",
+                "note": "最好的入门课，先看它建立整体认识。"
+              },
+              {
+                "title": "南瓜书",
+                "note": "《机器学习》（西瓜书）公式详细推导，看西瓜书卡住时对照它。"
+              },
+              {
+                "title": "李宏毅机器学习 2023",
+                "note": "讲义与作业齐全，讲法更贴近现代深度学习。"
+              },
+              {
+                "title": "Datawhale 开源学习社区",
+                "note": "中文开源教程与组队学习，适合找同伴一起学。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能解释过拟合与欠拟合，并说出三种应对方法",
+              "理解训练集/验证集/测试集的划分意义",
+              "手写过至少一个线性回归或逻辑回归",
+              "能读懂混淆矩阵与基本的评价指标"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第三阶段 · 深度学习",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "这一阶段要动手。《动手学深度学习》的核心价值是每个概念都有可运行代码——不要只看，一定要跑起来改参数观察变化。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "动手学深度学习（PyTorch 版）",
+                "note": "主线教材。建议每个章节的代码都亲手跑一遍。"
+              },
+              {
+                "title": "动手学深度学习",
+                "note": "同一本书的另一入口，含视频讲解。"
+              },
+              {
+                "title": "蘑菇书（李宏毅深度学习笔记）",
+                "note": "李宏毅课程的笔记整理，作为第二视角补充。"
+              },
+              {
+                "title": "Kaggle",
+                "note": "找真实数据集与入门竞赛，把学到的用出去。"
+              },
+              {
+                "title": "和鲸社区",
+                "note": "国内数据科学社区，中文数据集与项目更多。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能解释反向传播在算什么",
+              "理解卷积、池化、BatchNorm 各自解决什么问题",
+              "独立训练过一个模型并在测试集上评估",
+              "完整参加过一次 Kaggle 入门赛或课程项目"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第四阶段 · Transformer 与 NLP",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Transformer 是现代大模型的共同基础，值得单独花时间。建议顺序：先看图解建立直觉，再读原论文，最后看代码实现。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "The Illustrated Transformer",
+                "note": "公认最好的入门图解，先把自注意力和多头注意力看懂。"
+              },
+              {
+                "title": "Transformer Explainer（交互可视化）",
+                "note": "能实时观察 GPT-2 内部注意力如何计算，看完图解再玩这个。"
+              },
+              {
+                "title": "Attention Is All You Need（Transformer 原论文）",
+                "note": "有了直觉再读原文，否则容易被公式挡住。"
+              },
+              {
+                "title": "李沐：Transformer 论文逐段精读",
+                "note": "逐段讲解原文与实现细节，读论文卡住时看它。"
+              },
+              {
+                "title": "动手学深度学习：注意力机制",
+                "note": "含注意力评分、Bahdanau 注意力与多头注意力的完整推导与代码。"
+              },
+              {
+                "title": "nanoGPT",
+                "note": "约 300 行代码训练一个字符级 GPT，理解训练流程的最佳实操。"
+              },
+              {
+                "title": "build-nanogpt（视频+代码）",
+                "note": "从零手写 GPT 的配套视频，逐行讲解。"
+              },
+              {
+                "title": "The Annotated Transformer",
+                "note": "哈佛的可运行代码注释版，理论与代码对照。"
+              },
+              {
+                "title": "Learn NLP With Transformers（中文）",
+                "note": "Datawhale 中文教程，从 NLP 基础讲到 Transformer。"
+              },
+              {
+                "title": "Hugging Face NLP 课程（中文版）",
+                "note": "官方课程中文版，从原理讲到微调与部署，免费带练习。"
+              },
+              {
+                "title": "Hugging Face Transformers 文档",
+                "note": "实际做项目时查阅。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能画出 Transformer 结构图并解释每个组件的作用",
+              "能说清自注意力里 Q、K、V 分别在做什么",
+              "跑通过 nanoGPT 或类似的最小实现",
+              "用 Hugging Face 微调过一个预训练模型"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第五阶段 · 大模型应用与本地部署",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "这一步是最容易做出成果的：调 API 做应用、或用本地模型保护隐私。国内平台基本都有免费额度，注册中国手机号即可。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "DeepSeek 开放平台文档",
+                "note": "国内直连、价格低，建议作为第一个上手的 API。"
+              },
+              {
+                "title": "智谱 AI 开放平台",
+                "note": "GLM 系列，有免费额度，国内手机号可注册。"
+              },
+              {
+                "title": "阿里云百炼（通义）",
+                "note": "通义系列，新用户有免费额度。"
+              },
+              {
+                "title": "OpenAI 官方文档",
+                "note": "文档可以读，但调用需要海外支付方式。国内建议先用上面三家替代。"
+              },
+              {
+                "title": "LangChain 官方文档",
+                "note": "LLM 应用开发框架，覆盖链式调用、检索与 Agent。"
+              },
+              {
+                "title": "Dify 开源 LLM 应用平台",
+                "note": "开源的大模型应用平台，可自部署，支持 RAG 与 Agent 编排。"
+              },
+              {
+                "title": "Model Context Protocol 文档",
+                "note": "MCP 协议，统一大模型与外部工具/数据源的接口标准。"
+              },
+              {
+                "title": "n8n 自动化",
+                "note": "工作流自动化，把大模型接进日常流程。"
+              },
+              {
+                "title": "Ollama",
+                "note": "一键在本地跑大模型，装好即可离线使用。"
+              },
+              {
+                "title": "llama.cpp",
+                "note": "纯 C/C++ 推理引擎，能在普通电脑甚至手机上跑量化模型。"
+              },
+              {
+                "title": "vLLM",
+                "note": "高吞吐推理框架，多并发部署时用。"
+              },
+              {
+                "title": "ModelScope 魔搭社区",
+                "note": "国内模型开源社区，模型与数据集下载快。"
+              },
+              {
+                "title": "动手学大模型 Dive into LLMs",
+                "note": "大模型编程实践教程，适合动手复现与微调。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "成功调用过一次大模型 API 并处理了返回结果",
+              "理解 RAG 的基本流程：切分、向量化、检索、拼接、生成",
+              "在本地跑通过一个开源模型",
+              "做出过一个能实际使用的小应用"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "research",
+    "title": "科研流程手册",
+    "subtitle": "从选题到投稿，每一步该用什么工具、做什么",
+    "audience": "准备进组做科研、或正在写第一篇论文的学生",
+    "icon": "🔬",
+    "steps": [
+      {
+        "title": "第一步 · 选题与了解领域",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "不要一上来就埋头读论文。先用综述和引文图谱搞清楚这个领域在解决什么问题、有哪些主要流派、最近的热点是什么。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "Semantic Scholar",
+                "note": "AI 驱动的学术搜索，支持引文脉络与相关论文推荐，找综述很好用。"
+              },
+              {
+                "title": "Connected Papers",
+                "note": "输入一篇关键论文，生成领域关联图谱，快速看清研究脉络。"
+              },
+              {
+                "title": "Google 学术",
+                "note": "覆盖面最广，引用追踪方便。"
+              },
+              {
+                "title": "arXiv",
+                "note": "预印本，看最新进展。AI 方向几乎所有人都先发这里。"
+              },
+              {
+                "title": "中国知网",
+                "note": "中文学位论文与期刊，找国内相关工作与中文综述。"
+              },
+              {
+                "title": "中国计算机学会 CCF",
+                "note": "查推荐会议与期刊目录，知道哪些是领域顶会。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能用一句话说清自己的研究方向在解决什么问题",
+              "读过至少 3 篇该方向的综述",
+              "列出 10 篇核心论文并说明它们的关系",
+              "知道该方向的顶会/顶刊是哪些"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第二步 · 文献管理",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "第一步就要把文献管理建立起来。等到写论文时再整理，会非常痛苦。Zotero 免费开源，文件在本地，长期可靠。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "Zotero",
+                "note": "免费开源文献管理，浏览器一键抓取，自动生成引用。"
+              },
+              {
+                "title": "Zotero 中文社区",
+                "note": "中文插件、教程与引用样式下载，解决中文文献与国标格式问题。"
+              },
+              {
+                "title": "arXiv",
+                "note": "arXiv 上的论文用 Zotero 直接抓取最省事。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "装好 Zotero 并配置浏览器抓取插件",
+              "把已读的核心论文全部入库并打好标签",
+              "能在 Word/LaTeX 中一键插入引用"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第三步 · 读论文",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "读论文要分层：先读摘要和结论判断是否相关，再看图表理解方法，最后才逐段精读。不要每篇都从头读到尾。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "Hugging Face Daily Papers",
+                "note": "每日 AI 论文精选，带社区解读，适合跟踪热点。"
+              },
+              {
+                "title": "alphaXiv",
+                "note": "arXiv 论文的阅读与讨论平台，能看到别人的笔记与质疑。"
+              },
+              {
+                "title": "PubMed",
+                "note": "生物医学方向检索必备。"
+              },
+              {
+                "title": "Connected Papers",
+                "note": "读一篇重要论文后，用它找出前后关联工作。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "建立自己的论文笔记模板（问题/方法/结论/局限）",
+              "读完并总结过 20 篇以上论文",
+              "能对一个方法提出至少一条合理的改进猜想"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第四步 · 复现与实验",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "复现是科研的基本功，也是最容易被跳过的一步。跑通别人的代码再改，比自己从零写更快出结果。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "GitHub",
+                "note": "绝大多数论文都有官方或第三方实现，先搜有没有现成代码。"
+              },
+              {
+                "title": "Hugging Face Daily Papers",
+                "note": "论文与代码的关联入口之一（原 Papers with Code 已被 Hugging Face 吸收，站点已失效）。"
+              },
+              {
+                "title": "Hugging Face Transformers 文档",
+                "note": "复现 NLP 相关工作时的基础工具。"
+              },
+              {
+                "title": "USTC 虚拟机平台",
+                "note": "学校云桌面，随时随地远程使用实验环境。"
+              },
+              {
+                "title": "Jupyter 官方",
+                "note": "实验记录与可视化。"
+              },
+              {
+                "title": "pandas 官方文档",
+                "note": "实验结果整理与统计分析。"
+              },
+              {
+                "title": "SciPy 官方文档",
+                "note": "数值计算与统计检验。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "跑通过至少一篇论文的官方代码",
+              "能在其基础上改一个模块并观察结果变化",
+              "实验记录可复现（记录随机种子、超参数、环境版本）"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "第五步 · 写作与投稿",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "写作是用 LaTeX 的。校内就有在线 LaTeX 平台，不用折腾本地环境。投稿前务必查清楚目标会议/期刊的格式要求与截稿时间。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "USTC LaTeX 平台",
+                "note": "校内在线 LaTeX，写报告论文免装环境、校园网直达。"
+              },
+              {
+                "title": "Overleaf",
+                "note": "在线 LaTeX 协作编辑，多人合作写论文用它可以免去同步文件的麻烦。"
+              },
+              {
+                "title": "中国计算机学会 CCF",
+                "note": "投稿前查推荐目录，确认目标刊物的层次。"
+              },
+              {
+                "title": "中国高校外语慕课平台 UMOOCs",
+                "note": "学术英语写作课程，英文表达不够地道时值得看。"
+              },
+              {
+                "title": "科大 PPT 模板",
+                "note": "组会汇报与答辩用的官方模板。"
+              },
+              {
+                "title": "Excalidraw",
+                "note": "画方法示意图，手绘风格，几分钟就能画清楚一张图。"
+              },
+              {
+                "title": "ProcessOn",
+                "note": "流程图与思维导图，梳理实验流程。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "能用 LaTeX 独立写出一篇格式正确的报告",
+              "论文的每张图都能用一句话说明它证明了什么",
+              "投稿前通读过目标刊物最近的 3 篇论文，对齐写作风格"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "competition",
+    "title": "竞赛准备",
+    "subtitle": "数学建模、程序设计、电子设计，从了解到拿奖",
+    "audience": "想参加竞赛但不知如何准备的学生",
+    "icon": "🏆",
+    "steps": [
+      {
+        "title": "数学建模类",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "数模是三人团队赛，考察的是「把实际问题变成数学模型并算出来」。分工通常是建模、编程、写作，但三人都要能看懂模型。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "全国大学生数学建模竞赛",
+                "note": "国赛官网，赛题、通知与获奖名单发布处。先看往年赛题感受难度。"
+              },
+              {
+                "title": "美国大学生数学建模竞赛",
+                "note": "美赛官网，寒假期间举行，英文写作，含金量高。"
+              },
+              {
+                "title": "数模竞赛报名系统",
+                "note": "国赛报名入口。"
+              },
+              {
+                "title": "MATLAB 官方文档",
+                "note": "数模主力工具之一，工具箱齐全。"
+              },
+              {
+                "title": "MATLAB Onramp 免费入门课",
+                "note": "官方免费交互式入门课，几天就能上手。"
+              },
+              {
+                "title": "SciPy 官方文档",
+                "note": "用 Python 做数模时的优化、积分、插值工具。"
+              },
+              {
+                "title": "pandas 官方文档",
+                "note": "赛题数据清洗与统计。"
+              },
+              {
+                "title": "Overleaf",
+                "note": "英文论文排版，美赛必备。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "组好三人队伍并明确分工",
+              "完整做过一套往年赛题（限时）",
+              "掌握至少一种优化求解工具",
+              "能写出结构完整的 20 页论文"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "程序设计竞赛",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "算法竞赛靠长期积累，没有捷径。建议从入门题单开始，坚持每周固定训练时间。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "洛谷",
+                "note": "题单与比赛丰富，新手友好，中文界面。建议从这里开始。"
+              },
+              {
+                "title": "力扣 LeetCode",
+                "note": "题目质量高，适合打基础与面试准备。"
+              },
+              {
+                "title": "Hello 算法",
+                "note": "系统学习数据结构与算法，图解清晰。"
+              },
+              {
+                "title": "ICPC 国际大学生程序设计竞赛",
+                "note": "了解赛制与规则，明确努力方向。"
+              },
+              {
+                "title": "牛客网",
+                "note": "校招与竞赛兼顾，有历年真题。"
+              },
+              {
+                "title": "Hackergame",
+                "note": "中科大信息安全竞赛，题目对新手友好，适合入门 CTF。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "掌握基础数据结构：数组、链表、栈、队列、树、图",
+              "刷过 200 道以上题目",
+              "参加过至少一场正式比赛"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "硬件与电子设计",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "电子设计竞赛是硬件方向少有的高含金量赛事，考察电路设计与系统实现能力，需要提前熟悉常用器件与仪器。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "全国大学生电子设计竞赛培训网",
+                "note": "官方技术交流平台，含信息发布、培训资源与往届回顾。"
+              },
+              {
+                "title": "希冀平台",
+                "note": "计算机课程作业提交与在线实验平台，部分实验与硬件相关。"
+              },
+              {
+                "title": "USTC 虚拟机平台",
+                "note": "需要专业软件时可用学校云桌面。"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "english",
+    "title": "英语与出国准备",
+    "subtitle": "四六级打底，雅思准备出国",
+    "audience": "需要过四六级、或准备出国的学生",
+    "icon": "🌍",
+    "steps": [
+      {
+        "title": "四六级",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "四六级考的是熟练度，真题是最好的材料。听力是拉开差距的部分，建议每天固定时间精听。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "全国大学英语四六级考试官网",
+                "note": "报名与成绩查询入口，先确认考试时间与报名节点。"
+              },
+              {
+                "title": "四六级真题全套",
+                "note": "历年真题 PDF/Word 与解析，覆盖多个考次，刷题主力材料。"
+              },
+              {
+                "title": "四六级听力在线版",
+                "note": "整套听力音频在线试听，配合真题使用。"
+              },
+              {
+                "title": "四级听力真题合集",
+                "note": "带中英字幕的听力合集，适合精听训练。"
+              },
+              {
+                "title": "六级听力真题合集",
+                "note": "六级听力，难度更高，建议考前一个月开始。"
+              },
+              {
+                "title": "Anki",
+                "note": "背单词与固定搭配，间隔重复比反复背单词书有效。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "完整做过 5 套以上真题并计时",
+              "听力每天精听 20 分钟以上，坚持一个月",
+              "整理出自己的高频错词表"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "雅思",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "雅思与四六级考法差别很大，尤其是口语和写作。建议先做一套完整真题判断基线，再针对性训练。"
+          },
+          {
+            "type": "resources",
+            "items": [
+              {
+                "title": "IELTS Online Tests 雅思真题库（中文版）",
+                "note": "免费题库，含听力、阅读、写作、口语全套模拟题，可在线做题并自动批改客观题。"
+              },
+              {
+                "title": "雅思听力练习题库",
+                "note": "按听力单项筛选，含音频，可反复重做。"
+              },
+              {
+                "title": "雅思阅读练习题库",
+                "note": "按阅读单项筛选，练习定位与同义替换。"
+              },
+              {
+                "title": "雅思写作与口语备考技巧",
+                "note": "评分标准解读与答题思路，写作口语最需要方法指导。"
+              },
+              {
+                "title": "中国高校外语慕课平台 UMOOCs",
+                "note": "学术英语写作课程，为出国后的学术写作做准备。"
+              },
+              {
+                "title": "MIT OpenCourseWare",
+                "note": "提前适应英文授课与英文教材。"
+              }
+            ]
+          },
+          {
+            "type": "checklist",
+            "items": [
+              "做过一套完整真题并知道自己的分数区间",
+              "写作能写出结构清晰的 Task 2 文章",
+              "口语能连续说 2 分钟不卡壳"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const SKILLS = [
+  {
+    "title": "数学与物理基础",
+    "items": [
+      {
+        "id": "m1",
+        "text": "能写出极限与连续的严格定义并解释其含义"
+      },
+      {
+        "id": "m2",
+        "text": "能推导常见函数的导数与积分，而不只是背公式表"
+      },
+      {
+        "id": "m3",
+        "text": "理解矩阵、线性变换、特征值三者的等价关系",
+        "ref": "线性代数的本质（3Blue1Brown）"
+      },
+      {
+        "id": "m4",
+        "text": "能手推多元函数的梯度与链式法则"
+      },
+      {
+        "id": "m5",
+        "text": "理解凸集与凸函数的定义，知道凸性为什么对优化重要",
+        "ref": "凸优化(Boyd 经典教材)"
+      },
+      {
+        "id": "m6",
+        "text": "能用 Python 或 MATLAB 完成数据拟合与误差分析"
+      },
+      {
+        "id": "m7",
+        "text": "能独立完成一次大学物理实验并写出合格报告",
+        "ref": "USTCPhysExpData"
+      }
+    ]
+  },
+  {
+    "title": "编程与工程能力",
+    "items": [
+      {
+        "id": "c1",
+        "text": "熟练掌握至少一门编程语言（Python / C / C++ / Java）"
+      },
+      {
+        "id": "c2",
+        "text": "能在命令行下完成文件操作、查找、运行与调试",
+        "ref": "计算机教育中缺失的一课（中文版）"
+      },
+      {
+        "id": "c3",
+        "text": "能用 Git 完成提交、查看历史、创建与合并分支",
+        "ref": "Pro Git 中文版"
+      },
+      {
+        "id": "c4",
+        "text": "掌握基础数据结构：数组、链表、栈、队列、树、图",
+        "ref": "Hello 算法"
+      },
+      {
+        "id": "c5",
+        "text": "能分析一个算法的时间与空间复杂度"
+      },
+      {
+        "id": "c6",
+        "text": "会用调试器定位问题，而不是靠 print 猜"
+      },
+      {
+        "id": "c7",
+        "text": "独立完成过 500 行以上的项目",
+        "ref": "build-your-own-xxx"
+      },
+      {
+        "id": "c8",
+        "text": "刷过 200 道以上算法题",
+        "ref": "力扣 LeetCode"
+      }
+    ]
+  },
+  {
+    "title": "AI 与数据科学",
+    "items": [
+      {
+        "id": "a1",
+        "text": "能用 NumPy 做矩阵运算并说清每一步的维度变化"
+      },
+      {
+        "id": "a2",
+        "text": "能解释过拟合、欠拟合与三种应对方法",
+        "ref": "南瓜书"
+      },
+      {
+        "id": "a3",
+        "text": "手写过线性回归或逻辑回归的完整训练过程"
+      },
+      {
+        "id": "a4",
+        "text": "能解释反向传播到底在算什么",
+        "ref": "动手学深度学习（PyTorch 版）"
+      },
+      {
+        "id": "a5",
+        "text": "理解卷积、池化、BatchNorm 各自解决什么问题"
+      },
+      {
+        "id": "a6",
+        "text": "能画出 Transformer 结构图并解释每个组件",
+        "ref": "The Illustrated Transformer"
+      },
+      {
+        "id": "a7",
+        "text": "跑通过一个最小 GPT 实现（如 nanoGPT）",
+        "ref": "nanoGPT"
+      },
+      {
+        "id": "a8",
+        "text": "用 Hugging Face 微调过一个预训练模型",
+        "ref": "Hugging Face Transformers 文档"
+      },
+      {
+        "id": "a9",
+        "text": "理解 RAG 的完整流程：切分、向量化、检索、拼接、生成",
+        "ref": "Dify 开源 LLM 应用平台"
+      },
+      {
+        "id": "a10",
+        "text": "成功调用过大模型 API 并处理了返回结果",
+        "ref": "DeepSeek 开放平台文档"
+      },
+      {
+        "id": "a11",
+        "text": "在本地跑通过一个开源大模型",
+        "ref": "Ollama"
+      },
+      {
+        "id": "a12",
+        "text": "完整参加过一次数据竞赛或课程项目",
+        "ref": "Kaggle"
+      }
+    ]
+  },
+  {
+    "title": "科研能力",
+    "items": [
+      {
+        "id": "r1",
+        "text": "能用一句话说清自己的研究方向在解决什么问题"
+      },
+      {
+        "id": "r2",
+        "text": "读过至少 3 篇领域综述"
+      },
+      {
+        "id": "r3",
+        "text": "建立并使用文献管理工具，论文全部入库",
+        "ref": "Zotero"
+      },
+      {
+        "id": "r4",
+        "text": "能在一篇论文中快速定位方法、实验与结论"
+      },
+      {
+        "id": "r5",
+        "text": "读完并总结过 20 篇以上论文"
+      },
+      {
+        "id": "r6",
+        "text": "跑通过至少一篇论文的官方代码",
+        "ref": "GitHub"
+      },
+      {
+        "id": "r7",
+        "text": "能在他人代码基础上改模块并观察结果变化"
+      },
+      {
+        "id": "r8",
+        "text": "实验可复现：记录了随机种子、超参数与环境版本"
+      },
+      {
+        "id": "r9",
+        "text": "能用 LaTeX 独立写出格式正确的论文或报告",
+        "ref": "USTC LaTeX 平台"
+      },
+      {
+        "id": "r10",
+        "text": "知道本方向的顶会/顶刊是哪些",
+        "ref": "中国计算机学会 CCF"
+      },
+      {
+        "id": "r11",
+        "text": "能用英文写出结构清晰的学术段落",
+        "ref": "中国高校外语慕课平台 UMOOCs"
+      },
+      {
+        "id": "r12",
+        "text": "做过一次组会或会议汇报"
+      }
+    ]
+  },
+  {
+    "title": "英语与升学",
+    "items": [
+      {
+        "id": "e1",
+        "text": "通过英语四级"
+      },
+      {
+        "id": "e2",
+        "text": "通过英语六级"
+      },
+      {
+        "id": "e3",
+        "text": "雅思/托福达到目标分数（出国方向）",
+        "ref": "IELTS Online Tests 雅思真题库（中文版）"
+      },
+      {
+        "id": "e4",
+        "text": "能直接阅读英文教材与论文，不依赖翻译"
+      },
+      {
+        "id": "e5",
+        "text": "了解保研/夏令营的时间节点与要求",
+        "ref": "计算机保研信息汇总"
+      }
+    ]
+  },
+  {
+    "title": "工具与效率",
+    "items": [
+      {
+        "id": "t1",
+        "text": "有一套长期使用的笔记系统",
+        "ref": "Obsidian"
+      },
+      {
+        "id": "t2",
+        "text": "会用间隔重复工具记公式与单词",
+        "ref": "Anki"
+      },
+      {
+        "id": "t3",
+        "text": "能画出清晰的方法示意图或流程图",
+        "ref": "Excalidraw"
+      },
+      {
+        "id": "t4",
+        "text": "掌握一款科研绘图或数据分析工具",
+        "ref": "pandas 官方文档"
+      },
+      {
+        "id": "t5",
+        "text": "知道遇到报错时如何高效求助",
+        "ref": "Stack Overflow"
+      },
+      {
+        "id": "t6",
+        "text": "会用计算引擎验证数学结果",
+        "ref": "Wolfram Alpha"
+      }
+    ]
+  }
+];
 /* ===== DATA:END ===== */
 
 const CATEGORIES = ["全部", "AI 与数据科学", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "校园信息", "英语备考"];
@@ -561,17 +1858,309 @@ q.addEventListener("input", render);
 freeOnly.addEventListener("change", render);
 render();
 
+/* ===================================================================
+   模式切换：资源库 / 学习路径 / 技能自查
+   设计取舍：用同一份数据的不同"视图"，不做多页面跳转，保持单文件可离线。
+   =================================================================== */
+const modebar = document.getElementById("modebar");
+const viewRes = document.getElementById("view-resources");
+const viewGui = document.getElementById("view-guides");
+const viewSki = document.getElementById("view-skills");
+const toolbar = document.querySelector(".toolbar");
+
+const MODES = [
+  { id: "resources", label: "资源库", n: () => RESOURCES.length },
+  { id: "guides", label: "学习路径", n: () => GUIDES.length },
+  { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
+];
+let activeMode = "resources";
+let activeGuide = null;
+
+const byTitle = new Map();
+function rebuildTitleIndex() {
+  byTitle.clear();
+  for (const r of RESOURCES) byTitle.set(r.name, r);
+}
+
+function renderModebar() {
+  modebar.innerHTML = "";
+  for (const m of MODES) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mode-btn" + (activeMode === m.id ? " active" : "");
+    b.textContent = m.label;
+    const sp = document.createElement("span");
+    sp.className = "n";
+    sp.textContent = m.n();
+    b.appendChild(sp);
+    b.addEventListener("click", () => {
+      activeMode = m.id;
+      if (m.id !== "guides") activeGuide = null;
+      applyMode();
+    });
+    modebar.appendChild(b);
+  }
+}
+
+function applyMode() {
+  viewRes.hidden = activeMode !== "resources";
+  viewGui.hidden = activeMode !== "guides";
+  viewSki.hidden = activeMode !== "skills";
+  // 资源筛选栏只在资源库模式下有意义
+  if (toolbar) toolbar.hidden = activeMode !== "resources";
+  renderModebar();
+  if (activeMode === "guides") renderGuides();
+  if (activeMode === "skills") renderSkills();
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+/* ---------- 学习路径 ---------- */
+function countRefs(g) {
+  let n = 0;
+  for (const st of g.steps) for (const b of st.blocks) if (b.type === "resources") n += b.items.length;
+  return n;
+}
+
+function renderGuides() {
+  viewGui.innerHTML = "";
+  if (activeGuide) return renderGuideDetail(activeGuide);
+
+  const intro = document.createElement("p");
+  intro.className = "gd-text";
+  intro.style.marginBottom = "18px";
+  intro.textContent = "把已收录的资源编排成能照着走的路线。每条路径按阶段列出该用什么、为什么现在用它，并附一份自查清单。";
+  viewGui.appendChild(intro);
+
+  for (const g of GUIDES) {
+    const card = document.createElement("div");
+    card.className = "guide-card";
+    card.innerHTML =
+      '<div class="g-top"><span class="g-icon"></span><div>' +
+      '<h3></h3><p class="g-sub"></p></div></div>' +
+      '<div class="g-meta"><span class="m1"></span><span class="m2"></span><span class="m3"></span></div>';
+    card.querySelector(".g-icon").textContent = g.icon || "📘";
+    card.querySelector("h3").textContent = g.title;
+    card.querySelector(".g-sub").textContent = g.subtitle || "";
+    const meta = card.querySelectorAll(".g-meta span");
+    meta[0].textContent = g.steps.length + " 个阶段";
+    meta[1].textContent = countRefs(g) + " 个资源";
+    meta[2].textContent = g.audience || "";
+    card.addEventListener("click", () => { activeGuide = g.id; renderGuides(); window.scrollTo({ top: 0, behavior: "auto" }); });
+    viewGui.appendChild(card);
+  }
+}
+
+function renderGuideDetail(id) {
+  const g = GUIDES.find((x) => x.id === id);
+  if (!g) { activeGuide = null; return renderGuides(); }
+
+  const back = document.createElement("button");
+  back.type = "button";
+  back.className = "back-btn";
+  back.textContent = "← 返回路径列表";
+  back.addEventListener("click", () => { activeGuide = null; renderGuides(); });
+  viewGui.appendChild(back);
+
+  const wrap = document.createElement("div");
+  wrap.className = "guide-detail";
+  const head = document.createElement("div");
+  head.className = "gd-head";
+  head.innerHTML = '<span class="g-icon" style="width:46px;height:46px;flex:none;border-radius:13px;font-size:22px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--primary) 10%, #fff);border:1px solid color-mix(in srgb, var(--primary) 20%, #fff)"></span><div><h2></h2><p class="gd-sub"></p></div>';
+  head.querySelector(".g-icon").textContent = g.icon || "📘";
+  head.querySelector("h2").textContent = g.title;
+  head.querySelector(".gd-sub").textContent = (g.subtitle || "") + (g.audience ? "　·　适合：" + g.audience : "");
+  wrap.appendChild(head);
+
+  g.steps.forEach((st, si) => {
+    const sec = document.createElement("div");
+    sec.className = "gd-step";
+    const h = document.createElement("h4");
+    const sn = document.createElement("span");
+    sn.className = "sn";
+    sn.textContent = si + 1;
+    h.appendChild(sn);
+    h.appendChild(document.createTextNode(st.title));
+    sec.appendChild(h);
+
+    for (const b of st.blocks) {
+      if (b.type === "text") {
+        const p = document.createElement("p");
+        p.className = "gd-text";
+        p.textContent = b.text;
+        sec.appendChild(p);
+      } else if (b.type === "resources") {
+        const ul = document.createElement("ul");
+        ul.className = "gd-res";
+        for (const raw of b.items) {
+          const it = typeof raw === "string" ? { title: raw } : raw;
+          const rec = byTitle.get(it.title);
+          const li = document.createElement("li");
+          const ri = document.createElement("span");
+          ri.className = "ri";
+          ri.textContent = rec ? (rec.icon || "•") : "•";
+          const box = document.createElement("div");
+          const rt = document.createElement("div");
+          rt.className = "rt";
+          if (rec) {
+            const a = document.createElement("a");
+            a.href = rec.url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = it.title;
+            rt.appendChild(a);
+          } else {
+            rt.textContent = it.title;   // 理论上不会发生：check-guides.mjs 会拦住
+          }
+          box.appendChild(rt);
+          if (it.note) {
+            const rn = document.createElement("div");
+            rn.className = "rn";
+            rn.textContent = it.note;
+            box.appendChild(rn);
+          }
+          li.appendChild(ri);
+          li.appendChild(box);
+          ul.appendChild(li);
+        }
+        sec.appendChild(ul);
+      } else if (b.type === "checklist") {
+        const ck = document.createElement("div");
+        ck.className = "gd-ck";
+        const t = document.createElement("b");
+        t.textContent = "走完这一阶段，你应该能：";
+        ck.appendChild(t);
+        const ul = document.createElement("ul");
+        for (const s of b.items) {
+          const li = document.createElement("li");
+          li.textContent = s;
+          ul.appendChild(li);
+        }
+        ck.appendChild(ul);
+        sec.appendChild(ck);
+      }
+    }
+    wrap.appendChild(sec);
+  });
+  viewGui.appendChild(wrap);
+}
+
+/* ---------- 技能自查表（勾选存 localStorage，不上传） ---------- */
+const SKILL_KEY = "shixueji.skills.v1";
+function loadSkillState() {
+  try { return JSON.parse(localStorage.getItem(SKILL_KEY) || "{}"); } catch { return {}; }
+}
+function saveSkillState(s) {
+  try { localStorage.setItem(SKILL_KEY, JSON.stringify(s)); } catch { /* 隐私模式下忽略 */ }
+}
+
+function renderSkills() {
+  viewSkills();
+}
+
+function viewSkills() {
+  viewSki.innerHTML = "";
+  const state = loadSkillState();
+  const all = SKILLS.reduce((a, g) => a.concat(g.items), []);
+  const doneAll = all.filter((i) => state[i.id]).length;
+
+  const head = document.createElement("div");
+  head.className = "sk-head";
+  const sum = document.createElement("div");
+  sum.className = "sk-sum";
+  sum.innerHTML = "已完成 <b>" + doneAll + "</b> / " + all.length + " 项（" +
+    (all.length ? Math.round((doneAll / all.length) * 100) : 0) + "%）　·　勾选存在你自己的浏览器里，不上传、无需登录";
+  head.appendChild(sum);
+  if (doneAll > 0) {
+    const rb = document.createElement("button");
+    rb.type = "button";
+    rb.className = "sk-reset";
+    rb.textContent = "清空进度";
+    rb.addEventListener("click", () => {
+      if (confirm("确定清空所有勾选进度？此操作无法撤销。")) { saveSkillState({}); viewSkills(); }
+    });
+    head.appendChild(rb);
+  }
+  viewSki.appendChild(head);
+
+  for (const grp of SKILLS) {
+    const total = grp.items.length;
+    const done = grp.items.filter((i) => state[i.id]).length;
+    const box = document.createElement("div");
+    box.className = "sk-group";
+
+    const h = document.createElement("h3");
+    h.appendChild(document.createTextNode(grp.title));
+    const cnt = document.createElement("span");
+    cnt.className = "g-cnt";
+    cnt.textContent = done + " / " + total;
+    h.appendChild(cnt);
+    box.appendChild(h);
+
+    const bar = document.createElement("div");
+    bar.className = "sk-bar";
+    const fill = document.createElement("i");
+    fill.style.width = (total ? (done / total) * 100 : 0) + "%";
+    bar.appendChild(fill);
+    box.appendChild(bar);
+
+    for (const it of grp.items) {
+      const row = document.createElement("label");
+      row.className = "sk-item" + (state[it.id] ? " done" : "");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!state[it.id];
+      const tx = document.createElement("div");
+      const t1 = document.createElement("div");
+      t1.className = "sk-tx";
+      t1.textContent = it.text;
+      tx.appendChild(t1);
+      if (it.ref) {
+        const rec = byTitle.get(it.ref);
+        const r1 = document.createElement("div");
+        r1.className = "sk-ref";
+        if (rec) {
+          const a = document.createElement("a");
+          a.href = rec.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = "参考：" + it.ref;
+          a.style.color = "var(--primary)";
+          a.style.textDecoration = "none";
+          r1.appendChild(a);
+        } else {
+          r1.textContent = "参考：" + it.ref;
+        }
+        tx.appendChild(r1);
+      }
+      cb.addEventListener("change", () => {
+        const s = loadSkillState();
+        if (cb.checked) s[it.id] = 1; else delete s[it.id];
+        saveSkillState(s);
+        viewSkills();
+      });
+      row.appendChild(cb);
+      row.appendChild(tx);
+      box.appendChild(row);
+    }
+    viewSki.appendChild(box);
+  }
+}
+
 /* ===== 资源数据加载 =====
    以 resources.json 为准；加载成功则原地替换内嵌数据并重绘。
    file:// 打开（fetch 不可用）或网络异常时静默降级，继续用内嵌数据，
-   因此页面在任何情况下都有内容可显示。 */
+   因此页面在任何情况下都有内容可显示。
+   注意：指南与技能表目前只用内嵌数据（它们不常变，内嵌可保证离线可用）。 */
 function applyResources(list) {
   if (!Array.isArray(list) || !list.length) return false;
   RESOURCES.length = 0;
   for (const r of list) RESOURCES.push(Object.assign({}, r));
+  rebuildTitleIndex();
   updateStats();
   renderSubchips();
   render();
+  if (activeMode === "guides") renderGuides();
+  if (activeMode === "skills") viewSkills();
   return true;
 }
 
@@ -583,6 +2172,9 @@ function loadResources() {
     .catch(function () { /* 静默降级到内嵌数据 */ });
 }
 
+rebuildTitleIndex();
+renderModebar();
+applyMode();
 loadResources();
 </script>
 </body>
