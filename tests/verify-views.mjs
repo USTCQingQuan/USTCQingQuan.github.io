@@ -109,7 +109,9 @@ check('前往按钮链接', box.querySelector('.dt-go').href, 'https://icourse.c
 check('显示完整 URL', box.querySelector('.dt-url').textContent, 'https://icourse.club');
 
 const rows = box.querySelectorAll('.dt-row');
-check('字段行数', rows.length, 10);
+// 注意：这两个数字随 FIELD_KEYS 变化。
+// 加字段时同步更新 —— 它们的作用是提醒"字段数变了，确认是否有意为之"。
+check('字段行数', rows.length, 11);
 // 桩的 querySelector 会递归整个子树，所以必须用 children 取该行自己的格子
 const rowMap = {};
 for (const r of rows) {
@@ -122,7 +124,7 @@ check('语言支持显示为 zh', rowMap['语言支持'], 'zh');
 check('来源站点', rowMap['来源站点'], 'icourse.club');
 check('子分类', rowMap['子分类'], '选课与课程评价');
 const noCount = rows.filter((r) => (r.children.find((c) => (c.className || '').includes('v')) || {}).className === 'v no').length;
-check('未核验字段数', noCount, 6);
+check('未核验字段数', noCount, 7);
 const noteText = box.querySelector('.dt-note').textContent;
 check('未核验说明存在', noteText.includes('尚未经人工核验'), true);
 check('说明条数与未核验字段数一致', noteText.includes(String(noCount) + ' 个字段'), true);
