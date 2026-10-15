@@ -39,9 +39,18 @@ const resBody = list.map((r, i) => {
   const tags = Array.isArray(r.tags) && r.tags.length ? ', tags: [' + r.tags.map((t) => '"' + esc(t) + '"').join(', ') + ']' : '';
   const src = r.source ? ', source: "' + esc(r.source) + '"' : '';
   const sub = r.subcategory ? ', subcategory: "' + esc(r.subcategory) + '"' : '';
+  // 详情页要展示的字段必须一并内嵌，否则离线打开时"使用条件"会全部退化成"未核验"，
+  // 把有值的数据谎报成未核验 —— 这比字段缺失更糟。这里显式列出，新增字段时记得同步。
+  const DETAIL_FIELDS = ['cost', 'language_support', 'account_requirement', 'student_requirement',
+    'network_requirement', 'hardware_requirement', 'verification_status', 'last_verified'];
+  let extra = '';
+  for (const f of DETAIL_FIELDS) {
+    const v = r[f];
+    if (v !== undefined && v !== null && String(v).trim() !== '') extra += ', ' + f + ': "' + esc(v) + '"';
+  }
   return '  { name: "' + esc(r.title) + '", url: "' + esc(r.url) + '", description: "' + esc(r.description || '') +
     '", category: "' + esc(r.category || '') + '", icon: "' + esc(r.icon || '') +
-    '", free: ' + (r.free ? 'true' : 'false') + tags + src + sub + ' }' + (i < list.length - 1 ? ',' : '');
+    '", free: ' + (r.free ? 'true' : 'false') + tags + src + sub + extra + ' }' + (i < list.length - 1 ? ',' : '');
 }).join('\n');
 
 // ---------- 2) 指南与技能（JSON 直接内嵌，保留结构） ----------
