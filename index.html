@@ -2460,11 +2460,50 @@ function viewSkills() {
    以 resources.json 为准；加载成功则原地替换内嵌数据并重绘。
    file:// 打开（fetch 不可用）或网络异常时静默降级，继续用内嵌数据，
    因此页面在任何情况下都有内容可显示。
-   注意：指南与技能表目前只用内嵌数据（它们不常变，内嵌可保证离线可用）。 */
+   注意：指南与技能表目前只用内嵌数据（它们不常变，内嵌可保证离线可用）。
+
+   ⚠️ 这里有一道必要的防护：远端 resources.json 可能被 CDN 或浏览器缓存成【旧版本】。
+   旧数据的条目与当前内嵌数据对不上，如果直接覆盖索引，就会出现
+   「点任何卡片都打开同一条 / 详情标题空白」这类诡异现象。
+   因此覆盖前必须比对：远端数据是否覆盖了内嵌数据的每一条。
+   若不覆盖，说明它已过期 —— 保留内嵌数据（卡片本来就用它渲染，天然一致）。 */
+function coversEmbedded(list) {
+  const remote = new Set();
+  for (const r of list) if (r && r.title) remote.add(r.title);
+  const embeddedNames = [];
+  for (const r of RESOURCES) embeddedNames.push(r.name);
+  const missing = [];
+  for (const n of embeddedNames) if (!remote.has(n)) missing.push(n);
+  return { ok: missing.length === 0, missing: missing };
+}
+
+/* 字段名归一化 —— 这是一处曾经导致线上事故的缺陷，务必保留。
+   原因：resources.json 里的字段名是 title（规范要求），而内嵌数据与渲染代码用的是 name。
+   两者只有在"fetch 成功、用远端数据覆盖内存"之后才会同时出现，
+   于是 render() 里的 r.name 变成 undefined，卡片标题直接显示成 "undefined"。
+   这里统一补齐两种字段名，使两套数据无论以何种顺序进入都不会再出问题。 */
+function normalizeRecord(r) {
+  if (!r) return r;
+  const o = Object.assign({}, r);
+  if (o.name === undefined) o.name = o.title;
+  if (o.title === undefined) o.title = o.name;
+  if (typeof o.free !== "boolean") o.free = !!o.free;
+  if (!o.category) o.category = "未分类";
+  if (!Array.isArray(o.tags)) o.tags = [];
+  return o;
+}
+
 function applyResources(list) {
   if (!Array.isArray(list) || !list.length) return false;
+  const cover = coversEmbedded(list);
+  if (!cover.ok) {
+    // 远端数据比页面旧，不足以覆盖当前卡片 —— 宁可不用它，也不能让索引错位。
+    console.warn("[拾学集] resources.json 版本落后于页面，已忽略。缺少 " +
+      cover.missing.length + " 条，例如：" + cover.missing.slice(0, 3).join("、"));
+    return false;
+  }
   RESOURCES.length = 0;
-  for (const r of list) RESOURCES.push(Object.assign({}, r));
+  for (const r of list) RESOURCES.push(normalizeRecord(r));
   rebuildTitleIndex();
   updateStats();
   renderSubchips();
