@@ -192,6 +192,14 @@
   mark.hl { background: #fdf3d7; color: #8a6100; padding: 0 2px; border-radius: 3px; font-weight: 600; }
   /* 匹配位置提示 */
   .card-why { font-size: 11.5px; color: #a08a5a; margin-top: 6px; }
+  /* 无结果时的标签建议 */
+  .empty .eh-tip { display: block; margin-top: 10px; font-size: 13px; }
+  .empty .eh-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .empty .eh-tag {
+    font-size: 13px; padding: 5px 13px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: #fff; color: var(--primary);
+  }
+  .empty .eh-tag:hover { border-color: var(--primary); background: #f2f8f5; }
 
   footer {
     border-top: 1px solid var(--border); padding: 30px 0 46px;
@@ -1936,6 +1944,54 @@ for (const cat of CATEGORIES) {
   chips.insertBefore(btn, chips.querySelector(".free-toggle"));
 }
 
+/* 相关度打分：决定搜索结果的排序。
+   为什么需要权重：搜一个词时，标题里就叫这个名字的，显然比"只在简介里提了一句"的更该排前面。
+   没有权重时，用户得自己在一堆卡片里挑，列表顺序对他毫无帮助。
+   注意：打分只影响【顺序】，不影响【是否出现】—— 命中即列出，避免用户以为资源不存在。 */
+function scoreOf(r, keyword) {
+  if (!keyword) return 0;
+  const has = (s) => String(s || "").toLowerCase().includes(keyword);
+  let score = 0;
+  if (has(r.name)) score += 100;
+  if ((r.tags || []).some((t) => has(t))) score += 50;
+  if (has(r.subcategory)) score += 30;
+  if (has(r.category)) score += 20;
+  if (has(r.source)) score += 15;
+  if (has(r.description)) score += 10;
+  // 同为标题命中时，名字越短通常越"就是它"（避免长名字靠巧合排前）
+  if (score >= 100) score += Math.max(0, 20 - r.name.length) / 20;
+  return score;
+}
+
+/* 搜不到时给建议 —— 从资源库的标签里找与查询最接近的。
+   为什么值得做：空结果只说"换个关键词"，等于把问题丢回给用户；
+   而这些标签是站内真实存在的词，点一下就能搜到东西。 */
+function suggestTags(keyword, limit) {
+  if (!keyword) return [];
+  const kw = keyword.toLowerCase();
+  // 查询词拆解：英文按空格/标点拆，中文取 2 字滑窗 —— 便于与标签做字符级比对
+  const frags = new Set();
+  for (const t of kw.split(/[\s,，、。.·()（）\-_/]+/)) if (t.length >= 2) frags.add(t);
+  const cn = kw.replace(/[^\u4e00-\u9fa5]/g, "");
+  for (let i = 0; i + 2 <= cn.length; i++) frags.add(cn.slice(i, i + 2));
+  if (!frags.size) frags.add(kw);
+
+  const counts = new Map();
+  for (const r of RESOURCES) for (const t of (r.tags || [])) counts.set(t, (counts.get(t) || 0) + 1);
+
+  const scored = [];
+  for (const [tag, count] of counts) {
+    const lower = tag.toLowerCase();
+    let s = 0;
+    if (lower === kw) s = 1000;
+    else if (lower.includes(kw) || kw.includes(lower)) s = 500;
+    else for (const f of frags) if (lower.includes(f)) s += 60;
+    if (s > 0) scored.push({ tag, score: s + Math.min(count, 30) });
+  }
+  scored.sort((a, b) => b.score - a.score || a.tag.localeCompare(b.tag));
+  return scored.slice(0, limit || 6).map((x) => x.tag);
+}
+
 function searchText(r) {
   // 检索范围：名称 + 简介 + 标签 + 分类 + 来源站点。
   // 标签参与检索是"标签搜索"的基础；分类与来源一起纳入，方便直接搜"论文""镜像站""校内平台"。
@@ -2048,8 +2104,17 @@ function render() {
     if (keyword && !searchText(r).includes(keyword)) return false;
     return true;
   });
+  // 有搜索词时按相关度排序：标题命中 > 标签命中 > 子分类 > 分类 > 来源 > 简介。
+  // 无搜索词时保持资源库原始顺序（策划过的顺序比"相关度"更有意义）。
+  if (keyword) {
+    const scored = list.map((r, idx) => ({ r, idx, s: scoreOf(r, keyword) }));
+    scored.sort((a, b) => b.s - a.s || a.idx - b.idx);
+    list.length = 0;
+    for (const x of scored) list.push(x.r);
+  }
   grid.innerHTML = "";
   renderResultBar(keyword, list.length);
+  renderEmptyHint(keyword, list.length);
   list.forEach((r, i) => {
     const a = document.createElement("a");
     a.className = "card";
@@ -2089,6 +2154,44 @@ function render() {
     grid.appendChild(a);
   });
   empty.hidden = list.length > 0;
+}
+
+/* 无结果时不只是说"没找到"，而是给出站内真实存在的相近标签。
+   点一下就能搜到东西 —— 比让用户自己想词有用得多。 */
+function renderEmptyHint(keyword, count) {
+  if (!empty) return;
+  if (count > 0 || !keyword) {
+    empty.textContent = "没有找到匹配的资源,换个关键词试试。";
+    return;
+  }
+  empty.textContent = "";
+  const p = document.createElement("span");
+  p.textContent = "没有找到「" + q.value.trim() + "」相关的资源。";
+  empty.appendChild(p);
+  const tags = suggestTags(keyword, 6);
+  if (!tags.length) return;
+  const p2 = document.createElement("span");
+  p2.className = "eh-tip";
+  p2.textContent = "试试这些标签：";
+  empty.appendChild(p2);
+  const box = document.createElement("span");
+  box.className = "eh-tags";
+  for (const t of tags) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "eh-tag";
+    b.textContent = t;
+    b.addEventListener("click", () => {
+      q.value = t;
+      activeCategory = "全部";
+      activeSub = "";
+      for (const c of chips.querySelectorAll(".chip")) c.classList.toggle("active", c.textContent === "全部");
+      renderSubchips();
+      render();
+    });
+    box.appendChild(b);
+  }
+  empty.appendChild(box);
 }
 
 /* ===================================================================
