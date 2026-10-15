@@ -2515,11 +2515,17 @@ function applyResources(list) {
 
 function loadResources() {
   if (typeof fetch !== "function" || location.protocol === "file:") return;
-  fetch("resources.json", { cache: "no-cache" })
+  // cache: "no-store" —— resources.json 与 index.html 是分开缓存的，
+  // 一旦出现"旧数据 + 新页面"的错配，就会引发卡片标题异常、索引错位等诡异问题。
+  // 这个文件很小（百余 KB），每次重新取最稳妥。
+  fetch("resources.json", { cache: "no-store" })
     .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
     .then(function (doc) { applyResources(doc && doc.resources); })
     .catch(function () { /* 静默降级到内嵌数据 */ });
 }
+
+// 内嵌数据也归一化一次，确保它与远端数据在任何使用顺序下都带齐 name/title
+for (let i = 0; i < RESOURCES.length; i++) RESOURCES[i] = normalizeRecord(RESOURCES[i]);
 
 rebuildTitleIndex();
 renderModebar();
