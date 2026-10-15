@@ -1,0 +1,8 @@
+{
+  "name": "shixueji-ask",
+  "version": "1.0.0",
+  "description": "拾学集 AI 资源检索云函数（腾讯云 CloudBase）",
+  "main": "index.js",
+  "type": "commonjs",
+  "private": true
+}
