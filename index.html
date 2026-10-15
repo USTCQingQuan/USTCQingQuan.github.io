@@ -338,6 +338,15 @@
     border: 1px solid var(--border); background: var(--card); color: var(--ink); cursor: pointer;
   }
   .dt-copy:hover { border-color: var(--primary); color: var(--primary); }
+  .dt-report {
+    padding: 10px 18px; border-radius: 999px; font-size: 14px;
+    border: 1px dashed var(--border); background: transparent; color: var(--muted); cursor: pointer;
+  }
+  .dt-report:hover { border-color: var(--accent); color: #a16207; background: #fffbef; }
+  .dt-hint {
+    margin-top: 9px; font-size: 12.5px; color: var(--muted); line-height: 1.7;
+  }
+  .dt-hint.ok { color: var(--primary); }
   .dt-url {
     margin-top: 12px; font-size: 12.5px; color: var(--muted);
     word-break: break-all; font-family: ui-monospace, Consolas, monospace;
@@ -1824,6 +1833,11 @@ const CAT_COLORS = {
   "英语备考": "var(--c-yingyu)"
 };
 
+/* 反馈问卷地址。集中在这里，以后换成自建表单（CloudBase）只改这一行。
+   注意：腾讯问卷的链接参数预填是商业版付费功能，免费版无法预填，
+   所以页面的做法是"先把资源信息复制到剪贴板，再打开问卷"。 */
+const FEEDBACK_FORM_URL = "https://wj.qq.com/s2/28211504/azd9/";
+
 let activeCategory = "全部";
 const grid = document.getElementById("grid");
 const empty = document.getElementById("empty");
@@ -2047,7 +2061,40 @@ function openDetail(title) {
     });
     acts.appendChild(cp);
   }
+
+  // 报告问题：把资源信息复制到剪贴板，再打开反馈问卷。
+  // 为什么用"复制 + 打开"而不是直接拼 URL 参数：
+  // 腾讯问卷的链接参数预填是【商业版付费功能】，免费版用不了（官方文档已注明）。
+  // 所以退而求其次 —— 替用户把要填的内容准备好，他粘贴一次即可。
+  const rp = document.createElement("button");
+  rp.type = "button";
+  rp.className = "dt-report";
+  rp.textContent = "报告问题";
+  acts.appendChild(rp);
   detailBox.appendChild(acts);
+
+  const hint = document.createElement("p");
+  hint.className = "dt-hint";
+  hint.textContent = "发现链接打不开、简介或分类有误、使用条件与实际不符？点「报告问题」即可反馈。";
+  detailBox.appendChild(hint);
+
+  rp.addEventListener("click", () => {
+    const payload = r.name + "\n" + r.url + "\n" + r.category + (r.subcategory ? " · " + r.subcategory : "");
+    const openForm = () => {
+      window.open(FEEDBACK_FORM_URL, "_blank", "noopener,noreferrer");
+      hint.classList.add("ok");
+      hint.textContent = "已复制本条资源信息，粘贴到问卷即可（Ctrl+V）。感谢反馈！";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload).then(openForm).catch(() => {
+        window.open(FEEDBACK_FORM_URL, "_blank", "noopener,noreferrer");
+        hint.textContent = "已打开问卷。请手动填写资源名称：「" + r.name + "」。";
+      });
+    } else {
+      window.open(FEEDBACK_FORM_URL, "_blank", "noopener,noreferrer");
+      hint.textContent = "已打开问卷。请手动填写资源名称：「" + r.name + "」。";
+    }
+  });
 
   const url = document.createElement("div");
   url.className = "dt-url";

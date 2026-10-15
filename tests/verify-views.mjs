@@ -147,4 +147,28 @@ check('触发了外部打开', calls.opened.length, 1);
 check('打开的是正确 URL', calls.opened[0] && calls.opened[0].u, 'http://bbs.ustc.edu.cn/');
 check('没有弹出详情层', mask.hidden, true);
 
+console.log('\n=== 11. 报告问题（反馈问卷）===');
+const card3 = ids.grid.children[0];
+card3.fire('click');
+const reportBtn = box.querySelector('.dt-report');
+check('详情页有「报告问题」按钮', !!reportBtn, true);
+check('按钮文案', reportBtn ? reportBtn.textContent : '', '报告问题');
+check('有反馈提示文字', !!box.querySelector('.dt-hint'), true);
+check('提示默认文案含「报告问题」', box.querySelector('.dt-hint').textContent.includes('报告问题'), true);
+
+calls.copied.length = 0;
+calls.opened.length = 0;
+reportBtn.fire('click');
+check('点击后复制到剪贴板', calls.copied.length, 1);
+const payload = calls.copied[0] || '';
+check('复制内容含资源名', payload.includes('USTC 评课社区'), true);
+check('复制内容含链接', payload.includes('https://icourse.club'), true);
+check('复制内容含分类', payload.includes('校内平台'), true);
+// window.open 在 clipboard 的 .then 里，必须等微任务完成后才能断言
+await new Promise((r) => setTimeout(r, 10));
+check('打开了反馈问卷', calls.opened.length, 1);
+check('问卷地址正确', calls.opened[0] && calls.opened[0].u, 'https://wj.qq.com/s2/28211504/azd9/');
+check('提示更新为「已复制」', box.querySelector('.dt-hint').textContent.includes('已复制'), true);
+mask.hidden = true;
+
 process.exit(done() ? 0 : 1);
