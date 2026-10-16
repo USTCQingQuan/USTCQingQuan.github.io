@@ -88,7 +88,10 @@ check('卡片数', ids.grid.children.length, 170);
 check('分类 chip 数', ids.chips.children.filter((c) => (c.className || '').includes('chip')).length, 11);
 ids.q.value = 'Transformer';
 ids.q.fire('input');
-check('搜索 Transformer', ids.grid.children.length, 10);
+// 数字从 10 变成 11：搜索口径统一后，「动手学深度学习：注意力机制」因其子分类是
+// 「Transformer 与 NLP」而被命中（卡片上显示"匹配：子分类"）。这是改进而非误报 ——
+// 旧实现只在名称/简介/标签里找词，子分类仅参与打分、不参与判定，两者口径不一致。
+check('搜索 Transformer', ids.grid.children.length, 11);
 ids.q.value = '';
 ids.q.fire('input');
 

@@ -1944,23 +1944,156 @@ for (const cat of CATEGORIES) {
   chips.insertBefore(btn, chips.querySelector(".free-toggle"));
 }
 
-/* 相关度打分：决定搜索结果的排序。
-   为什么需要权重：搜一个词时，标题里就叫这个名字的，显然比"只在简介里提了一句"的更该排前面。
-   没有权重时，用户得自己在一堆卡片里挑，列表顺序对他毫无帮助。
-   注意：打分只影响【顺序】，不影响【是否出现】—— 命中即列出，避免用户以为资源不存在。 */
-function scoreOf(r, keyword) {
-  if (!keyword) return 0;
-  const has = (s) => String(s || "").toLowerCase().includes(keyword);
-  let score = 0;
-  if (has(r.name)) score += 100;
-  if ((r.tags || []).some((t) => has(t))) score += 50;
-  if (has(r.subcategory)) score += 30;
-  if (has(r.category)) score += 20;
-  if (has(r.source)) score += 15;
-  if (has(r.description)) score += 10;
-  // 同为标题命中时，名字越短通常越"就是它"（避免长名字靠巧合排前）
-  if (score >= 100) score += Math.max(0, 20 - r.name.length) / 20;
-  return score;
+/* ===== 搜索匹配 =====
+   为什么要拆词：以前是 searchText(r).includes("数学 期末") —— 把整个输入当成一个
+   连续字符串去匹配，而资源里不可能出现"数学 期末"这一串，所以多关键词永远搜不到东西。
+   现在改成：按空格拆成多个词，每个词都要命中（AND）。搜「数学 期末」= 同时含这两个词。 */
+
+// 归一化：去掉空格与常见连接符，让 "pytorch" 能匹配 "PyTorch 版"、"b1" 能匹配 "B1"。
+// ⚠️ 必须保留 + 和 # —— 它们是 C++ / C# 这类名称的语义字符。
+//    踩过的坑：把 + 当标点扔掉后，搜 "c++" 会被拆成 "c"，于是命中所有含字母 C 的条目。
+function normLoose(s) {
+  return String(s == null ? "" : s).toLowerCase()
+    .replace(/[\s\u3000]+/g, "")
+    .replace(/[-_—－·・.。]/g, "");
+}
+
+function normText(s) {
+  return String(s == null ? "" : s).toLowerCase();
+}
+
+/* 抽出"参与匹配的字符"及其在原文中的下标。
+   只保留汉字 / 拉丁字母 / 数字 / + / # —— 标点与空格不参与匹配。
+   + 与 # 必须保留：C++、C# 是真实的编程语言名，扔掉它们会让 "c++" 退化成 "c"。
+   这一步是模糊匹配与高亮的共同基础，两者必须用同一套口径，否则会出现
+   "搜到了却不高亮"或"高亮了却搜不到"的矛盾。 */
+function baseChars(src) {
+  const chars = [];
+  const idx = [];
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (/[\u4e00-\u9fa5]/.test(ch) || /[0-9A-Za-z+#]/.test(ch)) {
+      chars.push(ch.toLowerCase());
+      idx.push(i);
+    }
+  }
+  return { chars, idx };
+}
+
+/* 最长公共子串长度。用于汉字的错别字容错。
+   为什么不用"按位置逐个比较"：「菜鸟教成」对上「菜鸟教程」时，
+   位置 3、4 都不相等（教≠程、成≠程），逐位比较会得出相似度 0.5 而漏掉；
+   但两者真正共享的是「菜鸟教」(3/4)，最长公共子串才反映真实相似度。 */
+function lcsLen(a, b) {
+  if (!a.length || !b.length) return 0;
+  let prev = new Array(b.length + 1).fill(0);
+  let best = 0;
+  for (let i = 1; i <= a.length; i++) {
+    const cur = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        cur[j] = prev[j - 1] + 1;
+        if (cur[j] > best) best = cur[j];
+      }
+    }
+    prev = cur;
+  }
+  return best;
+}
+
+/* 模糊容错。汉字与拉丁用不同策略 —— 这是踩过坑的地方：
+     汉字：最长公共子串 / 词长 >= 0.75 即命中（「菜鸟教成」→「菜鸟教程」）。
+     拉丁：子序列 + 跨度紧凑。绝不能只看"字符是否出现过" ——
+           字母在英文文案里到处都是，会让 leetcode 命中几十条无关资源。
+           子序列要求字母按顺序出现，且首尾跨度不能远大于词长。 */
+function fuzzyHit(text, term) {
+  const t = normLoose(term);
+  if (!t) return false;
+  const isCJK = /[\u4e00-\u9fa5]/.test(t);
+  const { chars: s } = baseChars(text);
+  if (!s.length) return false;
+
+  if (isCJK) {
+    const tc = t.split("").filter((c) => /[\u4e00-\u9fa5]/.test(c));
+    if (tc.length < 3) return false;
+    // 与文本的若干候选窗口比较：直接用整段文本做 LCS 即可（LCS 本身按子串算）
+    const ratio = lcsLen(tc, s) / tc.length;
+    return ratio >= 0.75;
+  }
+
+  // 拉丁：子序列 + 跨度约束
+  if (t.length < 4) return false;
+  const tc = t.split("").filter((c) => /[0-9a-z]/.test(c));
+  if (tc.length < 4) return false;
+  let ti = 0;
+  let first = -1;
+  let last = -1;
+  for (let i = 0; i < s.length && ti < tc.length; i++) {
+    if (s[i] === tc[ti]) {
+      if (first === -1) first = i;
+      last = i;
+      ti++;
+    }
+  }
+  if (ti < tc.length) return false;
+  return (last - first + 1) <= tc.length * 3;
+}
+
+function looseHit(text, term) {
+  if (!term) return false;
+  if (normText(text).includes(normText(term))) return true;
+  if (normLoose(text).includes(normLoose(term))) return true;
+  return fuzzyHit(text, term);
+}
+
+/* 把查询拆成词。中英混排时：英文/数字按空格与标点拆，中文连续串保留整段
+   （再按 2 字滑窗补一些子词，便于"期末"这种短词命中）。 */
+function splitQuery(q) {
+  const raw = String(q == null ? "" : q).trim();
+  if (!raw) return [];
+  const terms = [];
+  for (const part of raw.split(/[\s\u3000,，、;；]+/)) {
+    const p = part.trim();
+    if (!p) continue;
+    terms.push(p);
+    // 中文长串再拆出 2 字滑窗（"数学分析" → 数学/学分/分析），提高召回
+    const cn = p.replace(/[^\u4e00-\u9fa5]/g, "");
+    if (cn.length >= 3) {
+      for (let i = 0; i + 2 <= cn.length; i++) {
+        const g = cn.slice(i, i + 2);
+        if (!terms.includes(g)) terms.push(g);
+      }
+    }
+  }
+  return terms;
+}
+
+/* 一条资源对某个词的匹配得分；返回 0 表示不命中。 */
+function termScore(r, term) {
+  if (!term) return 0;
+  let s = 0;
+  if (looseHit(r.name, term)) s += 100;
+  if ((r.tags || []).some((t) => looseHit(t, term))) s += 50;
+  if (looseHit(r.subcategory, term)) s += 30;
+  if (looseHit(r.category, term)) s += 20;
+  if (looseHit(r.source, term)) s += 15;
+  if (looseHit(r.description, term)) s += 10;
+  return s;
+}
+/* 相关度打分：所有词都命中才算匹配，分数为各词得分之和。
+   注意：打分只影响【顺序】，不影响【是否出现】—— 命中即列出。 */
+function scoreOf(r, terms) {
+  const list = Array.isArray(terms) ? terms : splitQuery(terms);
+  if (!list.length) return 0;
+  let total = 0;
+  for (const t of list) {
+    const s = termScore(r, t);
+    if (s === 0) return 0;          // 有一个词没命中 → 整条不算匹配
+    total += s;
+  }
+  // 标题命中的条目，名字越短通常越"就是它"
+  if (looseHit(r.name, list[0])) total += Math.max(0, 20 - r.name.length) / 20;
+  return total;
 }
 
 /* 搜不到时给建议 —— 从资源库的标签里找与查询最接近的。
@@ -2007,40 +2140,75 @@ function searchText(r) {
 /* 判断某条资源在哪些字段命中了关键词 —— 用于卡片上的"匹配位置"提示。
    为什么需要它：用户搜一个词，结果里出现看起来不相干的条目时会困惑，
    标明"因为标签里有这个词"就能让他立刻判断要不要点。 */
-function matchReasons(r, keyword) {
-  if (!keyword) return [];
-  const has = (s) => String(s || "").toLowerCase().includes(keyword);
+/* 命中了哪些字段 —— 用于卡片上的「匹配：…」提示。
+   用松散匹配（跳过空格/连字符），与搜索口径一致，否则会出现
+   "明明搜到了，却不显示命中原因"的矛盾。 */
+function matchReasons(r, terms) {
+  const list = Array.isArray(terms) ? terms : splitQuery(terms);
+  if (!list.length) return [];
+  const any = (s) => list.some((t) => looseHit(s, t));
   const out = [];
-  if (has(r.name)) out.push("名称");
-  const hitTags = (r.tags || []).filter((t) => has(t));
+  if (any(r.name)) out.push("名称");
+  const hitTags = (r.tags || []).filter((t) => list.some((x) => looseHit(t, x)));
   if (hitTags.length) out.push("标签「" + hitTags.slice(0, 2).join("、") + "」");
-  if (has(r.description)) out.push("简介");
-  if (has(r.category)) out.push("分类");
-  if (has(r.subcategory)) out.push("子分类");
-  if (has(r.source)) out.push("来源");
+  if (any(r.description)) out.push("简介");
+  if (any(r.category)) out.push("分类");
+  if (any(r.subcategory)) out.push("子分类");
+  if (any(r.source)) out.push("来源");
   return out;
 }
 
-/* 把文本里出现的关键词包进 <mark>。必须走 DOM API 而不是拼 HTML 字符串，
+/* 找出文本里所有命中片段的位置，用于高亮。
+   关键点：搜索用的是「松散匹配」（忽略空格与连字符），所以高亮也必须按同样口径，
+   否则搜 pytorch 时 "PyTorch 版" 明明命中了却看不到高亮 —— 用户会以为搜错了。
+   segs = 归一化后的字符在原文中的下标数组（被忽略的字符不进入该数组）。 */
+function hitRanges(src, terms) {
+  const { chars, idx } = baseChars(src);
+  if (!chars.length) return [];
+  const norm = chars.join("");
+  const ranges = [];
+  for (const t of terms) {
+    // 高亮用的词同样要保留 + 和 #，与 baseChars 口径一致
+    const nt = baseChars(String(t)).chars.join("");
+    if (!nt) continue;
+    let from = 0;
+    for (;;) {
+      const at = norm.indexOf(nt, from);
+      if (at === -1) break;
+      ranges.push([idx[at], idx[at + nt.length - 1] + 1]);
+      from = at + nt.length;
+    }
+  }
+  // 合并重叠区间，避免嵌套 <mark>
+  ranges.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  for (const rg of ranges) {
+    const last = merged[merged.length - 1];
+    if (last && rg[0] <= last[1]) last[1] = Math.max(last[1], rg[1]);
+    else merged.push([rg[0], rg[1]]);
+  }
+  return merged;
+}
+
+/* 把文本里出现的命中片段包进 <mark>。必须走 DOM API 而不是拼 HTML 字符串，
    否则资源标题里的 < > & 等字符会被当成标签解析（名称里确实有 "C++" 这类内容）。 */
-function highlightInto(el, text, keyword) {
+function highlightInto(el, text, terms) {
   el.textContent = "";
   const src = String(text == null ? "" : text);
-  if (!keyword) { el.textContent = src; return; }
-  const lower = src.toLowerCase();
+  const list = Array.isArray(terms) ? terms : splitQuery(terms);
+  if (!list.length) { el.textContent = src; return; }
+  const ranges = hitRanges(src, list);
+  if (!ranges.length) { el.textContent = src; return; }
   let from = 0;
-  for (;;) {
-    const at = lower.indexOf(keyword, from);
-    if (at === -1) break;
-    if (at > from) el.appendChild(document.createTextNode(src.slice(from, at)));
+  for (const [a, b] of ranges) {
+    if (a > from) el.appendChild(document.createTextNode(src.slice(from, a)));
     const m = document.createElement("mark");
     m.className = "hl";
-    m.textContent = src.slice(at, at + keyword.length);
+    m.textContent = src.slice(a, b);
     el.appendChild(m);
-    from = at + keyword.length;
+    from = b;
   }
   if (from < src.length) el.appendChild(document.createTextNode(src.slice(from)));
-  if (!el.childNodes.length) el.textContent = src;
 }
 
 /* 结果计数条：说清"筛完剩几条、按什么关键词筛的"，并给一个清空按钮。
@@ -2048,9 +2216,10 @@ function highlightInto(el, text, keyword) {
 const resultBar = document.getElementById("resultBar");
 let rbClearText = null;   // 桌面端显示"清除筛选"，窄屏显示"清除"
 
-function renderResultBar(keyword, count) {
+function renderResultBar(terms, count) {
   if (!resultBar) return;
-  const filtering = !!(keyword || activeCategory !== "全部" || activeSub || freeOnly.checked);
+  const hasTerms = Array.isArray(terms) ? terms.length > 0 : !!terms;
+  const filtering = !!(hasTerms || activeCategory !== "全部" || activeSub || freeOnly.checked);
   if (!filtering) { resultBar.hidden = true; resultBar.textContent = ""; return; }
 
   resultBar.hidden = false;
@@ -2070,12 +2239,16 @@ function renderResultBar(keyword, count) {
   if (freeOnly.checked) parts.push("只看免费");
   if (parts.length) label.appendChild(document.createTextNode("　·　" + parts.join(" / ")));
 
-  if (keyword) {
+  if (hasTerms) {
     label.appendChild(document.createTextNode("　·　关键词 "));
     const kw = document.createElement("span");
     kw.className = "rb-kw";
     kw.textContent = q.value.trim();
     label.appendChild(kw);
+    // 多关键词时说明「每个词都要命中」，否则用户不知道结果是怎么筛出来的
+    if (terms.length > 1) {
+      label.appendChild(document.createTextNode("　·　已拆为 " + terms.length + " 个词，需全部命中"));
+    }
   }
   resultBar.appendChild(label);
 
@@ -2096,24 +2269,26 @@ function renderResultBar(keyword, count) {
 }
 
 function render() {
-  const keyword = q.value.trim().toLowerCase();
+  const keyword = q.value.trim();
+  const terms = splitQuery(keyword);
   const list = RESOURCES.filter((r) => {
     if (activeCategory !== "全部" && r.category !== activeCategory) return false;
     if (activeSub && r.subcategory !== activeSub) return false;
     if (freeOnly.checked && !r.free) return false;
-    if (keyword && !searchText(r).includes(keyword)) return false;
+    // 多关键词：每个词都要命中（AND）。scoreOf 返回 0 即表示有词没命中。
+    if (terms.length && scoreOf(r, terms) === 0) return false;
     return true;
   });
   // 有搜索词时按相关度排序：标题命中 > 标签命中 > 子分类 > 分类 > 来源 > 简介。
   // 无搜索词时保持资源库原始顺序（策划过的顺序比"相关度"更有意义）。
-  if (keyword) {
-    const scored = list.map((r, idx) => ({ r, idx, s: scoreOf(r, keyword) }));
+  if (terms.length) {
+    const scored = list.map((r, idx) => ({ r, idx, s: scoreOf(r, terms) }));
     scored.sort((a, b) => b.s - a.s || a.idx - b.idx);
     list.length = 0;
     for (const x of scored) list.push(x.r);
   }
   grid.innerHTML = "";
-  renderResultBar(keyword, list.length);
+  renderResultBar(terms, list.length);
   renderEmptyHint(keyword, list.length);
   list.forEach((r, i) => {
     const a = document.createElement("a");
@@ -2133,11 +2308,11 @@ function render() {
       (r.free ? '<span class="badge free">免费</span>' : '<span class="badge paid">付费/部分免费</span>') +
       "</div>";
     // 高亮命中关键词，并标注命中位置（名称/标签/简介…）
-    highlightInto(a.querySelector(".card-name"), r.name, keyword);
-    highlightInto(a.querySelector(".card-desc"), r.description, keyword);
-    if (keyword) {
+    highlightInto(a.querySelector(".card-name"), r.name, terms);
+    highlightInto(a.querySelector(".card-desc"), r.description, terms);
+    if (terms.length) {
       const why = a.querySelector(".card-why");
-      const reasons = matchReasons(r, keyword);
+      const reasons = matchReasons(r, terms);
       if (why) why.textContent = reasons.length ? "匹配：" + reasons.join(" · ") : "";
     }
     // 卡片主体 -> 打开详情；右上箭头 -> 直接跳转（阻止冒泡以免同时弹层）

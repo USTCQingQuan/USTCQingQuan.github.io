@@ -14,6 +14,7 @@ const SUITES = [
   { name: '回归 · 数据加载双路径', cmd: ['tests/verify-loader.mjs', 'index.html'] },
   { name: '回归 · 搜索计数与高亮', cmd: ['tests/verify-search.mjs', 'index.html'] },
   { name: '回归 · 搜索排序与建议', cmd: ['tests/verify-search-rank.mjs', 'index.html'] },
+  { name: '回归 · 多关键词与模糊搜索', cmd: ['tests/verify-search-fuzzy.mjs', 'index.html'] },
   { name: '回归 · AI 防幻觉闸门', cmd: ['tests/verify-ai-guard.mjs'] },
 ];
 
