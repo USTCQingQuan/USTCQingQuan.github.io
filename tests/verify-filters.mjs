@@ -1,4 +1,4 @@
-// 回归测试：两级筛选（大类 -> 子分类）
+﻿// 回归测试：两级筛选（大类 -> 子分类）
 // 用法: node tests/verify-filters.mjs [index.html]
 import { makeChecker, setupDom, loadScript } from './dom-stub.mjs';
 
@@ -6,7 +6,7 @@ const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const { byId, ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-resources', 'view-guides', 'view-skills', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 

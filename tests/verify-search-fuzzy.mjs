@@ -1,4 +1,4 @@
-// 回归测试：多关键词搜索 + 模糊容错
+﻿// 回归测试：多关键词搜索 + 模糊容错
 //
 // 为什么需要它：搜索是最容易被改坏的功能，而"多关键词"这条以前完全不能用 ——
 // 旧实现把「数学 期末」当成一个连续字符串去 includes()，永远搜不到。
@@ -8,7 +8,7 @@ import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 eval(script);

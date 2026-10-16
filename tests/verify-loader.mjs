@@ -1,4 +1,4 @@
-// 回归测试：数据加载双路径
+﻿// 回归测试：数据加载双路径
 //   1) https 下走 resources.json 并重绘
 //   2) file:// 下静默降级到内嵌数据
 // 用法: node tests/verify-loader.mjs [index.html]
@@ -20,7 +20,7 @@ const FAKE = {
 function runOnce(protocol) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-resources', 'view-guides', 'view-skills', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);
@@ -80,7 +80,7 @@ check('总数保持 170', b.async.total, '170');
 async function runWithPayload(protocol, payload, sentinel) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-resources', 'view-guides', 'view-skills', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);

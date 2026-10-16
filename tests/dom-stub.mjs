@@ -14,12 +14,21 @@ export function makeEl(tag) {
   const el = {
     tag, children: [], _text: '', style: { setProperty() {} }, hidden: false,
     className: '', listeners: {}, attrs: {},
+    // 表单类元素必须有 value / checked / type —— 真实浏览器里它们恒存在（空串 / false）。
+    // 踩过的坑：桩里没有 value 时，页面读 inp.value.trim() 会抛
+    // "Cannot read properties of undefined"，而错误位置在页面代码里，
+    // 极易被误判成页面 bug（排查花了很久）。凡是页面会碰的原生属性都要给默认值。
+    value: '', checked: false, type: '', placeholder: '',
     get textContent() { return this._text + this.children.map((c) => c.textContent).join(''); },
     set textContent(v) { this._text = String(v); this.children = []; },
     get innerHTML() { return this._html == null ? '' : this._html; },
     set innerHTML(v) { this._html = v; this.children = v === '' ? [] : parseFragment(v); },
     setAttribute(k, v) { this.attrs[k] = String(v); },
     getAttribute(k) { return this.attrs[k]; },
+    // id 需要同时可从 el.id 读取、也能被 findById 通过 attrs.id 查到 ——
+    // 页面两种写法都有（el.id = 'x' 与 setAttribute('id','x')），必须都支持。
+    get id() { return this.attrs.id || ''; },
+    set id(v) { this.attrs.id = String(v); },
     // childNodes 是标准 DOM API，真实浏览器里恒存在。
     // 页面用它判断"有没有插入过子节点"（如高亮时），桩里必须一并提供，
     // 否则会报 undefined —— 那是桩的能力缺失，不是页面 bug。
@@ -35,12 +44,18 @@ export function makeEl(tag) {
     querySelectorAll(sel) {
       const parts = sel.split(/\s+/); let cur = [this];
       for (const p of parts) {
-        const want = p.replace(/^\./, ''); const isCls = p.startsWith('.');
+        const isId = p.startsWith('#');
+        const isCls = p.startsWith('.');
+        const want = p.replace(/^[.#]/, '');
         const next = [];
         const walk = (n) => {
           for (const c of n.children) {
             const cls = c.className || '';
-            if (isCls ? cls.split(/\s+/).includes(want) : c.tag === want) next.push(c);
+            const cid = (c.attrs && c.attrs.id) || '';
+            // 支持三种选择器：#id / .class / tag —— 页面里三种都在用。
+            // 踩过的坑：早先只支持后两种，导致 querySelector('#exQ') 返回 null，
+            // 页面读 .value 时抛错，表现成"视图空白"，很容易被误判为页面 bug。
+            if (isId ? cid === want : (isCls ? cls.split(/\s+/).includes(want) : c.tag === want)) next.push(c);
             walk(c);
           }
         };
@@ -112,10 +127,35 @@ export function setupDom(idList, opts = {}) {
   const docListeners = {};
   const calls = { opened: [], copied: [] };
 
+  // getElementById 必须能在【整棵树】里按 id 查，而不只是预设的顶层元素。
+  // 真实浏览器就是这样：页面运行时 createElement + el.id = 'x' 之后，
+  // document.getElementById('x') 立刻能查到。
+  // 踩过的坑：只查预设表时，页面里动态创建的 #exQ / #exCat 全返回 null，
+  // 页面在赋值 .hidden 时抛错 —— 那是桩的缺陷，却表现成"页面有 bug"。
+  function findById(root, id) {
+    if (!root || !root.children) return null;
+    for (const c of root.children) {
+      if (c.attrs && c.attrs.id === id) return c;
+      const got = findById(c, id);
+      if (got) return got;
+    }
+    return null;
+  }
+
   globalThis.document = {
-    getElementById: (i) => byId[i] || null,
+    getElementById: (i) => {
+      if (byId[i]) return byId[i];
+      for (const key of Object.keys(byId)) {
+        const got = findById(byId[key], i);
+        if (got) return got;
+      }
+      return null;
+    },
     createElement: (t) => makeEl(t),
     createTextNode: (t) => { const n = makeEl('#text'); n.textContent = t; return n; },
+    // DocumentFragment 是真实浏览器标配，页面用它批量拼接再一次性插入。
+    // 桩里用一个普通容器代替即可 —— appendChild 到 fragment 后再整体 append，语义一致。
+    createDocumentFragment: () => makeEl('#fragment'),
     querySelector: (s) => (s === '.toolbar' ? toolbar : null),
     addEventListener: (ev, fn) => { (docListeners[ev] = docListeners[ev] || []).push(fn); },
     fire(ev, payload) {

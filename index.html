@@ -201,6 +201,60 @@
   }
   .empty .eh-tag:hover { border-color: var(--primary); background: #f2f8f5; }
 
+  /* ---------- 历年试卷（列表视图） ---------- */
+  /* 1580 条用卡片太重，这里用紧凑列表：一行一条，便于按年份快速扫读 */
+  .ex-bar {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    padding: 14px 0 12px; border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .ex-bar input[type="search"] {
+    flex: 1 1 260px; min-width: 180px; padding: 9px 14px; font-size: 14px;
+    border: 1px solid var(--border); border-radius: 999px; background: #fff;
+    font-family: inherit; color: var(--text);
+  }
+  .ex-bar input[type="search"]:focus { outline: none; border-color: var(--primary); }
+  .ex-bar select {
+    padding: 9px 12px; font-size: 13.5px; border: 1px solid var(--border);
+    border-radius: 999px; background: #fff; color: var(--text); font-family: inherit;
+    max-width: 210px;
+  }
+  .ex-bar .ex-sort {
+    padding: 9px 14px; font-size: 13.5px; border: 1px solid var(--border);
+    border-radius: 999px; background: #fff; cursor: pointer; color: var(--text);
+    font-family: inherit;
+  }
+  .ex-bar .ex-sort:hover { border-color: var(--primary); color: var(--primary); }
+  .ex-count { font-size: 13px; color: var(--muted); padding: 10px 0 6px; }
+  .ex-count b { color: var(--primary); font-size: 14px; }
+
+  .ex-list { display: flex; flex-direction: column; }
+  .ex-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    border-bottom: 1px solid #f0f0ec; font-size: 14px;
+  }
+  .ex-row:hover { background: #fafaf7; }
+  .ex-row .ex-year {
+    flex: 0 0 76px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums;
+  }
+  .ex-row .ex-course { flex: 0 0 200px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ex-row .ex-type { flex: 0 0 52px; color: var(--muted); font-size: 13px; }
+  .ex-row .ex-teacher { flex: 0 0 82px; color: var(--muted); font-size: 13px; }
+  .ex-row .ex-name { flex: 1 1 auto; color: #6b6b62; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ex-row .ex-go {
+    flex: 0 0 auto; font-size: 13px; padding: 5px 13px; border-radius: 999px;
+    border: 1px solid var(--border); background: #fff; color: var(--primary);
+    text-decoration: none; white-space: nowrap;
+  }
+  .ex-row .ex-go:hover { border-color: var(--primary); background: #f2f8f5; }
+  .ex-row .ex-none { flex: 0 0 auto; font-size: 12px; color: #b0b0a6; white-space: nowrap; }
+  .ex-row .ex-mirror { flex: 0 0 auto; font-size: 11px; color: #17603f; background: #e2f0e8; padding: 2px 8px; border-radius: 999px; }
+  @media (max-width: 720px) {
+    .ex-row { flex-wrap: wrap; gap: 6px 10px; }
+    .ex-row .ex-course { flex: 1 1 100%; }
+    .ex-row .ex-name { display: none; }
+    .ex-row .ex-year, .ex-row .ex-type, .ex-row .ex-teacher { flex: 0 0 auto; }
+  }
+
   footer {
     border-top: 1px solid var(--border); padding: 30px 0 46px;
     text-align: center; color: var(--muted); font-size: 13px;
@@ -457,6 +511,7 @@
   </div>
   <div id="view-guides" hidden></div>
   <div id="view-skills" hidden></div>
+  <div id="view-exams" hidden></div>
 </main>
 
 <footer>
@@ -2576,12 +2631,14 @@ const modebar = document.getElementById("modebar");
 const viewRes = document.getElementById("view-resources");
 const viewGui = document.getElementById("view-guides");
 const viewSki = document.getElementById("view-skills");
+const viewExa = document.getElementById("view-exams");
 const toolbar = document.querySelector(".toolbar");
 
 const MODES = [
   { id: "resources", label: "资源库", n: () => RESOURCES.length },
   { id: "guides", label: "学习路径", n: () => GUIDES.length },
   { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
+  { id: "exams", label: "历年试卷", n: () => (EXAMS ? EXAMS.total : "…") },
 ];
 let activeMode = "resources";
 let activeGuide = null;
@@ -2616,11 +2673,13 @@ function applyMode() {
   viewRes.hidden = activeMode !== "resources";
   viewGui.hidden = activeMode !== "guides";
   viewSki.hidden = activeMode !== "skills";
+  viewExa.hidden = activeMode !== "exams";
   // 资源筛选栏只在资源库模式下有意义
   if (toolbar) toolbar.hidden = activeMode !== "resources";
   renderModebar();
   if (activeMode === "guides") renderGuides();
   if (activeMode === "skills") renderSkills();
+  if (activeMode === "exams") renderExams();
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
@@ -2928,6 +2987,285 @@ function loadResources() {
 for (let i = 0; i < RESOURCES.length; i++) RESOURCES[i] = normalizeRecord(RESOURCES[i]);
 
 rebuildTitleIndex();
+/* ===================================================================
+   历年试卷（1580 份）
+   目的：把整理好的历年期中/期末试卷做成站内可搜索、可筛选的索引。
+   为什么只做索引不放文件：全部 PDF 有 1.15 GB，GitHub Pages 放不下
+   （官方限制：仓库与站点各不超过 1 GB）。所以这里只存元数据，
+   文件放在源站与 GitCode 镜像上，点击直接下载。
+   =================================================================== */
+let EXAMS = null;             // { total, cats, courses, items, repo }
+let exLoaded = false;
+let exSortDesc = true;        // 默认年份倒序（最新的在最上面）
+
+function loadExams() {
+  if (exLoaded) return;
+  exLoaded = true;
+  if (typeof fetch !== "function" || location.protocol === "file:") {
+    renderExamsError("本地打开（file://）时无法载入试卷索引，请通过网站访问。");
+    return;
+  }
+  fetch("exams.json", { cache: "no-store" })
+    .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function (doc) {
+      EXAMS = doc;
+      renderModebar();
+      if (activeMode === "exams") renderExams();
+    })
+    .catch(function (e) {
+      // 打印真实错误：把渲染异常和网络失败混在一起会导致"页面空白但不知为何"
+      console.error("[拾学集] 试卷索引加载失败:", e);
+      renderExamsError("试卷索引加载失败，请刷新重试。");
+    });
+}
+
+function renderExamsError(msg) {
+  viewExa.innerHTML = "";
+  const p = document.createElement("p");
+  p.className = "empty";
+  p.textContent = msg;
+  viewExa.appendChild(p);
+}
+
+/* 试卷的检索文本：课程 + 科目 + 年份 + 类型 + 老师 + 文件名。
+   课程与年份是最主要的检索入口（"数学分析A1 2024"）。 */
+function examText(it) {
+  return [
+    EXAMS.courses[it.k] || "",
+    EXAMS.cats[it.c] || "",
+    it.y || "", it.s || "", it.t || "", it.h || "",
+    it.n || "",
+  ].join(" ").toLowerCase();
+}
+
+function renderExams() {
+  if (!EXAMS) {
+    if (!exLoaded) loadExams();
+    // 数据还没到：显示载入中。
+    // ⚠️ 这里必须让容器内容与"已就绪"状态可区分 —— 否则数据到达后，
+    //    renderExams 会看到容器里已有节点就以为"控件已建好"，跳过建控件，
+    //    于是页面永远卡在"正在载入"。这是实际踩过的 bug。
+    if (!viewExa.querySelector(".ex-loading")) {
+      viewExa.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "empty ex-loading";
+      p.textContent = "正在载入试卷索引…";
+      viewExa.appendChild(p);
+    }
+    return;
+  }
+  // 数据已就绪：确保控件建好（首次进入时建；之后复用，避免输入时丢焦点）
+  let bar = viewExa.querySelector(".ex-bar");
+  if (!bar) {
+    viewExa.innerHTML = "";
+    bar = document.createElement("div");
+    bar.className = "ex-bar";
+
+    const inp = document.createElement("input");
+    inp.type = "search";
+    inp.id = "exQ";
+    inp.placeholder = "搜索课程 / 年份 / 老师，如「数学分析A1」「2024」「赵立丰」…";
+    inp.setAttribute("aria-label", "搜索试卷");
+    bar.appendChild(inp);
+
+    const selCat = document.createElement("select");
+    selCat.id = "exCat";
+    const o0 = document.createElement("option");
+    o0.value = ""; o0.textContent = "全部科目";
+    selCat.appendChild(o0);
+    EXAMS.cats.forEach(function (c) {
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c;
+      selCat.appendChild(o);
+    });
+    bar.appendChild(selCat);
+
+    const selCourse = document.createElement("select");
+    selCourse.id = "exCourse";
+    bar.appendChild(selCourse);
+
+    const sortBtn = document.createElement("button");
+    sortBtn.type = "button";
+    sortBtn.className = "ex-sort";
+    sortBtn.id = "exSort";
+    bar.appendChild(sortBtn);
+
+    const count = document.createElement("p");
+    count.className = "ex-count";
+    count.id = "exCount";
+
+    const list = document.createElement("div");
+    list.className = "ex-list";
+    list.id = "exList";
+
+    viewExa.appendChild(bar);
+    viewExa.appendChild(count);
+    viewExa.appendChild(list);
+
+    inp.addEventListener("input", function () { paintExams(); });
+    selCat.addEventListener("change", function () { fillCourseSelect(); paintExams(); });
+    selCourse.addEventListener("change", function () { paintExams(); });
+    sortBtn.addEventListener("click", function () {
+      exSortDesc = !exSortDesc;
+      paintExams();
+    });
+    fillCourseSelect();
+  }
+  paintExams();
+}
+
+/* 课程下拉：随科目选择联动，只列出该科目下真实存在的课程 */
+function fillCourseSelect() {
+  const selCat = document.getElementById("exCat");
+  const selCourse = document.getElementById("exCourse");
+  if (!selCat || !selCourse) return;
+  const cat = selCat.value;
+  const keep = selCourse.value;
+  selCourse.innerHTML = "";
+  const o0 = document.createElement("option");
+  o0.value = ""; o0.textContent = "全部课程";
+  selCourse.appendChild(o0);
+
+  const seen = new Set();
+  for (const it of EXAMS.items) {
+    if (cat && EXAMS.cats[it.c] !== cat) continue;
+    const name = EXAMS.courses[it.k];
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    const o = document.createElement("option");
+    o.value = name; o.textContent = name;
+    selCourse.appendChild(o);
+  }
+  // 尽量保留原来的选择
+  if (keep && seen.has(keep)) selCourse.value = keep;
+}
+
+function paintExams() {
+  const list = document.getElementById("exList");
+  const countEl = document.getElementById("exCount");
+  const sortBtn = document.getElementById("exSort");
+  if (!list || !countEl) return;
+
+  const inp = document.getElementById("exQ");
+  const selCat = document.getElementById("exCat");
+  const selCourse = document.getElementById("exCourse");
+  const kw = inp ? inp.value.trim().toLowerCase() : "";
+  const cat = selCat ? selCat.value : "";
+  const course = selCourse ? selCourse.value : "";
+  const terms = splitQuery(kw);
+
+  let rows = EXAMS.items.filter(function (it) {
+    if (cat && EXAMS.cats[it.c] !== cat) return false;
+    if (course && EXAMS.courses[it.k] !== course) return false;
+    if (terms.length) {
+      const txt = examText(it);
+      // 多关键词：每个词都要在检索文本里出现
+      for (const t of terms) if (txt.indexOf(t.toLowerCase()) === -1) return false;
+    }
+    return true;
+  });
+
+  // 排序：年份优先（题面里的"按时间排好序"）。
+  // ⚠️ 年份缺失的必须显式排到最后 —— 早先用 (y || "0") 代替，
+  //    而 "0" 小于 "2026"，导致"年份未知"在降序时跑到最前面。
+  rows = rows.slice().sort(function (a, b) {
+    const aHas = !!(a.y && /^\d{4}$/.test(a.y));
+    const bHas = !!(b.y && /^\d{4}$/.test(b.y));
+    if (aHas !== bHas) return aHas ? -1 : 1;
+    let cmp = 0;
+    if (aHas) {
+      const ya = a.y + (a.s || "");
+      const yb = b.y + (b.s || "");
+      cmp = ya < yb ? -1 : (ya > yb ? 1 : 0);
+    }
+    if (cmp === 0) cmp = (EXAMS.courses[a.k] || "").localeCompare(EXAMS.courses[b.k] || "", "zh");
+    if (cmp === 0) cmp = (a.t || "").localeCompare(b.t || "", "zh");
+    return exSortDesc ? -cmp : cmp;
+  });
+
+  if (sortBtn) sortBtn.textContent = exSortDesc ? "年份 ↓ 最新优先" : "年份 ↑ 最早优先";
+  countEl.textContent = "";
+  const b = document.createElement("b");
+  b.textContent = String(rows.length);
+  countEl.appendChild(document.createTextNode("找到 "));
+  countEl.appendChild(b);
+  countEl.appendChild(document.createTextNode(
+    " 份试卷" + (rows.length < EXAMS.items.length ? "（共 " + EXAMS.items.length + " 份）" : "")));
+
+  list.innerHTML = "";
+  // 一次只渲染前 300 条，避免 1500+ 行同时入 DOM 造成卡顿；滚动到底再补
+  paintExamRows(list, rows.slice(0, 300));
+  if (rows.length > 300) {
+    const more = document.createElement("p");
+    more.className = "ex-count";
+    more.style.textAlign = "center";
+    more.textContent = "已显示前 300 条 —— 用上面的搜索或筛选缩小范围";
+    list.appendChild(more);
+  }
+}
+
+function paintExamRows(list, rows) {
+  const frag = document.createDocumentFragment();
+  for (const it of rows) {
+    const row = document.createElement("div");
+    row.className = "ex-row";
+
+    const y = document.createElement("span");
+    y.className = "ex-year";
+    y.textContent = (it.y || "年份不详") + (it.s || "");
+    row.appendChild(y);
+
+    const c = document.createElement("span");
+    c.className = "ex-course";
+    c.textContent = EXAMS.courses[it.k] || "";
+    c.title = EXAMS.cats[it.c] + (EXAMS.courses[it.k] ? " · " + EXAMS.courses[it.k] : "");
+    row.appendChild(c);
+
+    const t = document.createElement("span");
+    t.className = "ex-type";
+    t.textContent = it.t || "";
+    row.appendChild(t);
+
+    const h = document.createElement("span");
+    h.className = "ex-teacher";
+    h.textContent = it.h || "";
+    row.appendChild(h);
+
+    const n = document.createElement("span");
+    n.className = "ex-name";
+    n.textContent = it.n || "";
+    n.title = it.n || "";
+    row.appendChild(n);
+
+    if (it.g) {
+      const tag = document.createElement("span");
+      tag.className = "ex-mirror";
+      tag.textContent = "国内镜像";
+      tag.title = "此文件托管在国内镜像仓库，下载更快";
+      row.appendChild(tag);
+    }
+
+    if (it.u) {
+      const a = document.createElement("a");
+      a.className = "ex-go";
+      a.href = it.u;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "下载";
+      a.title = it.u;
+      row.appendChild(a);
+    } else {
+      const s = document.createElement("span");
+      s.className = "ex-none";
+      s.textContent = "暂无链接";
+      s.title = "这份试卷没有公开的下载地址（源站未单独提供）";
+      row.appendChild(s);
+    }
+    frag.appendChild(row);
+  }
+  list.appendChild(frag);
+}
+
 renderModebar();
 applyMode();
 loadResources();

@@ -1,4 +1,4 @@
-// 回归测试：搜索结果计数 + 关键词高亮 + 匹配位置提示
+﻿// 回归测试：搜索结果计数 + 关键词高亮 + 匹配位置提示
 //
 // 为什么需要它：
 //   高亮是把用户输入拼进 DOM 的路径 —— 最容易出的问题是【文本被当成 HTML 解析】，
@@ -10,7 +10,7 @@ const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 
