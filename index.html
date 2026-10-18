@@ -410,13 +410,13 @@
      用纯 CSS 渐变做背景，不依赖图片素材（离线也能正常显示）。 */
   .hero-banner {
     position: relative; border-radius: 18px; overflow: hidden;
-    margin-bottom: 14px; min-height: 148px;
+    margin-bottom: 14px; min-height: 216px;
   }
   .hb-slide {
     position: absolute; inset: 0; opacity: 0; pointer-events: none;
     transition: opacity .45s ease;
     display: flex; flex-direction: column; justify-content: center;
-    padding: 26px 30px; color: #fff; text-decoration: none;
+    padding: 32px 34px; color: #fff; text-decoration: none;
   }
   .hb-slide.on { opacity: 1; pointer-events: auto; position: relative; }
   .hb-slide::after {
@@ -429,11 +429,11 @@
     letter-spacing: 1px; padding: 3px 11px; border-radius: 999px;
     background: rgba(255,255,255,.18); margin-bottom: 10px;
   }
-  .hb-title { font-size: 24px; font-weight: 800; letter-spacing: .5px; line-height: 1.3; }
+  .hb-title { font-size: 28px; font-weight: 800; letter-spacing: .5px; line-height: 1.28; }
   .hb-title b { color: #ffe699; font-weight: 800; }
-  .hb-desc { font-size: 13.5px; color: rgba(255,255,255,.82); margin-top: 7px; line-height: 1.55; }
+  .hb-desc { font-size: 14.5px; color: rgba(255,255,255,.85); margin-top: 9px; line-height: 1.6; max-width: 640px; }
   .hb-go {
-    align-self: flex-start; margin-top: 14px; font-size: 13px; font-weight: 700;
+    align-self: flex-start; margin-top: 18px; font-size: 13.5px; font-weight: 700;
     padding: 7px 20px; border-radius: 999px; background: rgba(255,255,255,.92);
     color: #175e4c; position: relative; z-index: 1;
   }
@@ -450,11 +450,11 @@
   .hb-dot.on { background: #fff; width: 18px; border-radius: 999px; }
 
   @media (max-width: 720px) {
-    .hero-banner { min-height: 128px; border-radius: 16px; margin-bottom: 10px; }
-    .hb-slide { padding: 20px 18px; }
-    .hb-title { font-size: 19px; }
-    .hb-desc { font-size: 12.5px; margin-top: 5px; }
-    .hb-go { margin-top: 11px; font-size: 12px; padding: 6px 16px; }
+    .hero-banner { min-height: 172px; border-radius: 16px; margin-bottom: 10px; }
+    .hb-slide { padding: 22px 20px; }
+    .hb-title { font-size: 20px; line-height: 1.32; }
+    .hb-desc { font-size: 12.5px; margin-top: 6px; }
+    .hb-go { margin-top: 13px; font-size: 12px; padding: 6px 16px; }
     .hb-dots { right: 12px; bottom: 10px; }
   }
 
@@ -519,6 +519,53 @@
   }
 
   /* ---------- 紧凑 hero（首页用） ---------- */
+  /* ---------- 品牌条（取代原来的大 hero） ----------
+     原来的 hero 占约 200px 高，第一屏几乎全是标题。
+     现在压成一条：站名 + 一句定位 + 三个数字，约 70px，
+     把首屏空间让给头条轮播和图标宫格。 */
+  .brandbar {
+    background: linear-gradient(135deg, #0f4436 0%, #175e4c 55%, #1d7a60 100%);
+    color: #fff; padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .brandbar .wrap {
+    display: flex; align-items: center; gap: 14px; flex-wrap: nowrap;
+    min-height: 34px;                       /* 8 + 34 + 8 = 50px 总高 */
+  }
+  .brand-left { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1; }
+  .brandbar h1 {
+    font-size: 21px; font-weight: 800; letter-spacing: 1.2px; line-height: 1;
+    white-space: nowrap; flex: none;
+  }
+  .brandbar h1 em { font-style: normal; color: var(--accent); }
+  .brandbar p {
+    font-size: 12.5px; color: #c6d8cf; line-height: 1; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+  }
+  .brandbar p b { color: #fff; font-weight: 600; }
+  .bp-short { display: none; }
+  .brand-stats {
+    margin-left: auto; display: flex; gap: 16px; align-items: baseline;
+    font-size: 11.5px; color: #a9c3b8; white-space: nowrap; flex: none;
+  }
+  .brand-stats b {
+    font-size: 15px; font-weight: 800; color: #fff; margin-right: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 780px) {
+    .brandbar { padding: 7px 0; }
+    .brandbar .wrap { min-height: 36px; gap: 10px; }
+    .brandbar h1 { font-size: 19px; }
+    .bp-long { display: none; }
+    .bp-short { display: inline; }
+    .brandbar p { font-size: 12px; }
+    .brand-stats { gap: 11px; font-size: 10.5px; }
+    .brand-stats b { font-size: 13.5px; }
+  }
+  @media (max-width: 420px) {
+    .brand-stats span:nth-child(3) { display: none; }
+  }
+
   .hero.compact { padding: 34px 0 30px; }
   .hero.compact h1 { font-size: 40px; }
   .hero.compact p.sub { margin-top: 10px; font-size: 14.5px; max-width: 520px; }
@@ -890,17 +937,17 @@
 </head>
 <body>
 
-<section class="hero compact">
+<!-- 品牌条：一行交代"这是什么站"，把竖向空间让给下面的头条轮播 -->
+<section class="brandbar">
   <div class="wrap">
-    <div>
-      <span class="hero-badge">USTC LEARNING HUB · 权益服务</span>
+    <div class="brand-left">
       <h1>拾<em>学</em>集</h1>
-      <p class="sub">中科大同学的<b>权益服务与学习资源</b>站。<b>权益服务</b>——校内反馈渠道汇总,遇到问题知道找谁; <b>学习资源</b>——精选网络资源、历年试卷、学习路径。</p>
+      <p><span class="bp-long">中科大同学的<b>权益服务</b>与<b>学习资源</b>站</span><span class="bp-short"><b>权益服务</b> · <b>学习资源</b></span></p>
     </div>
-    <div class="hero-stats">
-      <div class="stat"><b id="total"></b><span>精选资源</span></div>
-      <div class="stat"><b id="examStat">—</b><span>历年试卷</span></div>
-      <div class="stat"><b id="chanStat">—</b><span>反馈渠道</span></div>
+    <div class="brand-stats">
+      <span><b id="total"></b>资源</span>
+      <span><b id="examStat">—</b>试卷</span>
+      <span><b id="chanStat">—</b>渠道</span>
     </div>
   </div>
 </section>
