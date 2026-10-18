@@ -348,6 +348,12 @@
   }
   .promo-head h2 { font-size: 19px; font-weight: 800; letter-spacing: .5px; }
   .promo-head p { font-size: 13px; color: #cfe3da; margin-top: 5px; }
+  .promo-src {
+    display: inline-block; margin-left: 10px; vertical-align: middle;
+    font-size: 11.5px; font-weight: 600; letter-spacing: .5px;
+    padding: 2px 10px; border-radius: 999px;
+    background: rgba(255,255,255,.18); color: #fff;
+  }
   .promo-body { padding: 8px 26px 22px; }
   .promo-row {
     display: flex; gap: 14px; align-items: flex-start;
@@ -466,12 +472,30 @@
   }
 
   /* ---------- 首页图标宫格（参考 App 首页的九宫格入口） ---------- */
-  /* 桌面：8 个入口排成一行（像菜单条）；手机：4 列两行（拇指区更好点） */
+  /* 分成两组：权益服务在上、学习资源在下。
+     这样一眼能看出网站重心在权益服务，而不是把 8 个入口混在一起。 */
   .icon-grid {
-    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    display: block;
     background: #fff; border: 1px solid var(--border); border-radius: 18px;
-    padding: 16px 8px 12px; margin-bottom: 18px;
+    padding: 6px 8px 10px; margin-bottom: 18px;
   }
+  .ig-group { padding: 4px 0 2px; }
+  .ig-group + .ig-group {
+    margin-top: 4px; padding-top: 10px; border-top: 1px dashed #e8e5dc;
+  }
+  .ig-group-head {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 10px 2px; font-size: 12.5px; font-weight: 700; color: var(--ink);
+  }
+  .ig-group-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex: none;
+  }
+  .ig-group-rights .ig-group-dot { background: #d4a017; }
+  .ig-group-study .ig-group-dot { background: var(--primary); }
+  .ig-group-cnt {
+    margin-left: auto; font-size: 11px; font-weight: 400; color: var(--muted);
+  }
+  .ig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
   .ig-item {
     display: flex; flex-direction: column; align-items: center; gap: 7px;
     padding: 8px 4px 6px; border-radius: 14px; text-decoration: none; color: inherit;
@@ -495,11 +519,10 @@
     font-variant-numeric: tabular-nums;
   }
   .ig-rights .ig-num { background: #d4a017; }
-  @media (max-width: 900px) {
-    .icon-grid { grid-template-columns: repeat(4, 1fr); }
-  }
   @media (max-width: 720px) {
-    .icon-grid { padding: 14px 4px 10px; gap: 2px; border-radius: 16px; }
+    .icon-grid { padding: 4px 4px 8px; border-radius: 16px; }
+    .ig-group-head { padding: 5px 8px 1px; font-size: 12px; }
+    .ig-row { gap: 0; }
     .ig-icon { width: 42px; height: 42px; font-size: 21px; }
     .ig-label { font-size: 12px; }
     .ig-desc { display: none; }
@@ -987,7 +1010,7 @@
 
       <section class="promo">
         <div class="promo-head">
-          <h2>权益服务工作</h2>
+          <h2>权益服务工作<span class="promo-src">青权中心</span></h2>
           <p>我们为同学做了什么 · 最新动态</p>
         </div>
         <div class="promo-body" id="promoBody"></div>
@@ -3352,7 +3375,7 @@ function currentCats() {
    纯 CSS 渐变背景，不用图片，离线也不会裂图。 */
 const BANNERS = [
   {
-    tag: "遇到问题",
+    tag: "权益服务",
     title: "校园里的事，<b>24 条渠道</b>都能反映",
     desc: "报修、食堂、宿舍、图书馆、医保……按问题类型对口联系，比层层转达快",
     cta: "看看该找谁",
@@ -3368,20 +3391,20 @@ const BANNERS = [
     bg: "linear-gradient(120deg,#134a3c 0%,#175e4c 55%,#23896c 100%)",
   },
   {
+    tag: "权益简报",
+    title: "高新校区<b>47 项议题</b>逐条回应",
+    desc: "住宿、交通、体育、餐饮、保卫、图书馆、医保，哪些已办、哪些在推进都写清楚了",
+    cta: "查看原文",
+    href: "https://mp.weixin.qq.com/s/23YhXJ9KP-p5KM0qH3w4Cw",
+    bg: "linear-gradient(120deg,#5a4210 0%,#8a6508 55%,#b8860b 100%)",
+  },
+  {
     tag: "学习资源",
     title: "<b>1580 份</b>历年试卷，按课程分好",
     desc: "期中期末都有，文件名带年份和老师，在同一课程文件夹里按时间排序",
     cta: "去找卷子",
     to: "#/study/exams",
     bg: "linear-gradient(120deg,#0f4436 0%,#1a6b55 55%,#2b9a78 100%)",
-  },
-  {
-    tag: "权益简报",
-    title: "高新校区<b>第二期简报</b>发布了",
-    desc: "7 个方面 47 项议题，逐条写明哪些已办、哪些还在推进",
-    cta: "查看原文",
-    href: "https://mp.weixin.qq.com/s/23YhXJ9KP-p5KM0qH3w4Cw",
-    bg: "linear-gradient(120deg,#5a4210 0%,#8a6508 55%,#b8860b 100%)",
   },
 ];
 
@@ -3563,58 +3586,107 @@ function hbResume() { if (!hbTimer && route.home) hbStart(); }
    8 个入口一次摆开，手机上不用先选大区再选子项。
    顺序上权益服务在前（网站主体是权益服务），学习资源在后。
    图标用 emoji：不依赖图片资源、离线也能显示，代价是各设备长得不同。 */
-const HOME_ENTRIES = [
-  { icon: "🛡️", label: "权益反馈", desc: "校内反馈渠道", to: "#/rights/channels", tone: "rights",
-    n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
-  { icon: "🏫", label: "校内平台", desc: "评课/论坛/图书馆", to: "#/rights/platforms", tone: "rights",
-    n: function () { return countIn(["校内平台"]); } },
-  { icon: "📢", label: "校园信息", desc: "升学/心理/通知", to: "#/rights/campus", tone: "rights",
-    n: function () { return countIn(["校园信息"]); } },
-  { icon: "📚", label: "资源库", desc: "精选网络资源", to: "#/study/library", tone: "study",
-    n: function () { return countIn(LIBRARY_CATS); } },
-  { icon: "📄", label: "历年试卷", desc: "按课程分类", to: "#/study/exams", tone: "study",
-    n: function () { return EXAMS ? EXAMS.total : "…"; } },
-  { icon: "🧭", label: "学习路径", desc: "按阶段规划", to: "#/study/guides", tone: "study",
-    n: function () { return GUIDES.length; } },
-  { icon: "✅", label: "技能自查", desc: "看看还缺什么", to: "#/study/skills", tone: "study",
-    n: function () { return SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0); } },
-  { icon: "💬", label: "反馈建议", desc: "告诉我们问题", href: FEEDBACK_FORM_URL, tone: "more", n: null },
+const HOME_GROUPS = [
+  {
+    label: "权益服务",
+    tone: "rights",
+    items: [
+      { icon: "🛡️", label: "权益反馈", desc: "校内反馈渠道", to: "#/rights/channels",
+        n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
+      { icon: "🏫", label: "校内平台", desc: "评课/论坛/图书馆", to: "#/rights/platforms",
+        n: function () { return countIn(["校内平台"]); } },
+      { icon: "📢", label: "校园信息", desc: "升学/心理/通知", to: "#/rights/campus",
+        n: function () { return countIn(["校园信息"]); } },
+      { icon: "💬", label: "反馈建议", desc: "告诉我们问题", href: FEEDBACK_FORM_URL, n: null },
+    ],
+  },
+  {
+    label: "学习资源",
+    tone: "study",
+    items: [
+      { icon: "📚", label: "资源库", desc: "精选网络资源", to: "#/study/library",
+        n: function () { return countIn(LIBRARY_CATS); } },
+      { icon: "📄", label: "历年试卷", desc: "按课程分类", to: "#/study/exams",
+        n: function () { return EXAMS ? EXAMS.total : "…"; } },
+      { icon: "🧭", label: "学习路径", desc: "按阶段规划", to: "#/study/guides",
+        n: function () { return GUIDES.length; } },
+      { icon: "✅", label: "技能自查", desc: "看看还缺什么", to: "#/study/skills",
+        n: function () { return SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0); } },
+    ],
+  },
 ];
+
+/* 拍平成一份带分组信息的列表，供数字刷新时按索引取用 */
+function flatEntries() {
+  var out = [];
+  for (var g = 0; g < HOME_GROUPS.length; g++) {
+    for (var i = 0; i < HOME_GROUPS[g].items.length; i++) {
+      out.push(HOME_GROUPS[g].items[i]);
+    }
+  }
+  return out;
+}
 
 function renderIconGrid() {
   var grid = document.getElementById("iconGrid");
   if (!grid) return;
-  var keep = grid.getAttribute("data-built");
-  if (keep) return;                       // 只建一次（数字会单独刷新）
+  if (grid.getAttribute("data-built")) return;
   grid.setAttribute("data-built", "1");
   grid.innerHTML = "";
-  for (var i = 0; i < HOME_ENTRIES.length; i++) {
-    (function (e) {
-      var a = document.createElement("a");
-      a.className = "ig-item ig-" + e.tone;
-      a.href = e.href || e.to;
-      if (e.href) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
-      var ic = document.createElement("span");
-      ic.className = "ig-icon";
-      ic.textContent = e.icon;
-      if (e.n) {
-        var num = document.createElement("span");
-        num.className = "ig-num";
-        num.setAttribute("data-n", String(i));
-        num.textContent = e.n();
-        ic.appendChild(num);
-      }
-      a.appendChild(ic);
-      var lb = document.createElement("span");
-      lb.className = "ig-label";
-      lb.textContent = e.label;
-      a.appendChild(lb);
-      var ds = document.createElement("span");
-      ds.className = "ig-desc";
-      ds.textContent = e.desc;
-      a.appendChild(ds);
-      grid.appendChild(a);
-    })(HOME_ENTRIES[i]);
+
+  var idx = 0;
+  for (var g = 0; g < HOME_GROUPS.length; g++) {
+    var grp = HOME_GROUPS[g];
+    var wrap = document.createElement("div");
+    wrap.className = "ig-group ig-group-" + grp.tone;
+
+    var head = document.createElement("div");
+    head.className = "ig-group-head";
+    var dot = document.createElement("span");
+    dot.className = "ig-group-dot";
+    head.appendChild(dot);
+    var nm = document.createElement("span");
+    nm.textContent = grp.label;
+    head.appendChild(nm);
+    var cnt = document.createElement("span");
+    cnt.className = "ig-group-cnt";
+    cnt.textContent = grp.items.length + " 个入口";
+    head.appendChild(cnt);
+    wrap.appendChild(head);
+
+    var row = document.createElement("div");
+    row.className = "ig-row";
+    for (var i = 0; i < grp.items.length; i++) {
+      (function (e) {
+        var a = document.createElement("a");
+        a.className = "ig-item ig-" + grp.tone;
+        a.href = e.href || e.to;
+        if (e.href) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+        var ic = document.createElement("span");
+        ic.className = "ig-icon";
+        ic.textContent = e.icon;
+        if (e.n) {
+          var num = document.createElement("span");
+          num.className = "ig-num";
+          num.setAttribute("data-n", String(idx));
+          num.textContent = e.n();
+          ic.appendChild(num);
+        }
+        a.appendChild(ic);
+        var lb = document.createElement("span");
+        lb.className = "ig-label";
+        lb.textContent = e.label;
+        a.appendChild(lb);
+        var ds = document.createElement("span");
+        ds.className = "ig-desc";
+        ds.textContent = e.desc;
+        a.appendChild(ds);
+        row.appendChild(a);
+        idx++;
+      })(grp.items[i]);
+    }
+    wrap.appendChild(row);
+    grid.appendChild(wrap);
   }
 }
 
@@ -3622,11 +3694,12 @@ function renderIconGrid() {
 function refreshIconNums() {
   var grid = document.getElementById("iconGrid");
   if (!grid) return;
+  var flat = flatEntries();
   var nums = grid.querySelectorAll(".ig-num");
   for (var i = 0; i < nums.length; i++) {
     var idx = parseInt(nums[i].getAttribute("data-n"), 10);
-    if (isNaN(idx) || !HOME_ENTRIES[idx] || !HOME_ENTRIES[idx].n) continue;
-    nums[i].textContent = HOME_ENTRIES[idx].n();
+    if (isNaN(idx) || !flat[idx] || !flat[idx].n) continue;
+    nums[i].textContent = flat[idx].n();
   }
 }
 

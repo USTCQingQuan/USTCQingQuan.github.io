@@ -212,19 +212,24 @@ console.log('=== 5. 首页图标宫格 ===');
   const items = grid.querySelectorAll('.ig-item');
   console.log('  宫格数量: ' + items.length);
   check('宫格有 8 个入口', items.length, 8);
-  // 顺序：权益 3 个 -> 学习 4 个 -> 反馈 1 个
+  // 顺序：权益服务 4 个（含反馈建议）在前 -> 学习资源 4 个在后
   const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
-  check('前 3 个属权益服务', tones.slice(0, 3).every((t) => t === 'ig-rights'), true);
-  check('中间 4 个属学习资源', tones.slice(3, 7).every((t) => t === 'ig-study'), true);
-  check('最后 1 个是反馈建议', tones[7], 'ig-more');
+  check('前 4 个属权益服务', tones.slice(0, 4).every((t) => t === 'ig-rights'), true);
+  check('后 4 个属学习资源', tones.slice(4).every((t) => t === 'ig-study'), true);
   const labels = items.map((a) => a.querySelector('.ig-label').textContent);
-  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 资源库 历年试卷 学习路径 技能自查 反馈建议');
+  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 反馈建议 资源库 历年试卷 学习路径 技能自查');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
-  // 反馈建议是外链，新窗口打开
-  const last = items[7];
-  check('反馈建议指向问卷', last.href.indexOf('wj.qq.com') >= 0 || last.href.indexOf('http') === 0, true);
+  // 反馈建议虽在权益组里，但指向外部问卷
+  const feedback = items[3];
+  check('反馈建议指向问卷', String(feedback.href).indexOf('wj.qq.com') >= 0 || String(feedback.href).indexOf('http') === 0, true);
+  // 分组标题
+  const groupHeads = grid.querySelectorAll('.ig-group-head');
+  console.log('  分组数: ' + groupHeads.length);
+  check('宫格分成 2 组', groupHeads.length, 2);
+  check('第一组是「权益服务」', groupHeads[0].textContent.indexOf('权益服务') === 0, true);
+  check('第二组是「学习资源」', groupHeads[1].textContent.indexOf('学习资源') === 0, true);
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
