@@ -3,15 +3,18 @@
 // 为什么需要它：搜索是最容易被改坏的功能，而"多关键词"这条以前完全不能用 ——
 // 旧实现把「数学 期末」当成一个连续字符串去 includes()，永远搜不到。
 // 这里的断言覆盖三层口径：拆词、模糊、以及"不能过度匹配"。
-import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
+import { setupDom, loadScript, makeChecker, makeNav } from './dom-stub.mjs';
 
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 eval(script);
+
+// 搜索针对资源列表，先进入学习资源区
+makeNav(ids).go('library');
 
 const q = ids.q;
 const cards = () => ids.grid.children;
@@ -24,7 +27,7 @@ console.log('=== 1. ★多关键词 AND（旧实现完全不可用）===');
   const cases = [
     ['雅思 真题', 4],
     ['雅思 听力', 2],
-    ['开源 社区', 8],
+    ['开源 社区', 7],   // 学习资源区不含校内平台，少了 USTC 开源镜像站那类条目
     ['编程 入门', 2],
   ];
   for (const [kw, expect] of cases) {
@@ -133,7 +136,7 @@ console.log('=== 8. 单关键词仍正常（不能因改多词而回归）===');
   console.log('  「数学」→ ' + r.length + ' 条');
   check('单关键词命中 16 条', r.length, 16);
   search('');
-  check('清空搜索后恢复全部', cards().length, 170);
+  check('清空搜索后恢复学习资源区全部', cards().length, 151);
 }
 console.log('');
 

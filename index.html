@@ -325,6 +325,94 @@
   @media (max-width: 640px) {
     .wk-block .wk-soon { position: static; display: inline-block; margin-top: 8px; }
   }
+
+  /* ---------- 首页：权益宣传工作 + 两个入口 ---------- */
+  .home-wrap { padding-top: 8px; }
+
+  /* 宣传区 */
+  .promo {
+    border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+    background: #fff; margin-bottom: 26px;
+  }
+  .promo-head {
+    padding: 22px 26px;
+    background: linear-gradient(135deg, #175e4c 0%, #1d7a60 60%, #23896c 100%);
+    color: #fff;
+  }
+  .promo-head h2 { font-size: 19px; font-weight: 800; letter-spacing: .5px; }
+  .promo-head p { font-size: 13px; color: #cfe3da; margin-top: 5px; }
+  .promo-body { padding: 8px 26px 22px; }
+  .promo-row {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 15px 0; border-bottom: 1px dashed #eceae2;
+  }
+  .promo-row:last-child { border-bottom: 0; }
+  .promo-ico {
+    flex: none; width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    background: color-mix(in srgb, var(--primary) 9%, #fff);
+  }
+  .promo-row .promo-txt { flex: 1; min-width: 0; }
+  .promo-row h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .promo-row p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-top: 4px; }
+  .promo-soon {
+    flex: none; font-size: 11px; color: #9a8f7d; background: #f4f1e8;
+    padding: 3px 10px; border-radius: 999px; white-space: nowrap; margin-top: 3px;
+  }
+
+  /* 两个入口卡片 */
+  .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .entry {
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid var(--border); border-radius: 18px; padding: 26px 26px 22px;
+    background: #fff; position: relative; overflow: hidden;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+  }
+  .entry::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 5px;
+    background: var(--primary);
+  }
+  .entry-rights::before { background: linear-gradient(90deg, #b8860b, #d4a017); }
+  .entry-study::before { background: linear-gradient(90deg, var(--primary-deep), #23896c); }
+  .entry:hover {
+    transform: translateY(-3px); border-color: rgba(23,94,76,.35);
+    box-shadow: 0 14px 34px rgba(34,48,43,.12);
+  }
+  .entry-tag {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .entry-rights .entry-tag { background: #fdf4dc; color: #8a6508; }
+  .entry-study .entry-tag { background: #e2f0e8; color: var(--primary-deep); }
+  .entry h3 { font-size: 20px; font-weight: 800; letter-spacing: .3px; color: var(--ink); }
+  .entry > p { font-size: 13.5px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+  .entry ul { margin: 16px 0 0; padding: 0; list-style: none; }
+  .entry li {
+    font-size: 13px; color: #4d5a53; padding: 6px 0 6px 20px; position: relative;
+    border-bottom: 1px solid #f4f2ec;
+  }
+  .entry li:last-child { border-bottom: 0; }
+  .entry li::before {
+    content: ""; position: absolute; left: 4px; top: 13px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
+  }
+  .entry-rights li::before { background: #d4a017; }
+  .entry li b { color: var(--ink); font-weight: 700; }
+  .entry-go {
+    display: inline-block; margin-top: 18px; font-size: 14px; font-weight: 700;
+    color: var(--primary);
+  }
+  .entry-rights .entry-go { color: #8a6508; }
+
+  @media (max-width: 760px) {
+    .entry-grid { grid-template-columns: 1fr; gap: 14px; }
+    .entry { padding: 22px 20px 18px; }
+    .entry h3 { font-size: 18px; }
+    .promo-head { padding: 18px 18px; }
+    .promo-body { padding: 4px 18px 16px; }
+    .promo-row { gap: 11px; }
+    .promo-soon { display: none; }
+  }
   @media (max-width: 720px) {
     .rt-list { grid-template-columns: 1fr; }
     .rt-intro { padding: 15px 16px; font-size: 13.5px; }
@@ -614,7 +702,46 @@
 </div>
 
 <main class="wrap">
-  <div id="view-resources">
+  <!-- ===== 首页：权益服务工作宣传 + 两个入口 ===== -->
+  <div id="view-home">
+    <div class="home-wrap">
+      <section class="promo">
+        <div class="promo-head">
+          <h2>权益服务工作</h2>
+          <p>我们为同学做了什么 · 最新动态</p>
+        </div>
+        <div class="promo-body" id="promoBody"></div>
+      </section>
+
+      <div class="entry-grid">
+        <a class="entry entry-rights" href="#/rights/channels">
+          <span class="entry-tag">权益服务</span>
+          <h3>遇到问题，知道找谁</h3>
+          <p>把校内的反馈渠道、常用平台和校园信息整理在一起，不用再翻各个官网。</p>
+          <ul>
+            <li>权益反馈 <b id="homeChanN">6</b> 个渠道，点开直达</li>
+            <li>校内平台 <b id="homePlatN">14</b> 个，评课/论坛/图书馆</li>
+            <li>校园信息 <b id="homeCampusN">5</b> 条，升学/心理/通知</li>
+          </ul>
+          <span class="entry-go">进入权益服务 →</span>
+        </a>
+
+        <a class="entry entry-study" href="#/study/library">
+          <span class="entry-tag">学习资源</span>
+          <h3>想学东西，从这开始</h3>
+          <p>精选过的网络资源、成体系的学习路径，还有整理好的历年试卷。</p>
+          <ul>
+            <li>资源库 <b id="homeResN">151</b> 个，可搜索可筛选</li>
+            <li>历年试卷 <b id="homeExamN">1580</b> 份，按课程分类</li>
+            <li>学习路径 <b id="homeGuideN">5</b> 条 · 技能自查 <b id="homeSkillN">50</b> 项</li>
+          </ul>
+          <span class="entry-go">进入学习资源 →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-resources" hidden>
     <p class="result-bar" id="resultBar" hidden></p>
     <div class="grid" id="grid"></div>
     <p class="empty" id="empty" hidden>没有找到匹配的资源,换个关键词试试。</p>
@@ -623,7 +750,6 @@
   <div id="view-skills" hidden></div>
   <div id="view-exams" hidden></div>
   <div id="view-channels" hidden></div>
-  <div id="view-work" hidden></div>
 </main>
 
 <footer>
@@ -2103,19 +2229,42 @@ function renderSubchips() {
   for (const s of subs) subchips.appendChild(mk(s, inCat.filter((r) => r.subcategory === s).length));
 }
 
-for (const cat of CATEGORIES) {
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "chip" + (cat === activeCategory ? " active" : "");
-  btn.textContent = cat;
-  btn.addEventListener("click", () => {
-    activeCategory = cat;
-    activeSub = "";                                    // 切换大类时清空子分类
-    for (const c of chips.querySelectorAll(".chip")) c.classList.toggle("active", c.textContent === cat);
+/* 分类标签按当前分区的可见分类重建。
+   权益服务区只显示「校内平台 / 校园信息」，学习资源区显示其余 8 类。
+   重建而不是一次性建好：同一个 #chips 容器被多个视图复用，切分区时要换掉标签。 */
+function renderChips() {
+  const cats = currentCats();
+  // 清掉旧的分类标签（保留搜索框与"只看免费"）
+  for (const c of Array.from(chips.querySelectorAll(".chip"))) c.remove();
+
+  const ft = chips.querySelector(".free-toggle");
+  const allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "chip" + (activeCategory === "全部" ? " active" : "");
+  allBtn.textContent = "全部";
+  allBtn.addEventListener("click", () => {
+    activeCategory = "全部";
+    activeSub = "";
+    for (const c of chips.querySelectorAll(".chip")) c.classList.toggle("active", c.textContent === "全部");
     renderSubchips();
     render();
   });
-  chips.insertBefore(btn, chips.querySelector(".free-toggle"));
+  chips.insertBefore(allBtn, ft);
+
+  for (const cat of cats) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "chip" + (cat === activeCategory ? " active" : "");
+    btn.textContent = cat;
+    btn.addEventListener("click", () => {
+      activeCategory = cat;
+      activeSub = "";
+      for (const c of chips.querySelectorAll(".chip")) c.classList.toggle("active", c.textContent === cat);
+      renderSubchips();
+      render();
+    });
+    chips.insertBefore(btn, ft);
+  }
 }
 
 /* ===== 搜索匹配 =====
@@ -2445,7 +2594,10 @@ function renderResultBar(terms, count) {
 function render() {
   const keyword = q.value.trim();
   const terms = splitQuery(keyword);
+  const scope = currentCats();
   const list = RESOURCES.filter((r) => {
+    // 分区过滤：每个视图只显示自己那几类资源
+    if (scope.indexOf(r.category) < 0) return false;
     if (activeCategory !== "全部" && r.category !== activeCategory) return false;
     if (activeSub && r.subcategory !== activeSub) return false;
     if (freeOnly.checked && !r.free) return false;
@@ -2740,7 +2892,9 @@ document.addEventListener("keydown", (ev) => {
 
 q.addEventListener("input", render);
 freeOnly.addEventListener("change", render);
-render();
+// 注意：这里不能直接调 render()。它依赖 RESOURCE_VIEWS / currentCats()，
+// 而那些声明在下面的导航块里 —— 在这里调用会撞上暂时性死区（TDZ）。
+// 首屏渲染由文件末尾的 applyMode() 统一负责。
 
 /* ===================================================================
    模式切换：资源库 / 学习路径 / 技能自查
@@ -2748,42 +2902,76 @@ render();
    =================================================================== */
 const modebar = document.getElementById("modebar");
 const subnav = document.getElementById("subnav");
+const viewHome = document.getElementById("view-home");
 const viewRes = document.getElementById("view-resources");
 const viewGui = document.getElementById("view-guides");
 const viewSki = document.getElementById("view-skills");
 const viewExa = document.getElementById("view-exams");
 const viewCha = document.getElementById("view-channels");
-const viewWor = document.getElementById("view-work");
 const toolbar = document.querySelector(".toolbar");
 
-/* 网站分两大部分：权益服务 / 学习资源。
-   为什么分两级而不是平铺 6 个按钮：权益和资源是两种完全不同的用途
-   （一个是"遇到问题找谁"，一个是"想学东西去哪"），平铺会让新用户
-   不知道从哪进。分两级后第一眼就看到两条主线。
-   默认进「学习资源 → 资源库」：网站的主体内容是资源，
-   权益是本次新增的并列部分。 */
+/* ===================== 站点结构 =====================
+   首页（权益服务工作宣传 + 两个入口）→ 权益服务区 / 学习资源区
+
+   分类归属按需求划分：
+   - 权益服务区：权益反馈（渠道）、校内平台、校园信息
+   - 学习资源区：资源库（其余 8 类）、学习路径、技能自查、历年试卷
+
+   为什么用 hash 路由而不是拆成多个 HTML：每个视图都有可分享链接
+   （#/rights/channels 贴到群里能直接打开对应页），切换不用重新加载，
+   而且保持单文件、离线也能用。要拆真多页随时可以，逻辑已经分好了。 */
+const PLATFORM_CATS = ["校内平台", "校园信息"];
+const LIBRARY_CATS = CATEGORIES.slice(1).filter((c) => PLATFORM_CATS.indexOf(c) < 0);
+
+// 这些视图复用同一个资源网格，各自限定可见分类
+const RESOURCE_VIEWS = { platforms: ["校内平台"], campus: ["校园信息"], library: LIBRARY_CATS };
+
 const SECTIONS = [
   {
     id: "rights", label: "权益服务",
     subs: [
-      { id: "channels", label: "反馈渠道", n: () => (CHANNELS ? CHANNELS.count : "…") },
-      { id: "work", label: "服务工作", n: null },
+      { id: "channels", label: "权益反馈", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
+      { id: "platforms", label: "校内平台", n: function () { return countIn(["校内平台"]); } },
+      { id: "campus", label: "校园信息", n: function () { return countIn(["校园信息"]); } },
     ],
   },
   {
     id: "study", label: "学习资源",
     subs: [
-      { id: "resources", label: "资源库", n: () => RESOURCES.length },
-      { id: "guides", label: "学习路径", n: () => GUIDES.length },
-      { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
-      { id: "exams", label: "历年试卷", n: () => (EXAMS ? EXAMS.total : "…") },
+      { id: "library", label: "资源库", n: function () { return countIn(LIBRARY_CATS); } },
+      { id: "guides", label: "学习路径", n: function () { return GUIDES.length; } },
+      { id: "skills", label: "技能自查", n: function () { return SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0); } },
+      { id: "exams", label: "历年试卷", n: function () { return EXAMS ? EXAMS.total : "…"; } },
     ],
   },
 ];
 
-let activeSection = "study";
-let activeView = "resources";
+function countIn(cats) {
+  return RESOURCES.filter(function (r) { return cats.indexOf(r.category) >= 0; }).length;
+}
+
+let route = { home: true, sec: "", sub: "" };
 let activeGuide = null;
+let lastResView = "";
+
+function parseRoute() {
+  var h = String(location.hash || "").replace(/^#\/?/, "");
+  if (!h) return { home: true, sec: "", sub: "" };
+  var parts = h.split("/");
+  var sec = parts[0] || "";
+  var found = null;
+  for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].id === sec) found = SECTIONS[i];
+  if (!found) return { home: true, sec: "", sub: "" };
+  var sub = parts[1] || "";
+  var ok = false;
+  for (var j = 0; j < found.subs.length; j++) if (found.subs[j].id === sub) ok = true;
+  if (!ok) sub = found.subs[0].id;
+  return { home: false, sec: sec, sub: sub };
+}
+
+function go(sec, sub) {
+  location.hash = sec ? ("#/" + sec + (sub ? "/" + sub : "")) : "#/";
+}
 
 const byTitle = new Map();
 function rebuildTitleIndex() {
@@ -2792,49 +2980,48 @@ function rebuildTitleIndex() {
 }
 
 function currentSection() {
-  return SECTIONS.find((s) => s.id === activeSection) || SECTIONS[0];
+  for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].id === route.sec) return SECTIONS[i];
+  return null;
 }
 
 function renderModebar() {
   modebar.innerHTML = "";
-  for (const s of SECTIONS) {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "mode-btn" + (activeSection === s.id ? " active" : "");
-    b.textContent = s.label;
-    b.addEventListener("click", () => {
-      if (activeSection === s.id) return;
-      activeSection = s.id;
-      // 切一级分类时，默认落到它的第一个子项
-      activeView = s.subs[0].id;
-      if (activeView !== "guides") activeGuide = null;
-      applyMode();
-    });
-    modebar.appendChild(b);
+
+  // 一级：首页 / 权益服务 / 学习资源
+  var HOME = { id: "", label: "首页" };
+  var tops = [HOME].concat(SECTIONS);
+  for (var i = 0; i < tops.length; i++) {
+    (function (s) {
+      var b = document.createElement("button");
+      b.type = "button";
+      var isActive = (s.id === "" && route.home) || (s.id !== "" && route.sec === s.id);
+      b.className = "mode-btn" + (isActive ? " active" : "");
+      b.textContent = s.label;
+      b.addEventListener("click", function () { go(s.id, ""); });
+      modebar.appendChild(b);
+    })(tops[i]);
   }
 
-  // 二级导航
+  // 二级：当前分区下的子视图
   subnav.innerHTML = "";
-  const sec = currentSection();
-  if (sec.subs.length > 1) {
+  var sec = currentSection();
+  if (sec) {
     subnav.hidden = false;
-    for (const sub of sec.subs) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "sub-btn" + (activeView === sub.id ? " active" : "");
-      b.textContent = sub.label;
-      if (sub.n) {
-        const sp = document.createElement("span");
-        sp.className = "n";
-        sp.textContent = sub.n();
-        b.appendChild(sp);
-      }
-      b.addEventListener("click", () => {
-        activeView = sub.id;
-        if (sub.id !== "guides") activeGuide = null;
-        applyMode();
-      });
-      subnav.appendChild(b);
+    for (var k = 0; k < sec.subs.length; k++) {
+      (function (sub) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "sub-btn" + (route.sub === sub.id ? " active" : "");
+        b.textContent = sub.label;
+        if (sub.n) {
+          var sp = document.createElement("span");
+          sp.className = "n";
+          sp.textContent = sub.n();
+          b.appendChild(sp);
+        }
+        b.addEventListener("click", function () { go(sec.id, sub.id); });
+        subnav.appendChild(b);
+      })(sec.subs[k]);
     }
   } else {
     subnav.hidden = true;
@@ -2842,21 +3029,84 @@ function renderModebar() {
 }
 
 function applyMode() {
-  viewRes.hidden = activeView !== "resources";
-  viewGui.hidden = activeView !== "guides";
-  viewSki.hidden = activeView !== "skills";
-  viewExa.hidden = activeView !== "exams";
-  viewCha.hidden = activeView !== "channels";
-  viewWor.hidden = activeView !== "work";
-  // 资源筛选栏只在资源库模式下有意义
-  if (toolbar) toolbar.hidden = activeView !== "resources";
+  route = parseRoute();
+
+  var isRes = !!RESOURCE_VIEWS[route.sub];
+  viewHome.hidden = !route.home;
+  viewRes.hidden = !isRes;
+  viewGui.hidden = route.sub !== "guides";
+  viewSki.hidden = route.sub !== "skills";
+  viewExa.hidden = route.sub !== "exams";
+  viewCha.hidden = route.sub !== "channels";
+  // 搜索与筛选栏只对资源类视图有意义
+  if (toolbar) toolbar.hidden = !isRes;
+
+  // 在不同资源视图之间切换时，重置分类/子分类筛选，否则会带着上一个视图的条件
+  if (isRes && lastResView !== route.sub) {
+    activeCategory = "全部";
+    activeSub = "";
+  }
+  lastResView = isRes ? route.sub : "";
+
   renderModebar();
-  if (activeView === "guides") renderGuides();
-  if (activeView === "skills") renderSkills();
-  if (activeView === "exams") renderExams();
-  if (activeView === "channels") renderRights();
-  if (activeView === "work") renderWork();
+
+  if (route.home) renderHome();
+  if (isRes) { renderChips(); render(); }
+  if (route.sub === "guides") renderGuides();
+  if (route.sub === "skills") renderSkills();
+  if (route.sub === "exams") renderExams();
+  if (route.sub === "channels") renderRights();
+
   window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+/* 当前资源视图允许出现的分类 */
+function currentCats() {
+  return RESOURCE_VIEWS[route.sub] || CATEGORIES.slice(1);
+}
+
+/* ===================== 首页 ===================== */
+function renderHome() {
+  // 宣传区三个栏目：内容还没有，先说明各自要放什么
+  var body = document.getElementById("promoBody");
+  if (body && !body.getAttribute("data-built")) {
+    body.setAttribute("data-built", "1");
+    var BLOCKS = [
+      ["📌", "工作动态", "每次推动的改进、处理的问题，按时间记录在这里。公众号发文后同步更新。"],
+      ["🔧", "典型问题处理", "同学反映较多的问题（食堂、宿舍、教室设备等），以及目前的进展和结果。"],
+      ["📮", "如何找到我们", "权益部的联系方式、值班时间、线上反馈群等。"],
+    ];
+    for (var i = 0; i < BLOCKS.length; i++) {
+      var row = document.createElement("div");
+      row.className = "promo-row";
+      var ico = document.createElement("span");
+      ico.className = "promo-ico";
+      ico.textContent = BLOCKS[i][0];
+      row.appendChild(ico);
+      var txt = document.createElement("div");
+      txt.className = "promo-txt";
+      var h4 = document.createElement("h4");
+      h4.textContent = BLOCKS[i][1];
+      txt.appendChild(h4);
+      var p2 = document.createElement("p");
+      p2.textContent = BLOCKS[i][2];
+      txt.appendChild(p2);
+      row.appendChild(txt);
+      var soon = document.createElement("span");
+      soon.className = "promo-soon";
+      soon.textContent = "内容准备中";
+      row.appendChild(soon);
+      body.appendChild(row);
+    }
+  }
+  // 入口卡片上的数字
+  setStat("homeChanN", CHANNELS ? CHANNELS.count : 6);
+  setStat("homePlatN", countIn(["校内平台"]));
+  setStat("homeCampusN", countIn(["校园信息"]));
+  setStat("homeResN", countIn(LIBRARY_CATS));
+  setStat("homeExamN", EXAMS ? EXAMS.total : 1580);
+  setStat("homeGuideN", GUIDES.length);
+  setStat("homeSkillN", SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0));
 }
 
 /* ---------- 学习路径 ---------- */
@@ -3143,8 +3393,8 @@ function applyResources(list) {
   updateStats();
   renderSubchips();
   render();
-  if (activeView === "guides") renderGuides();
-  if (activeView === "skills") viewSkills();
+  if (route.sub === "guides") renderGuides();
+  if (route.sub === "skills") viewSkills();
   return true;
 }
 
@@ -3187,7 +3437,7 @@ function loadExams() {
       EXAMS = doc;
       setStat("examStat", doc.total);
       renderModebar();
-      if (activeView === "exams") renderExams();
+      if (route.sub === "exams") renderExams();
     })
     .catch(function (e) {
       // 打印真实错误：把渲染异常和网络失败混在一起会导致"页面空白但不知为何"
@@ -3471,7 +3721,7 @@ function loadChannels() {
       CHANNELS = doc;
       setStat("chanStat", ok);
       renderModebar();
-      if (activeView === "channels") renderRights();
+      if (route.sub === "channels") renderRights();
     })
     .catch(function (e) {
       console.error("[拾学集] 权益渠道加载失败:", e);
@@ -3577,79 +3827,10 @@ function renderRights() {
   }
 }
 
-/* 权益服务工作（宣传板块）
-   内容暂时没有 —— 陈娇说明等公众号内容起来再填。
-   所以这里做成一个「结构已就位、内容待补」的页面：把将来要填的
-   几个栏目先摆出来（工作动态 / 处理过的典型问题 / 如何联系我们），
-   而不是只放一句"敬请期待"——那样陈娇看到会以为没做。 */
-function renderWork() {
-  if (viewWor.querySelector(".wk-intro")) return;   // 已渲染过
 
-  viewWor.innerHTML = "";
 
-  const intro = document.createElement("div");
-  intro.className = "rt-intro wk-intro";
-  intro.innerHTML =
-    "这里是<b>权益服务的工作记录</b>——我们处理了哪些问题、推动了哪些改动、同学能感受到什么变化。" +
-    "内容会随公众号同步更新。";
-  viewWor.appendChild(intro);
-
-  const promo = document.createElement("section");
-  promo.className = "rt-promo";
-  const ph = document.createElement("div");
-  ph.className = "rt-promo-head";
-  const ph3 = document.createElement("h3");
-  ph3.textContent = "权益服务工作";
-  ph.appendChild(ph3);
-  const php = document.createElement("p");
-  php.textContent = "我们为同学做了什么 · 最新动态";
-  ph.appendChild(php);
-  promo.appendChild(ph);
-
-  const pb = document.createElement("div");
-  pb.className = "rt-promo-body";
-
-  // 三个将来的栏目，先占位说明各自要放什么
-  const BLOCKS = [
-    ["工作动态", "每次推动的改进、处理的问题，按时间倒序记录在这里。公众号发文后同步更新。"],
-    ["典型问题处理", "同学反映较多的问题（食堂、宿舍、教室设备等），以及目前的进展和结果。"],
-    ["如何找到我们", "权益部的联系方式、值班时间、线上反馈群等。"],
-  ];
-  for (const [title, desc] of BLOCKS) {
-    const row = document.createElement("div");
-    row.className = "wk-block";
-    const h = document.createElement("h4");
-    h.textContent = title;
-    row.appendChild(h);
-    const d = document.createElement("p");
-    d.textContent = desc;
-    row.appendChild(d);
-    const tag = document.createElement("span");
-    tag.className = "wk-soon";
-    tag.textContent = "内容准备中";
-    row.appendChild(tag);
-    pb.appendChild(row);
-  }
-
-  promo.appendChild(pb);
-  viewWor.appendChild(promo);
-
-  // 引导去反馈渠道
-  const jump = document.createElement("p");
-  jump.className = "empty wk-jump";
-  jump.innerHTML = "";
-  const a = document.createElement("button");
-  a.type = "button";
-  a.className = "sub-btn";
-  a.textContent = "→ 遇到问题？去「反馈渠道」看看该找谁";
-  a.addEventListener("click", () => {
-    activeView = "channels";
-    applyMode();
-  });
-  jump.appendChild(a);
-  viewWor.appendChild(jump);
-}
-
+// 路由：hash 变化就重新渲染（支持浏览器前进/后退与直接打开深链接）
+window.addEventListener("hashchange", applyMode);
 renderModebar();
 applyMode();
 loadResources();

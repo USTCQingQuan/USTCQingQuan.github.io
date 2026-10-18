@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work',
+  'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();
@@ -35,16 +35,17 @@ const nav = makeNav(ids);
 console.log('=== 1. 切到「权益反馈」===');
 {
   nav.go('channels');
-  const btn = nav.subBtns().find((b) => b.textContent.indexOf('反馈渠道') === 0);
-  check('存在「反馈渠道」子按钮', !!btn, true);
+  const btn = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
+  check('存在「权益反馈」子按钮', !!btn, true);
   check('权益视图已显示', view.hidden, false);
-  check('资源视图已隐藏', ids['view-resources'].hidden, true);
+  check('资源视图已隐藏', ids['view-home', 'view-resources'].hidden, true);
   await new Promise((r) => setTimeout(r, 60));
-  const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('反馈渠道') === 0);
+  const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
   console.log('  按钮文案: ' + btn2.textContent);
   const okCount = real.categories.reduce((a, c) => a + c.channels.filter((x) => x.status === 'ok').length, 0);
-  check('二级按钮显示可用条数', btn2.textContent, '反馈渠道' + okCount);
-  check('一级按钮是「权益服务」', nav.modeBtns()[0].textContent, '权益服务');
+  check('二级按钮显示可用条数', btn2.textContent, '权益反馈' + okCount);
+  const activeTop = nav.modeBtns().find((b) => (b.className || '').includes('active'));
+  check('当前激活的一级按钮是「权益服务」', activeTop ? activeTop.textContent : '', '权益服务');
 }
 console.log('');
 
@@ -89,21 +90,18 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 }
 console.log('');
 
-console.log('=== 5. 「服务工作」独立成页 ===');
+console.log('=== 5. 宣传板块已移到首页 ===');
 {
-  nav.go('work');
-  const workView = ids['view-work'];
-  check('服务工作视图已显示', workView.hidden, false);
-  check('反馈渠道视图已隐藏', view.hidden, true);
-  check('页面说明存在', !!workView.querySelector('.wk-intro'), true);
-  const promo = workView.querySelector('.rt-promo');
-  check('宣传板块存在', !!promo, true);
-  const head = promo ? promo.querySelector('.rt-promo-head h3') : null;
-  check('宣传板块标题', head ? head.textContent : '', '权益服务工作');
-  const blocks = workView.querySelectorAll('.wk-block');
-  console.log('  待填栏目数: ' + blocks.length);
-  check('三个待填栏目都摆出来了', blocks.length, 3);
-  check('栏目都标「内容准备中」', workView.querySelectorAll('.wk-soon').length, 3);
+  nav.home();
+  check('首页视图已显示', ids['view-home'].hidden, false);
+  // 宣传栏目由 renderHome() 建进 #promoBody（静态 HTML 里的 .promo 外壳不在桩里）
+  const body = ids['promoBody'];
+  const rows = body ? body.children.filter((c) => (c.className || '').includes('promo-row')) : [];
+  console.log('  宣传栏目数: ' + rows.length);
+  check('三个宣传栏目都摆出来了', rows.length, 3);
+  const firstTitle = rows[0] ? rows[0].querySelector('h4').textContent : '';
+  check('第一个栏目是「工作动态」', firstTitle, '工作动态');
+  check('栏目都标「内容准备中」', body.querySelectorAll('.promo-soon').length, 3);
   nav.go('channels');
 }
 console.log('');

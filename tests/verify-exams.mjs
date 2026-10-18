@@ -11,7 +11,7 @@ const realExams = JSON.parse(await readFile('exams.json', 'utf8'));
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ], { protocol: 'https:' });   // 必须用 https：file:// 下页面会跳过 fetch，走"无法载入"分支
 const { check, done } = makeChecker();
 
@@ -31,11 +31,11 @@ const subBtns = nav.subBtns;
 
 console.log('=== 1. 切换到试卷模式 ===');
 {
+  nav.go('exams');
   const btn = nav.subBtns().find((b) => b.textContent.indexOf('历年试卷') === 0);
   check('存在「历年试卷」子按钮', !!btn, true);
-  nav.go('exams');
   check('试卷视图已显示', view.hidden, false);
-  check('资源视图已隐藏', ids['view-resources'].hidden, true);
+  check('资源视图已隐藏', ids['view-home', 'view-resources'].hidden, true);
   // exams.json 是异步 fetch，必须等它 resolve 后才会建控件
   await new Promise((r) => setTimeout(r, 60));
   console.log('  等待 exams.json 加载完成');

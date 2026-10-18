@@ -34,8 +34,26 @@ export function makeEl(tag) {
     // 否则会报 undefined —— 那是桩的能力缺失，不是页面 bug。
     get childNodes() { return this.children; },
     focus() {}, blur() {},
-    appendChild(c) { this.children.push(c); return c; },
-    insertBefore(c) { this.children.push(c); return c; },
+    appendChild(c) { c.parentNode = this; this.children.push(c); return c; },
+    // insertBefore 必须真的插到参照节点前面 —— 页面用它把分类标签
+    // 插到"只看免费"之前。桩里直接 push 的话顺序会错，测试里读位置就会误判。
+    insertBefore(c, ref) {
+      c.parentNode = this;
+      const i = ref ? this.children.indexOf(ref) : -1;
+      if (i >= 0) this.children.splice(i, 0, c);
+      else this.children.push(c);
+      return c;
+    },
+    // remove() 是标准 DOM API，真实浏览器里每个节点都有。
+    // 页面用它清掉旧的分类标签（renderChips 里），桩不提供就会报
+    // "c.remove is not a function" —— 又是桩的能力缺失。
+    remove() {
+      const p = this.parentNode;
+      if (!p) return;
+      const i = p.children.indexOf(this);
+      if (i >= 0) p.children.splice(i, 1);
+      this.parentNode = null;
+    },
     addEventListener(ev, fn) { (this.listeners[ev] = this.listeners[ev] || []).push(fn); },
     fire(ev, payload) {
       const e = Object.assign({ preventDefault() {}, stopPropagation() {}, target: this }, payload || {});
@@ -169,7 +187,20 @@ export function setupDom(idList, opts = {}) {
     },
     body,
   };
-  globalThis.location = { protocol: opts.protocol || 'file:', href: (opts.protocol || 'file:') + '///x/index.html' };
+  // location.hash 必须可读可写：页面用 hash 路由（#/rights/channels）。
+  // 写入 hash 时同步触发 hashchange 监听，模拟浏览器行为。
+  const winListeners = {};
+  globalThis.location = {
+    protocol: opts.protocol || 'file:',
+    _hash: opts.hash || '',
+    get hash() { return this._hash; },
+    set hash(v) {
+      const nv = String(v);
+      if (this._hash === nv) return;
+      this._hash = nv;
+      for (const fn of winListeners.hashchange || []) fn({ type: 'hashchange' });
+    },
+  };
   globalThis.fetch = async () => { throw new Error('file:// 不应调用 fetch'); };
 
   const store = {};
@@ -182,6 +213,13 @@ export function setupDom(idList, opts = {}) {
   globalThis.window = {
     scrollTo() {},
     open: (u, t) => { calls.opened.push({ u, t }); },
+    // 页面监听 hashchange 来做路由
+    addEventListener(ev, fn) { (winListeners[ev] = winListeners[ev] || []).push(fn); },
+    removeEventListener(ev, fn) {
+      const arr = winListeners[ev] || [];
+      const i = arr.indexOf(fn);
+      if (i >= 0) arr.splice(i, 1);
+    },
   };
   // Node 的 navigator 是只读的，必须 defineProperty
   Object.defineProperty(globalThis, 'navigator', {
@@ -225,12 +263,12 @@ export function makeNav(ids) {
   const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
   const subBtns = () => ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
   const SECTION_OF = {
-    resources: '学习资源', guides: '学习资源', skills: '学习资源', exams: '学习资源',
-    channels: '权益服务', work: '权益服务',
+    library: '学习资源', guides: '学习资源', skills: '学习资源', exams: '学习资源',
+    channels: '权益服务', platforms: '权益服务', campus: '权益服务',
   };
   const LABEL_OF = {
-    resources: '资源库', guides: '学习路径', skills: '技能自查', exams: '历年试卷',
-    channels: '反馈渠道', work: '服务工作',
+    library: '资源库', guides: '学习路径', skills: '技能自查', exams: '历年试卷',
+    channels: '权益反馈', platforms: '校内平台', campus: '校园信息',
   };
   // 切到指定子视图：先点一级（若当前不在该分类），再点二级
   function go(subId) {
@@ -242,5 +280,10 @@ export function makeNav(ids) {
     const sb = subBtns().find((x) => x.textContent.indexOf(LABEL_OF[subId]) === 0);
     if (sb) sb.fire('click');
   }
-  return { go, modeBtns, subBtns };
+  // 回首页
+  function home() {
+    const b = modeBtns().find((x) => x.textContent === '首页');
+    if (b) b.fire('click');
+  }
+  return { go, home, modeBtns, subBtns };
 }

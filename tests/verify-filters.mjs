@@ -1,29 +1,33 @@
 ﻿// 回归测试：两级筛选（大类 -> 子分类）
 // 用法: node tests/verify-filters.mjs [index.html]
-import { makeChecker, setupDom, loadScript } from './dom-stub.mjs';
+import { makeChecker, setupDom, loadScript, makeNav } from './dom-stub.mjs';
 
 const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const { byId, ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-home', 'view-exams', 'subnav', 'view-channels', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 
 eval(script);
+
+// 新结构下资源列表在学习资源区，先导航过去
+makeNav(ids).go('library');
+
 
 const chips = ids.chips.children.filter((c) => (c.className || '').includes('chip'));
 const subChips = () => ids.subchips.children.filter((c) => (c.className || '').includes('sub-chip'));
 
 console.log('=== 1. 初始状态 ===');
 check('资源总数', Number(byId.total.textContent), 170);
-check('大类标签数', chips.length, 11);
+check('大类标签数（学习资源区 8 类 + 全部）', chips.length, 9);
 check('初始子分类区隐藏', ids.subchips.hidden, true);
 
 console.log('\n=== 2. 「全部」时不应显示子分类 ===');
 chips[0].fire('click');
 check('子分类区仍隐藏', ids.subchips.hidden, true);
-check('卡片数', ids.grid.children.length, 170);
+check('卡片数（学习资源区 151 条）', ids.grid.children.length, 151);
 
 console.log('\n=== 3. 逐个大类：子分类计数之和 == 该大类条数 ===');
 for (const chip of chips.slice(1)) {

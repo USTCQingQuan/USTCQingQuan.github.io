@@ -3,18 +3,22 @@
 // 为什么需要它：
 //   高亮是把用户输入拼进 DOM 的路径 —— 最容易出的问题是【文本被当成 HTML 解析】，
 //   资源名里确实有 "C++"、"R"、">" 之类内容。必须验证高亮走的是文本节点而非 innerHTML。
-import { setupDom, loadScript } from './dom-stub.mjs';
+import { setupDom, loadScript, makeNav } from './dom-stub.mjs';
 import { makeChecker } from './dom-stub.mjs';
 
 const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-home', 'view-exams', 'subnav', 'view-channels', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 
 eval(script);
+
+// 新结构下资源列表在学习资源区，先导航过去
+makeNav(ids).go('library');
+
 
 const bar = ids.resultBar;
 const q = ids.q;
@@ -107,7 +111,7 @@ console.log('=== 7. 清除按钮：一次恢复全部 ===');
   check('有清除按钮', !!clear, true);
   if (clear) clear.fire('click');
   console.log('  清除后 → 卡片 ' + cards().length + ' 条，结果条隐藏=' + bar.hidden + '，搜索框=' + JSON.stringify(q.value));
-  check('恢复全部 170 条', cards().length, 170);
+  check('恢复学习资源区全部 151 条', cards().length, 151);
   check('结果条隐藏', bar.hidden, true);
   check('搜索框已清空', q.value, '');
   check('只看免费已取消', ids.freeOnly.checked, false);

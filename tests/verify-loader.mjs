@@ -20,7 +20,7 @@ const FAKE = {
 function runOnce(protocol) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);
@@ -34,10 +34,16 @@ function runOnce(protocol) {
     addEventListener() {},
     body: makeEl('body'),
   };
-  globalThis.location = { protocol, href: protocol + '//x.test/' };
+  // 页面用 hash 路由：设 hash 必须能触发 hashchange，否则切不到资源视图
+  const _lis = {};
+  globalThis.location = {
+    protocol, href: protocol + '//x.test/', _hash: '',
+    get hash() { return this._hash; },
+    set hash(v) { this._hash = String(v); for (const fn of _lis.hashchange || []) fn({}); },
+  };
   globalThis.localStorage = { getItem: () => null, setItem() {}, removeItem() {} };
   globalThis.confirm = () => true;
-  globalThis.window = { scrollTo() {}, open() {} };
+  globalThis.window = { scrollTo() {}, open() {}, addEventListener(e, f) { (_lis[e] = _lis[e] || []).push(f); }, removeEventListener() {} };
   Object.defineProperty(globalThis, 'navigator', { configurable: true, writable: true, value: {} });
   globalThis.fetch = async (u) => {
     fetchCalled = String(u);
@@ -45,6 +51,8 @@ function runOnce(protocol) {
   };
 
   eval(script);
+  // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
+  globalThis.location.hash = '#/study/library';
   const sync = { cards: ids.grid.children.length, total: byId.total.textContent, free: byId.freeCount.textContent };
   return new Promise((resolve) => setTimeout(() => {
     const badges = ids.grid.children.map((c) => {
@@ -61,7 +69,7 @@ console.log('  同步(内嵌兜底): ' + JSON.stringify(a.sync));
 console.log('  fetch 调用     : ' + a.fetchCalled);
 console.log('  异步(拒绝旧数据后): ' + JSON.stringify({ cards: a.async.cards, total: a.async.total, free: a.async.free }));
 check('fetch 请求了 resources.json', a.fetchCalled, 'resources.json');
-check('过期数据被拒绝，卡片保持 170', a.async.cards, 170);
+check('过期数据被拒绝，卡片保持 151（学习资源区）', a.async.cards, 151);
 check('总数未被旧数据覆盖', a.async.total, '170');
 check('免费数未被旧数据覆盖', a.async.free, '165');
 
@@ -71,7 +79,7 @@ console.log('  同步           : ' + JSON.stringify(b.sync));
 console.log('  fetch 调用     : ' + b.fetchCalled);
 console.log('  异步           : ' + JSON.stringify({ cards: b.async.cards, total: b.async.total, free: b.async.free }));
 check('fetch 未被调用', b.fetchCalled, null);
-check('卡片数保持 170', b.async.cards, 170);
+check('卡片数保持 151（学习资源区）', b.async.cards, 151);
 check('总数保持 170', b.async.total, '170');
 
 // ===== 场景 3/4：远端数据过期时的防护 =====
@@ -80,7 +88,7 @@ check('总数保持 170', b.async.total, '170');
 async function runWithPayload(protocol, payload, sentinel) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);
@@ -93,14 +101,21 @@ async function runWithPayload(protocol, payload, sentinel) {
     addEventListener() {},
     body: makeEl('body'),
   };
-  globalThis.location = { protocol, href: protocol + '//x.test/' };
+  const _lis2 = {};
+  globalThis.location = {
+    protocol, href: protocol + '//x.test/', _hash: '',
+    get hash() { return this._hash; },
+    set hash(v) { this._hash = String(v); for (const fn of _lis2.hashchange || []) fn({}); },
+  };
   globalThis.localStorage = { getItem: () => null, setItem() {}, removeItem() {} };
   globalThis.confirm = () => true;
-  globalThis.window = { scrollTo() {}, open() {} };
+  globalThis.window = { scrollTo() {}, open() {}, addEventListener(e, f) { (_lis2[e] = _lis2[e] || []).push(f); }, removeEventListener() {} };
   Object.defineProperty(globalThis, 'navigator', { configurable: true, writable: true, value: {} });
   globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => payload });
 
   eval(script);
+  // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
+  globalThis.location.hash = '#/study/library';
   await new Promise((r) => setTimeout(r, 60));
 
   // 点第 5 张卡，看详情打开的是不是它自己
@@ -131,7 +146,7 @@ console.log('\n=== 场景 3: 远端数据【过期】（只有 3 条，与页面
 const stale = await runWithPayload('https:', { resources: FAKE.resources });
 console.log('  卡片数: ' + stale.cards + '   总数显示: ' + stale.total);
 console.log('  点第 5 张卡（应为「' + stale.want + '」）→ 详情标题: 「' + stale.got + '」');
-check('过期数据被拒绝，卡片仍为 170', stale.cards, 170);
+check('过期数据被拒绝，卡片仍为 151（学习资源区）', stale.cards, 151);
 check('总数未被旧数据覆盖', stale.total, '170');
 check('点卡片仍打开它自己', stale.got, stale.want);
 
@@ -146,7 +161,9 @@ console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真
   const full = {
     resources: names.map((t, k) => ({
       title: t, url: k === 5 ? SENTINEL : 'https://x.test/',
-      description: 'd', category: '校内平台', subcategory: '选课与课程评价',
+      // 必须是【学习资源区】的分类 —— 校内平台/校园信息现在归权益服务区，
+      // 用它们构造会让学习资源区一张卡都没有（实测踩过）。
+      description: 'd', category: '课程资料', subcategory: '课程资源合集',
       icon: 'A', free: true, tags: ['t'], source: 'x.test', cost: '免费',
     })),
   };
@@ -158,7 +175,7 @@ console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真
   // 关键回归点：远端数据被采纳后，卡片标题必须仍是真实标题
   // （曾经因为内嵌数据用 name、resources.json 用 title，导致标题变成字面量 "undefined"）
   console.log('  采纳远端数据后，卡片标题: ' + JSON.stringify(ok.nameDump));
-  check('对齐数据被采纳，卡片 170', ok.cards, 170);
+  check('对齐数据被采纳，卡片 170（合成数据全属学习资源区）', ok.cards, 170);
   check('总数显示 170', ok.total, '170');
   check('采纳远端数据后卡片标题仍是真实标题（不是 undefined）',
     ok.nameDump[0] === '"' + ok.want + '"', true);

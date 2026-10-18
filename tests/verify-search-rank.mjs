@@ -1,14 +1,18 @@
 ﻿// 验证相关度排序与无结果建议
-import { setupDom, loadScript } from './dom-stub.mjs';
+import { setupDom, loadScript, makeNav } from './dom-stub.mjs';
 import { makeChecker } from './dom-stub.mjs';
 
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-home', 'view-exams', 'subnav', 'view-channels', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 eval(script);
+
+// 新结构下资源列表在学习资源区，先导航过去
+makeNav(ids).go('library');
+
 
 const q = ids.q, cards = () => ids.grid.children;
 const nameOf = (c) => (c.querySelector('.card-name') ? c.querySelector('.card-name').textContent : '');
