@@ -255,6 +255,60 @@
     .ex-row .ex-year, .ex-row .ex-type, .ex-row .ex-teacher { flex: 0 0 auto; }
   }
 
+  /* ---------- 权益反馈 ---------- */
+  /* 用途：把校内各反馈渠道汇总成一张清单，学生遇到问题知道找谁。
+     与资源卡片不同，这里强调「按场景分组」——出问题的人先想的是
+     "我这是哪类问题"，而不是"哪个部门管"。 */
+  .rt-intro {
+    padding: 18px 20px; background: #f2f8f5; border: 1px solid #d8e8e0;
+    border-radius: 14px; margin: 4px 0 22px; font-size: 14px; line-height: 1.7; color: #3d4b45;
+  }
+  .rt-intro b { color: var(--primary); }
+
+  .rt-cat { margin-bottom: 26px; }
+  .rt-cat h3 {
+    font-size: 16px; font-weight: 700; color: var(--primary);
+    display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px;
+  }
+  .rt-cat h3 .rt-cat-desc { font-size: 12.5px; font-weight: 400; color: var(--muted); }
+  .rt-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 10px; }
+  .rt-item {
+    border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px;
+    background: #fff; display: flex; flex-direction: column; gap: 6px;
+  }
+  .rt-item.todo { background: #faf9f5; border-style: dashed; }
+  .rt-item .rt-name { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .rt-item .rt-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; flex: 1; }
+  .rt-item .rt-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 2px; }
+  .rt-item .rt-go {
+    font-size: 13px; padding: 5px 14px; border-radius: 999px; text-decoration: none;
+    border: 1px solid var(--border); color: var(--primary); background: #fff; white-space: nowrap;
+  }
+  .rt-item .rt-go:hover { border-color: var(--primary); background: #f2f8f5; }
+  .rt-item .rt-wait { font-size: 12px; color: #b0b0a6; }
+  .rt-item .rt-ok { font-size: 11px; color: #17603f; }
+  .rt-item .rt-ok::before { content: "●"; font-size: 8px; margin-right: 4px; vertical-align: middle; }
+
+  /* 权益服务工作宣传（内容待补，先占位） */
+  .rt-promo {
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    margin-top: 8px; background: #fff;
+  }
+  .rt-promo-head {
+    padding: 16px 20px; background: linear-gradient(135deg, #175e4c, #1d7a60); color: #fff;
+  }
+  .rt-promo-head h3 { font-size: 16px; font-weight: 700; }
+  .rt-promo-head p { font-size: 12.5px; color: #cfe3da; margin-top: 4px; }
+  .rt-promo-body { padding: 20px; }
+  .rt-promo-empty {
+    text-align: center; padding: 26px 16px; color: var(--muted); font-size: 13.5px; line-height: 1.8;
+  }
+  .rt-promo-empty b { color: var(--primary); }
+  @media (max-width: 720px) {
+    .rt-list { grid-template-columns: 1fr; }
+    .rt-intro { padding: 15px 16px; font-size: 13.5px; }
+  }
+
   footer {
     border-top: 1px solid var(--border); padding: 30px 0 46px;
     text-align: center; color: var(--muted); font-size: 13px;
@@ -529,6 +583,7 @@
   <div id="view-guides" hidden></div>
   <div id="view-skills" hidden></div>
   <div id="view-exams" hidden></div>
+  <div id="view-rights" hidden></div>
 </main>
 
 <footer>
@@ -2649,6 +2704,7 @@ const viewRes = document.getElementById("view-resources");
 const viewGui = document.getElementById("view-guides");
 const viewSki = document.getElementById("view-skills");
 const viewExa = document.getElementById("view-exams");
+const viewRig = document.getElementById("view-rights");
 const toolbar = document.querySelector(".toolbar");
 
 const MODES = [
@@ -2656,6 +2712,7 @@ const MODES = [
   { id: "guides", label: "学习路径", n: () => GUIDES.length },
   { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
   { id: "exams", label: "历年试卷", n: () => (EXAMS ? EXAMS.total : "…") },
+  { id: "rights", label: "权益反馈", n: () => (CHANNELS ? CHANNELS.count : "…") },
 ];
 let activeMode = "resources";
 let activeGuide = null;
@@ -2691,12 +2748,14 @@ function applyMode() {
   viewGui.hidden = activeMode !== "guides";
   viewSki.hidden = activeMode !== "skills";
   viewExa.hidden = activeMode !== "exams";
+  viewRig.hidden = activeMode !== "rights";
   // 资源筛选栏只在资源库模式下有意义
   if (toolbar) toolbar.hidden = activeMode !== "resources";
   renderModebar();
   if (activeMode === "guides") renderGuides();
   if (activeMode === "skills") renderSkills();
   if (activeMode === "exams") renderExams();
+  if (activeMode === "rights") renderRights();
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
@@ -3281,6 +3340,163 @@ function paintExamRows(list, rows) {
     frag.appendChild(row);
   }
   list.appendChild(frag);
+}
+
+/* ===================================================================
+   权益反馈
+   目的：把校内各种反馈渠道汇总成一张清单，同学遇到问题知道该找谁。
+   数据在 channels.json，便于非技术人员后续维护（改标题/换链接不用碰代码）。
+   每条渠道带 status：ok（已实测可访问）/ todo（待补充链接）。
+   =================================================================== */
+let CHANNELS = null;
+let chLoaded = false;
+
+function loadChannels() {
+  if (chLoaded) return;
+  chLoaded = true;
+  if (typeof fetch !== "function" || location.protocol === "file:") {
+    renderRightsError("本地打开（file://）时无法载入渠道数据，请通过网站访问。");
+    return;
+  }
+  fetch("channels.json", { cache: "no-store" })
+    .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function (doc) {
+      // 统计"可用"条数，用于模式按钮上的数字
+      let ok = 0;
+      (doc.categories || []).forEach(function (c) {
+        (c.channels || []).forEach(function (x) { if (x.status === "ok") ok++; });
+      });
+      doc.count = ok;
+      CHANNELS = doc;
+      renderModebar();
+      if (activeMode === "rights") renderRights();
+    })
+    .catch(function (e) {
+      console.error("[拾学集] 权益渠道加载失败:", e);
+      renderRightsError("渠道数据加载失败，请刷新重试。");
+    });
+}
+
+function renderRightsError(msg) {
+  viewRig.innerHTML = "";
+  const p = document.createElement("p");
+  p.className = "empty";
+  p.textContent = msg;
+  viewRig.appendChild(p);
+}
+
+function renderRights() {
+  if (!CHANNELS) {
+    if (!chLoaded) loadChannels();
+    if (!viewRig.querySelector(".rt-loading")) {
+      viewRig.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "empty rt-loading";
+      p.textContent = "正在载入反馈渠道…";
+      viewRig.appendChild(p);
+    }
+    return;
+  }
+  if (viewRig.querySelector(".rt-intro")) return;   // 已渲染过，不重复构建
+
+  viewRig.innerHTML = "";
+
+  // 顶部说明
+  const intro = document.createElement("div");
+  intro.className = "rt-intro";
+  intro.innerHTML =
+    "遇到问题不知道找谁？这里汇总了校内的反馈渠道。<b>点「去反馈」直接跳转</b>，不用再翻官网。" +
+    "部分渠道还在收集中，已标注「待补充」。";
+  viewRig.appendChild(intro);
+
+  // 按分类渲染
+  for (const cat of CHANNELS.categories || []) {
+    const box = document.createElement("section");
+    box.className = "rt-cat";
+
+    const h = document.createElement("h3");
+    h.textContent = cat.name;
+    if (cat.desc) {
+      const d = document.createElement("span");
+      d.className = "rt-cat-desc";
+      d.textContent = cat.desc;
+      h.appendChild(d);
+    }
+    box.appendChild(h);
+
+    const list = document.createElement("div");
+    list.className = "rt-list";
+    for (const ch of cat.channels || []) {
+      const item = document.createElement("div");
+      item.className = "rt-item" + (ch.status === "ok" ? "" : " todo");
+
+      const n = document.createElement("div");
+      n.className = "rt-name";
+      n.textContent = ch.name;
+      item.appendChild(n);
+
+      const d = document.createElement("div");
+      d.className = "rt-desc";
+      d.textContent = ch.desc || "";
+      item.appendChild(d);
+
+      const foot = document.createElement("div");
+      foot.className = "rt-foot";
+
+      if (ch.status === "ok" && ch.url) {
+        const ok = document.createElement("span");
+        ok.className = "rt-ok";
+        ok.textContent = "可用";
+        if (ch.verified) ok.title = ch.verified;
+        foot.appendChild(ok);
+
+        const a = document.createElement("a");
+        a.className = "rt-go";
+        a.href = ch.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = "去反馈";
+        a.title = ch.url;
+        foot.appendChild(a);
+      } else {
+        const w = document.createElement("span");
+        w.className = "rt-wait";
+        w.textContent = "待补充链接";
+        w.title = "这个渠道还没确认官方链接，确认后会补上";
+        foot.appendChild(w);
+        const spacer = document.createElement("span");
+        foot.appendChild(spacer);
+      }
+      item.appendChild(foot);
+      list.appendChild(item);
+    }
+    box.appendChild(list);
+    viewRig.appendChild(box);
+  }
+
+  // 权益服务工作宣传（内容待补）
+  const promo = document.createElement("section");
+  promo.className = "rt-promo";
+  const ph = document.createElement("div");
+  ph.className = "rt-promo-head";
+  const ph3 = document.createElement("h3");
+  ph3.textContent = "权益服务工作";
+  ph.appendChild(ph3);
+  const php = document.createElement("p");
+  php.textContent = "我们为同学做了什么 · 最新动态";
+  ph.appendChild(php);
+  promo.appendChild(ph);
+
+  const pb = document.createElement("div");
+  pb.className = "rt-promo-body";
+  const pe = document.createElement("div");
+  pe.className = "rt-promo-empty";
+  pe.innerHTML =
+    "这一块会放我们的<b>权益服务工作内容</b>——处理过哪些问题、推动了哪些改进、有哪些进展。<br>" +
+    "内容正在整理中，公众号发出来后这里会同步更新。";
+  pb.appendChild(pe);
+  promo.appendChild(pb);
+  viewRig.appendChild(promo);
 }
 
 renderModebar();

@@ -9,7 +9,7 @@ const FILE = process.argv[2] || 'index.html';
 const { html, script } = await loadScript(FILE);
 const { byId, ids, store, calls } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-rights', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 
@@ -24,14 +24,15 @@ try {
 const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
 
 console.log('=== 1. 模式栏 ===');
-// 第 4 个按钮「历年试卷」在数据未加载时显示 …（exams.json 走 fetch，测试里没有）
-check('模式按钮数', modeBtns().length, 4);
+// 第 4、5 个按钮的数据都走 fetch（exams.json / channels.json），测试里没有 → 显示 …
+check('模式按钮数', modeBtns().length, 5);
 check('模式按钮文案', modeBtns().map((b) => b.textContent).join(' | '),
-  '资源库170 | 学习路径5 | 技能自查50 | 历年试卷…');
+  '资源库170 | 学习路径5 | 技能自查50 | 历年试卷… | 权益反馈…');
 check('默认在资源库模式', ids['view-resources'].hidden, false);
 check('指南视图默认隐藏', ids['view-guides'].hidden, true);
 check('技能视图默认隐藏', ids['view-skills'].hidden, true);
 check('试卷视图默认隐藏', ids['view-exams'].hidden, true);
+check('权益视图默认隐藏', ids['view-rights'].hidden, true);
 
 console.log('\n=== 2. 切到「学习路径」 ===');
 modeBtns()[1].fire('click');

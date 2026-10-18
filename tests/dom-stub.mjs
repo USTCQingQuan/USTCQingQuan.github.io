@@ -46,16 +46,21 @@ export function makeEl(tag) {
       for (const p of parts) {
         const isId = p.startsWith('#');
         const isCls = p.startsWith('.');
+        // 支持复合类选择器（.a.b）—— 页面用 querySelectorAll('.rt-item.todo') 这类写法。
+        // 踩过的坑：早先按单个类匹配，'.rt-item.todo' 会被当成一个叫 "rt-item.todo" 的类，
+        // 永远匹配不到，测试报"待补充条目 0 个"，看着像页面 bug，其实是桩太弱。
+        const wantCls = isCls ? p.split('.').filter(Boolean) : [];
         const want = p.replace(/^[.#]/, '');
         const next = [];
         const walk = (n) => {
           for (const c of n.children) {
-            const cls = c.className || '';
+            const cls = (c.className || '').split(/\s+/).filter(Boolean);
             const cid = (c.attrs && c.attrs.id) || '';
-            // 支持三种选择器：#id / .class / tag —— 页面里三种都在用。
-            // 踩过的坑：早先只支持后两种，导致 querySelector('#exQ') 返回 null，
-            // 页面读 .value 时抛错，表现成"视图空白"，很容易被误判为页面 bug。
-            if (isId ? cid === want : (isCls ? cls.split(/\s+/).includes(want) : c.tag === want)) next.push(c);
+            let hit;
+            if (isId) hit = cid === want;
+            else if (isCls) hit = wantCls.every((w) => cls.includes(w));
+            else hit = c.tag === want;
+            if (hit) next.push(c);
             walk(c);
           }
         };

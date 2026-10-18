@@ -1,4 +1,4 @@
-// 回归测试：历年试卷视图（用真实 exams.json 数据）
+﻿// 回归测试：历年试卷视图（用真实 exams.json 数据）
 //
 // 为什么用真实数据而不是假数据：之前吃过亏 —— 假数据的字段形状与真实不符，
 // 导致真 bug 在测试里看不见。这里直接读 exams.json，断言真实的条数与分布。
@@ -11,7 +11,7 @@ const realExams = JSON.parse(await readFile('exams.json', 'utf8'));
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-rights', 'detail-mask', 'detail-box',
 ], { protocol: 'https:' });   // 必须用 https：file:// 下页面会跳过 fetch，走"无法载入"分支
 const { check, done } = makeChecker();
 

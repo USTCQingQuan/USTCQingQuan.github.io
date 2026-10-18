@@ -1,0 +1,118 @@
+{
+  "generated": "2026-10-16",
+  "note": "权益反馈渠道。status: ok=已实测可访问(含实测日期与耗时)；todo=待补充(需要团队提供链接)",
+  "categories": [
+    {
+      "id": "teaching",
+      "name": "教学与课程",
+      "desc": "上课、考试、成绩、教学设备相关",
+      "channels": [
+        {
+          "name": "教务处 意见反馈",
+          "url": "https://www.teach.ustc.edu.cn/feedback",
+          "desc": "对课程安排、教学管理、成绩等提出意见",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（395ms）"
+        },
+        {
+          "name": "教学设备快速报修",
+          "url": "https://fix.ustc.edu.cn/",
+          "desc": "教室多媒体、投影、音响等设备故障报修",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（262ms）"
+        }
+      ]
+    },
+    {
+      "id": "life",
+      "name": "生活与后勤",
+      "desc": "宿舍、食堂、水电、校园设施",
+      "channels": [
+        {
+          "name": "后勤报修",
+          "url": "",
+          "desc": "宿舍水电、家具、公共设施维修",
+          "status": "todo",
+          "verified": ""
+        },
+        {
+          "name": "食堂意见反馈",
+          "url": "",
+          "desc": "饭菜质量、价格、卫生等",
+          "status": "todo",
+          "verified": ""
+        },
+        {
+          "name": "校园基建反馈",
+          "url": "",
+          "desc": "施工噪音、道路、绿化等校园建设相关问题",
+          "status": "todo",
+          "verified": ""
+        }
+      ]
+    },
+    {
+      "id": "study",
+      "name": "学习资源与服务",
+      "desc": "图书馆、信息化、研究生教育",
+      "channels": [
+        {
+          "name": "图书馆 留言板",
+          "url": "https://lib.ustc.edu.cn/guestbook-upgrading/",
+          "desc": "馆藏建议、开放时间、借阅问题",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（494ms）"
+        },
+        {
+          "name": "研究生教育 问题与建议",
+          "url": "https://gradschool.ustc.edu.cn/feedback",
+          "desc": "研究生培养、学位、导师相关问题",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（134ms）"
+        }
+      ]
+    },
+    {
+      "id": "appeal",
+      "name": "监督与申诉",
+      "desc": "违规违纪、作风问题",
+      "channels": [
+        {
+          "name": "纪检监察 监督举报",
+          "url": "https://jjjc.ustc.edu.cn/jdjb.htm",
+          "desc": "对违纪违规、作风问题的监督举报",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（126ms）"
+        },
+        {
+          "name": "校长信箱",
+          "url": "",
+          "desc": "直接向学校层面反映问题",
+          "status": "todo",
+          "verified": ""
+        }
+      ]
+    },
+    {
+      "id": "student",
+      "name": "学生组织",
+      "desc": "学生会、研究生会权益渠道",
+      "channels": [
+        {
+          "name": "学生会权益部",
+          "url": "",
+          "desc": "学生权益问题收集与反馈",
+          "status": "todo",
+          "verified": ""
+        },
+        {
+          "name": "研究生会",
+          "url": "http://gradunion.ustc.edu.cn/main.htm",
+          "desc": "研究生会官网",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问"
+        }
+      ]
+    }
+  ]
+}
