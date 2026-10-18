@@ -1,4 +1,4 @@
-﻿// 回归测试：历年试卷视图（用真实 exams.json 数据）
+// 回归测试：历年试卷视图（用真实 exams.json 数据）
 //
 // 为什么用真实数据而不是假数据：之前吃过亏 —— 假数据的字段形状与真实不符，
 // 导致真 bug 在测试里看不见。这里直接读 exams.json，断言真实的条数与分布。
@@ -153,6 +153,52 @@ console.log('=== 6. 排序切换 ===');
 }
 console.log('');
 
+console.log('=== 6b. 非标准年份格式的排序（回归）===');
+{
+  // 数据里有 42 条 y 字段不是纯四位数字：2025春 / 2017/2018/2019/2025 / 2001-2020 / 年份未知
+  // 旧实现用 /^\d{4}$/ 判断"有没有年份"，导致这些被当成"年份未知"排到列表最底部 ——
+  // 于是 2026 年的卷子沉到 1507/1580 位。这里锁住修复。
+  const withSeason = realExams.items.filter((x) => /^\d{4}[^\d]/.test(x.y));
+  console.log('  非标准年份条目: ' + withSeason.length);
+  check('数据里确实存在这类条目', withSeason.length > 0, true);
+
+  const list = view.querySelector('#exList');
+  const inp = view.querySelector('#exQ');
+  const selCat = view.querySelector('#exCat');
+  const selCourse = view.querySelector('#exCourse');
+  const sortBtn = view.querySelector('#exSort');
+
+  // 重置筛选，保证是「最新优先」
+  inp.value = ''; inp.fire('input');
+  selCat.value = ''; selCat.fire('change');
+  selCourse.value = ''; selCourse.fire('change');
+  if (sortBtn.textContent.indexOf('最新优先') < 0) sortBtn.fire('click');
+
+  // 取一份能代表 2026 年的卷子名，确认它出现在前 300 行里
+  const target = realExams.items.find((x) => /^2026/.test(x.y) && /^\d{4}[^\d]/.test(x.y));
+  if (target) {
+    const names = list.querySelectorAll('.ex-name').map((n) => n.textContent);
+    const idx = names.indexOf(target.n);
+    console.log('  代表条目: ' + target.n.slice(0, 36));
+    console.log('  在首屏（前 300 行）里的位置: ' + (idx >= 0 ? idx + 1 : '不在前 300'));
+    check('2026 年的卷子出现在顶部而不是沉底', idx >= 0 && idx < 300, true);
+  } else {
+    console.log('  （数据里没有 2026 带季节写法的条目，跳过）');
+  }
+
+  // 年份未知的应排到最后 —— 首屏 300 行里不该出现「年份不详」
+  // （列表只渲染前 300 行，这类条目在 1300+ 位，所以"首屏没有"就是正确表现）
+  const yearLabels = list.querySelectorAll('.ex-year').map((e) => e.textContent);
+  const unknownInTop = yearLabels.filter((t) => t.indexOf('年份不详') >= 0).length;
+  console.log('  首屏 300 行里「年份不详」出现次数: ' + unknownInTop);
+  check('年份未知的没有混进首屏', unknownInTop, 0);
+  // 顺便确认它确实存在于数据里（不是因为没有这类数据才通过）
+  const hasNoYear = realExams.items.some((x) => !x.y);
+  console.log('  数据里存在无年份条目: ' + hasNoYear);
+  check('数据里确实有无年份条目', hasNoYear, true);
+}
+
+console.log('');
 console.log('=== 7. 下载链接与镜像标记 ===');
 {
   const list = view.querySelector('#exList');

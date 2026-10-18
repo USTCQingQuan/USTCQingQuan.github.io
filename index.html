@@ -593,8 +593,12 @@
     .brand-stats b { font-size: 13.5px; }
   }
   @media (max-width: 420px) {
-    /* 超窄屏：先藏「试卷」，保住「反馈渠道」和「资源」 —— 权益是站点重心 */
+    /* 超窄屏空间紧张，按优先级依次舍弃：
+       1) 先藏「试卷」统计，保住「反馈渠道」和「资源」（权益是站点重心）
+       2) 再藏副标题 —— 下方的导航按钮已经写着「权益服务 / 学习资源」，信息不丢
+       320px 下若不藏副标题，品牌条会横向溢出约 37px（算过：61+10+108+10+120 > 272）。 */
     .brand-stats span:nth-child(3) { display: none; }
+    .brandbar p { display: none; }
   }
 
   .hero.compact { padding: 34px 0 30px; }
@@ -3362,6 +3366,14 @@ function applyMode() {
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
+/* 从试卷的 y 字段里取出年份数字。
+   数据里 y 有四种形态：「2025」「2025春」「2017/2018/2019/2025」「2001-2020」「年份未知」。
+   排序只认前四位，否则「2025春」会被当成"没有年份"，2026 年的卷子会沉到列表底部 —— 实测踩过。 */
+function examYearNum(y) {
+  var m = String(y == null ? "" : y).match(/^(\d{4})/);
+  return m ? m[1] : "";
+}
+
 /* 当前资源视图允许出现的分类 */
 function currentCats() {
   return RESOURCE_VIEWS[route.sub] || CATEGORIES.slice(1);
@@ -4497,13 +4509,16 @@ function paintExams() {
   // ⚠️ 年份缺失的必须显式排到最后 —— 早先用 (y || "0") 代替，
   //    而 "0" 小于 "2026"，导致"年份未知"在降序时跑到最前面。
   rows = rows.slice().sort(function (a, b) {
-    const aHas = !!(a.y && /^\d{4}$/.test(a.y));
-    const bHas = !!(b.y && /^\d{4}$/.test(b.y));
+    // 只取前四位年份判断「有没有年份」，这样才能容纳「2025春」「2001-2020」这些写法
+    var ay = examYearNum(a.y);
+    var by = examYearNum(b.y);
+    var aHas = !!ay;
+    var bHas = !!by;
     if (aHas !== bHas) return aHas ? -1 : 1;
-    let cmp = 0;
+    var cmp = 0;
     if (aHas) {
-      const ya = a.y + (a.s || "");
-      const yb = b.y + (b.s || "");
+      var ya = ay + (a.s || "");
+      var yb = by + (b.s || "");
       cmp = ya < yb ? -1 : (ya > yb ? 1 : 0);
     }
     if (cmp === 0) cmp = (EXAMS.courses[a.k] || "").localeCompare(EXAMS.courses[b.k] || "", "zh");
