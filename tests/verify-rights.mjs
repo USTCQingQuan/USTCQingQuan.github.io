@@ -148,6 +148,63 @@ console.log('=== 5a. 首页头条轮播 ===');
 }
 
 console.log('');
+console.log('=== 5a2. 手动滑动 ===');
+{
+  nav.home();
+  const hb = ids['heroBanner'];
+  const cur = () => {
+    const sl = hb.querySelectorAll('.hb-slide');
+    for (let i = 0; i < sl.length; i++) if ((sl[i].className || '').includes('on')) return i;
+    return -1;
+  };
+  const before = cur();
+  console.log('  起始在第 ' + (before + 1) + ' 条');
+
+  // 模拟向左滑动 120px（应翻到下一条）
+  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+  hb.fire('pointermove', { clientX: 280, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+  hb.fire('pointerup', { clientX: 280, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+  const afterL = cur();
+  console.log('  左滑后在第 ' + (afterL + 1) + ' 条');
+  check('左滑切到下一条', afterL, (before + 1) % 4);
+
+  // 模拟向右滑动 120px（应翻回上一条）
+  hb.fire('pointerdown', { clientX: 200, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
+  hb.fire('pointermove', { clientX: 320, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
+  hb.fire('pointerup', { clientX: 320, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
+  const afterR = cur();
+  console.log('  右滑后在第 ' + (afterR + 1) + ' 条');
+  check('右滑切回上一条', afterR, before);
+
+  // 滑动距离不足阈值：不切页
+  const b2 = cur();
+  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
+  hb.fire('pointermove', { clientX: 385, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
+  hb.fire('pointerup', { clientX: 385, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
+  check('轻滑不切页（阈值生效）', cur(), b2);
+  console.log('  轻滑 15px 后仍在第 ' + (cur() + 1) + ' 条');
+
+  // 拖动后应吃掉 click，避免误跳转
+  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
+  hb.fire('pointermove', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
+  hb.fire('pointerup', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
+  let prevented = false;
+  hb.fire('click', {
+    clientX: 250, clientY: 100, target: hb,
+    preventDefault() { prevented = true; },
+    stopPropagation() {},
+  });
+  check('拖完后的 click 被拦下', prevented, true);
+
+  // 圆点仍能手动切（不被拖动逻辑干扰）
+  const dots = hb.querySelectorAll('.hb-dot');
+  dots[2].fire('click', { preventDefault() {}, stopPropagation() {} });
+  check('点圆点仍能切到第 3 条', cur(), 2);
+
+  nav.home();
+}
+
+console.log('');
 console.log('=== 5. 首页图标宫格 ===');
 {
   nav.home();

@@ -411,7 +411,14 @@
   .hero-banner {
     position: relative; border-radius: 18px; overflow: hidden;
     margin-bottom: 14px; min-height: 216px;
+    /* 横向拖拽由脚本处理，纵向继续交给浏览器滚动。
+       不加这一条的话，手机上横向滑动会先触发页面滚动，轮播收不到事件。 */
+    touch-action: pan-y;
+    -webkit-user-select: none; user-select: none;
+    cursor: grab;
   }
+  .hero-banner.dragging { cursor: grabbing; }
+  .hero-banner.dragging .hb-slide { transition: none; }
   .hb-slide {
     position: absolute; inset: 0; opacity: 0; pointer-events: none;
     transition: opacity .45s ease;
@@ -3442,6 +3449,7 @@ function renderHeroBanner() {
   }
   box.appendChild(dots);
 
+  hbBindDrag();
   hbStart();
 }
 
@@ -3454,11 +3462,90 @@ function hbGo(i) {
   for (var k = 0; k < slides.length; k++) {
     var on = k === i;
     if (on) slides[k].classList.add("on"); else slides[k].classList.remove("on");
+    slides[k].style.transform = "";      // 清掉拖动时留下的位移
   }
   for (var m = 0; m < dots.length; m++) {
     if (m === i) dots[m].classList.add("on"); else dots[m].classList.remove("on");
   }
   hbStart();                                       // 手动切换后重新计时
+}
+
+/* 手动滑动：Pointer Events 一套代码同时覆盖触屏与鼠标。
+   设计要点：
+   - 拖动中暂停自动播放，松手后重新计时（否则手还没松开就被定时器切走）
+   - 拖动超过阈值才算切页，避免轻点误触
+   - 拖过之后要吃掉后续的 click，否则会触发链接跳转 */
+var hbDrag = { on: false, x0: 0, dx: 0, moved: false, id: null };
+var HB_SWIPE_MIN = 45;      // 判定为切页的最小横向位移（px）
+
+function hbSlides() {
+  var box = document.getElementById("heroBanner");
+  return box ? box.querySelectorAll(".hb-slide") : [];
+}
+
+function hbMove(dx) {
+  var cur = hbSlides()[hbIndex];
+  if (!cur) return;
+  if (dx) cur.style.transform = "translateX(" + dx + "px)";
+  else cur.style.transform = "";
+}
+
+function hbBindDrag() {
+  var box = document.getElementById("heroBanner");
+  if (!box || box.getAttribute("data-drag")) return;
+  box.setAttribute("data-drag", "1");
+
+  box.addEventListener("pointerdown", function (e) {
+    // 点圆点时不启动拖动
+    var t = e.target;
+    while (t && t !== box) {
+      if (t.className && String(t.className).indexOf("hb-dot") >= 0) return;
+      t = t.parentNode;
+    }
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    hbDrag.on = true;
+    hbDrag.x0 = e.clientX;
+    hbDrag.dx = 0;
+    hbDrag.moved = false;
+    hbDrag.id = e.pointerId;
+    hbPause();
+    box.classList.add("dragging");
+  });
+
+  box.addEventListener("pointermove", function (e) {
+    if (!hbDrag.on) return;
+    var dx = e.clientX - hbDrag.x0;
+    hbDrag.dx = dx;
+    if (Math.abs(dx) > 6) hbDrag.moved = true;
+    // 阻尼：跟手程度 0.75，拖到头会有点"拉不动"的手感
+    hbMove(dx * 0.75);
+  });
+
+  function endDrag(e) {
+    if (!hbDrag.on) return;
+    hbDrag.on = false;
+    box.classList.remove("dragging");
+    hbMove(0);
+    var dx = hbDrag.dx;
+    if (dx <= -HB_SWIPE_MIN) hbGo((hbIndex + 1) % BANNERS.length);
+    else if (dx >= HB_SWIPE_MIN) hbGo((hbIndex - 1 + BANNERS.length) % BANNERS.length);
+    else hbStart();                      // 没到阈值：仅恢复自动播放
+    hbDrag.dx = 0;
+  }
+  box.addEventListener("pointerup", endDrag);
+  box.addEventListener("pointercancel", endDrag);
+  box.addEventListener("pointerleave", function (e) {
+    if (hbDrag.on && e.pointerType === "mouse") endDrag(e);
+  });
+
+  // 拖动后手指抬起会补发 click，这里吃掉它，避免误跳转
+  box.addEventListener("click", function (e) {
+    if (hbDrag.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      hbDrag.moved = false;
+    }
+  }, true);
 }
 
 function hbStart() {
