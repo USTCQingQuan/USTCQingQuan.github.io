@@ -3653,6 +3653,15 @@ function renderWork() {
 renderModebar();
 applyMode();
 loadResources();
+
+/* 首屏之后预取试卷与渠道数据。
+   两个原因：① 首页统计要显示"历年试卷 / 反馈渠道"的数量，不预取就是一直显示"—"，
+   看起来像页面坏了；② 预取后切到这两个视图不用等。
+   用 setTimeout 延后，避免和首屏的资源列表抢带宽。 */
+setTimeout(function () {
+  loadExams();
+  loadChannels();
+}, 400);
 </script>
 </body>
 </html>
