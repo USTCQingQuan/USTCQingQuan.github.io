@@ -91,7 +91,7 @@ console.log('=== 3. 可用条目：按 kind 给出正确操作 ===');
   console.log('  链接 ' + links.length + ' 个 / 电话 ' + tels.length + ' 个 / 邮箱 ' + mails.length +
     ' 个 / QQ 复制按钮 ' + qqBtns.length + ' 个 / 公众号提示 ' + wx.length + ' 个');
   check('有网页链接渠道', links.length > 0, true);
-  check('有电话渠道', tels.length, 1);
+  check('有电话渠道（含各部门直拨电话）', tels.length, 12);
   check('有邮箱渠道', mails.length, 2);
   check('有 QQ 渠道（按钮非链接）', qqBtns.length, 2);
   check('有公众号渠道', wx.length, 1);
@@ -179,10 +179,12 @@ console.log('\n=== 5c. 宣传板块已移到首页 ===');
   check('有典型问题处理块', !!body.querySelector('.iss-block'), true);
   const rows = body.children.filter((c) => (c.className || '').includes('promo-row'));
   console.log('  占位栏目数: ' + rows.length);
-  check('只剩一个占位栏目', rows.length, 1);
-  const firstTitle = rows[0] ? rows[0].querySelector('h4').textContent : '';
-  check('剩下的占位是「如何找到我们」', firstTitle, '如何找到我们');
-  check('占位栏目标「内容准备中」', body.querySelectorAll('.promo-soon').length, 1);
+  check('首页已无占位栏目', rows.length, 0);
+  // 三个真实块：工作动态 / 典型问题处理 / 如何找到我们
+  const heads = body.querySelectorAll('.iss-block h4').map((h) => h.textContent.replace(/（.*$/, ''));
+  console.log('  内容块: ' + heads.join(' | '));
+  check('有「典型问题处理」块', heads.some((h) => h.indexOf('典型问题处理') === 0), true);
+  check('有「如何找到我们」块', heads.some((h) => h.indexOf('如何找到我们') === 0), true);
   // news.json 在测试里不会被 fetch（桩返回 404），所以走占位文案分支
   const nb = body.querySelector('.news-block');
   check('工作动态块有标题', nb.querySelector('h4').textContent.indexOf('工作动态') === 0, true);
