@@ -1,71 +1,140 @@
 {
   "generated": "2026-10-16",
-  "note": "权益反馈渠道。status: ok=已实测可访问(含实测日期与耗时)；todo=待补充(需要团队提供链接)",
+  "updated": "2026-10-16（并入《权益服务反馈渠道汇总 11.28》与团委公开文章）",
+  "note": "kind 决定展示方式：link=网页链接 / qq=QQ号（可复制）/ phone=电话（可拨号）/ email=邮箱（可发信）/ wechat=公众号（微信内搜）/ guide=操作路径说明。status: ok=已核实；todo=待补链接。",
   "categories": [
     {
-      "id": "teaching",
-      "name": "教学与课程",
-      "desc": "上课、考试、成绩、教学设备相关",
+      "id": "urgent",
+      "name": "校园报修",
+      "desc": "宿舍、教室、公共设施损坏，最快的入口",
       "channels": [
         {
-          "name": "教务处 意见反馈",
-          "url": "https://www.teach.ustc.edu.cn/feedback",
-          "desc": "对课程安排、教学管理、成绩等提出意见",
+          "name": "校园报修",
+          "kind": "link",
+          "value": "https://xsfw.ustc.edu.cn/repair-v2/pc-app/home",
+          "desc": "后勤报修系统，宿舍水电、家具、公共设施损坏都在这里报",
           "status": "ok",
-          "verified": "2026-10-16 实测可访问（395ms）"
+          "verified": "2026-10-16 实测可访问（36ms）"
+        },
+        {
+          "name": "科大基建（公众号）",
+          "kind": "wechat",
+          "value": "科大基建",
+          "desc": "微信搜「科大基建」关注，可报修、也可缴空调电费。用法见公众号「报修缴费 - 使用指南」",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总》与团委公开文章"
         },
         {
           "name": "教学设备快速报修",
-          "url": "https://fix.ustc.edu.cn/",
-          "desc": "教室多媒体、投影、音响等设备故障报修",
+          "kind": "link",
+          "value": "https://fix.ustc.edu.cn/",
+          "desc": "教室多媒体、投影、音响等教学设备故障",
           "status": "ok",
           "verified": "2026-10-16 实测可访问（262ms）"
         }
       ]
     },
     {
-      "id": "life",
-      "name": "生活与后勤",
-      "desc": "宿舍、食堂、水电、校园设施",
+      "id": "youth",
+      "name": "青权中心 · 权益反馈平台",
+      "desc": "校团委青权中心的官方线上反馈入口",
       "channels": [
         {
-          "name": "后勤报修",
-          "url": "",
-          "desc": "宿舍水电、家具、公共设施维修",
-          "status": "todo",
-          "verified": ""
+          "name": "青春科大 权益反馈",
+          "kind": "link",
+          "value": "https://young.ustc.edu.cn/login/sc-wisdom-group-learning/suggestions/Lists/suggestionsList",
+          "desc": "登录青春科大智慧团学平台，进入「沟通平台 - 权益广场 - 权益反馈」，点「新增」提交问题",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（1087ms）"
+        }
+      ]
+    },
+    {
+      "id": "student",
+      "name": "校学生会 · 研究生会",
+      "desc": "学生自己的权益渠道，反馈后有人跟进",
+      "channels": [
+        {
+          "name": "中科大权益柜（QQ）",
+          "kind": "qq",
+          "value": "2433663485",
+          "desc": "校学生会权益柜。宿舍、食堂等生活相关权益问题，也可发失物招领与寻物启事。会有骨干私信反馈解决情况",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总 11.28》"
         },
         {
-          "name": "食堂意见反馈",
-          "url": "",
-          "desc": "饭菜质量、价格、卫生等",
-          "status": "todo",
-          "verified": ""
+          "name": "研究生会权益服务 QQ 群",
+          "kind": "qq",
+          "value": "314901964",
+          "desc": "2025 级权益服务群，本学期持续开放。工作日有值班员维护，对接各机关部门解答问题",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总 11.28》"
         },
         {
-          "name": "校园基建反馈",
-          "url": "",
-          "desc": "施工噪音、道路、绿化等校园建设相关问题",
-          "status": "todo",
-          "verified": ""
+          "name": "研究生会权益服务部邮箱",
+          "kind": "email",
+          "value": "ustc_qyfwb@163.com",
+          "desc": "收提案、问题建议。一般一周内回复",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总 11.28》"
+        }
+      ]
+    },
+    {
+      "id": "park",
+      "name": "高新园区团工委",
+      "desc": "高新园区的权益反馈，长期开放",
+      "channels": [
+        {
+          "name": "高新园区团工委邮箱",
+          "kind": "email",
+          "value": "tgw@ustc.edu.cn",
+          "desc": "可反馈公共设施、住宿条件、餐饮消费、交通出行、图书馆使用、体育健身、医保医疗等问题",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总 11.28》"
+        },
+        {
+          "name": "高新园区团工委电话",
+          "kind": "phone",
+          "value": "0551-63607994",
+          "desc": "长期开放，可随时反馈校园生活中的问题与建议。高新园区青年权益服务中心会定期汇总、制作权益简报并推动落实",
+          "status": "ok",
+          "verified": "来源：《权益服务反馈渠道汇总 11.28》"
+        }
+      ]
+    },
+    {
+      "id": "teaching",
+      "name": "教学与课程",
+      "desc": "课程安排、成绩、培养方案相关",
+      "channels": [
+        {
+          "name": "教务处 意见反馈",
+          "kind": "link",
+          "value": "https://www.teach.ustc.edu.cn/feedback",
+          "desc": "对课程安排、教学管理、成绩等提出意见",
+          "status": "ok",
+          "verified": "2026-10-16 实测可访问（395ms）"
         }
       ]
     },
     {
       "id": "study",
       "name": "学习资源与服务",
-      "desc": "图书馆、信息化、研究生教育",
+      "desc": "图书馆、研究生教育",
       "channels": [
         {
           "name": "图书馆 留言板",
-          "url": "https://lib.ustc.edu.cn/guestbook-upgrading/",
+          "kind": "link",
+          "value": "https://lib.ustc.edu.cn/guestbook-upgrading/",
           "desc": "馆藏建议、开放时间、借阅问题",
           "status": "ok",
           "verified": "2026-10-16 实测可访问（494ms）"
         },
         {
           "name": "研究生教育 问题与建议",
-          "url": "https://gradschool.ustc.edu.cn/feedback",
+          "kind": "link",
+          "value": "https://gradschool.ustc.edu.cn/feedback",
           "desc": "研究生培养、学位、导师相关问题",
           "status": "ok",
           "verified": "2026-10-16 实测可访问（134ms）"
@@ -79,38 +148,42 @@
       "channels": [
         {
           "name": "纪检监察 监督举报",
-          "url": "https://jjjc.ustc.edu.cn/jdjb.htm",
+          "kind": "link",
+          "value": "https://jjjc.ustc.edu.cn/jdjb.htm",
           "desc": "对违纪违规、作风问题的监督举报",
           "status": "ok",
           "verified": "2026-10-16 实测可访问（126ms）"
-        },
-        {
-          "name": "校长信箱",
-          "url": "",
-          "desc": "直接向学校层面反映问题",
-          "status": "todo",
-          "verified": ""
         }
       ]
     },
     {
-      "id": "student",
-      "name": "学生组织",
-      "desc": "学生会、研究生会权益渠道",
+      "id": "survey",
+      "name": "专题问卷",
+      "desc": "针对具体事项的专项收集",
       "channels": [
         {
-          "name": "学生会权益部",
-          "url": "",
-          "desc": "学生权益问题收集与反馈",
+          "name": "共享雨伞专题问卷",
+          "kind": "link",
+          "value": "",
+          "desc": "共享雨伞相关意见收集",
           "status": "todo",
           "verified": ""
         },
         {
-          "name": "研究生会",
-          "url": "http://gradunion.ustc.edu.cn/main.htm",
-          "desc": "研究生会官网",
-          "status": "ok",
-          "verified": "2026-10-16 实测可访问"
+          "name": "高新园区校园建设建议问卷",
+          "kind": "link",
+          "value": "",
+          "desc": "高新园区校园建设方面的建议",
+          "status": "todo",
+          "verified": ""
+        },
+        {
+          "name": "研究生会校园建设建议问卷",
+          "kind": "link",
+          "value": "",
+          "desc": "校研究生会收集的校园建设建议",
+          "status": "todo",
+          "verified": ""
         }
       ]
     }

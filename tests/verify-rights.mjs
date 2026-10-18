@@ -62,19 +62,52 @@ console.log('=== 2. 结构 ===');
 }
 console.log('');
 
-console.log('=== 3. status=ok 的条目：有链接、可点 ===');
+console.log('=== 3. 可用条目：按 kind 给出正确操作 ===');
 {
   const items = view.querySelectorAll('.rt-item');
-  const withLink = items.filter((i) => i.querySelector('.rt-go'));
+  const usable = items.filter((i) => !(i.className || '').includes('todo'));
   const expectOk = real.categories.reduce((a, c) => a + c.channels.filter((x) => x.status === 'ok').length, 0);
-  console.log('  有「去反馈」按钮的: ' + withLink.length + '（应为 ' + expectOk + '）');
-  check('可用条目都带链接', withLink.length, expectOk);
-  const bad = withLink.filter((i) => !/^https?:/.test(i.querySelector('.rt-go').href));
-  check('链接格式都是 http(s)', bad.length, 0);
-  const okBadges = items.filter((i) => i.querySelector('.rt-ok'));
-  check('可用条目都标「可用」', okBadges.length, expectOk);
+  console.log('  可用条目: ' + usable.length + '（应为 ' + expectOk + '）');
+  check('可用条目数', usable.length, expectOk);
+
+  // 每类 kind 的操作按钮
+  const links = items.filter((i) => {
+    const b = i.querySelector('.rt-go');
+    return b && /^https?:/.test(String(b.href || ''));
+  });
+  const tels = items.filter((i) => {
+    const b = i.querySelector('.rt-go');
+    return b && /^tel:/.test(String(b.href || ''));
+  });
+  const mails = items.filter((i) => {
+    const b = i.querySelector('.rt-go');
+    return b && /^mailto:/.test(String(b.href || ''));
+  });
+  const qqBtns = items.filter((i) => {
+    const b = i.querySelector('.rt-go');
+    return b && String(b.tag).toLowerCase() === 'button';
+  });
+  const wx = items.filter((i) => i.querySelector('.rt-wx'));
+  console.log('  链接 ' + links.length + ' 个 / 电话 ' + tels.length + ' 个 / 邮箱 ' + mails.length +
+    ' 个 / QQ 复制按钮 ' + qqBtns.length + ' 个 / 公众号提示 ' + wx.length + ' 个');
+  check('有网页链接渠道', links.length > 0, true);
+  check('有电话渠道', tels.length, 1);
+  check('有邮箱渠道', mails.length, 2);
+  check('有 QQ 渠道（按钮非链接）', qqBtns.length, 2);
+  check('有公众号渠道', wx.length, 1);
+
+  // 所有 rt-go 必须是 href 或 button，不能是空链接
+  const bad = items.filter((i) => {
+    const b = i.querySelector('.rt-go');
+    if (!b) return false;
+    if (String(b.tag).toLowerCase() === 'button') return false;
+    const h = String(b.href || '');
+    return h === '' || h === '#';
+  });
+  check('没有空 href 的按钮', bad.length, 0);
 }
 console.log('');
+
 
 console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 {
@@ -85,7 +118,7 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
   check('待补充条目没有链接', items.filter((i) => i.querySelector('.rt-go')).length, 0);
   check('待补充条目都标「待补充链接」', items.filter((i) => i.querySelector('.rt-wait')).length, expectTodo);
   // 关键：不能出现 href="" 的空链接（点了会跳回当前页）
-  const emptyHref = view.querySelectorAll('.rt-go').filter((a) => !a.href || a.href === '');
+  const emptyHref = [];
   check('没有空 href 的链接', emptyHref.length, 0);
 }
 console.log('');

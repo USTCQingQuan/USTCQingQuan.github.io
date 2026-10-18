@@ -287,6 +287,13 @@
   }
   .rt-item .rt-go:hover { border-color: var(--primary); background: #f2f8f5; }
   .rt-item .rt-wait { font-size: 12px; color: #b0b0a6; }
+  .rt-item .rt-val {
+    font-size: 12px; color: #5a6b62; background: #f4f6f4; border-radius: 6px;
+    padding: 2px 7px; font-family: ui-monospace, Consolas, monospace;
+    max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rt-item .rt-flex { flex: 1; }
+  .rt-item .rt-wx { font-size: 12px; color: var(--primary-deep); }
   .rt-item .rt-ok { font-size: 11px; color: #17603f; }
   .rt-item .rt-ok::before { content: "●"; font-size: 8px; margin-right: 4px; vertical-align: middle; }
 
@@ -1031,7 +1038,23 @@ const RESOURCES = [
   { name: "MATLAB Onramp 免费入门课", url: "https://matlabacademy.mathworks.com/details/matlab-onramp/gettingstarted", description: "MathWorks 官方免费入门课程,交互式学习 MATLAB 基础语法与工作流,配套已收录的 MATLAB 文档使用。", category: "学术科研", icon: "📈", free: true, tags: ["MATLAB", "入门课程", "官方", "交互式学习"], source: "matlabacademy.mathworks.com", subcategory: "计算与仿真", cost: "免费", language_support: "zh+en", account_requirement: "未核验", student_requirement: "未核验", network_requirement: "直连可访问", hardware_requirement: "未核验", verification_status: "直连可访问（2026-10-15 实测：校园网直连（未用代理））", last_verified: "2026-10-15" },
   { name: "物理学习 Wiki", url: "https://github.com/Physics-Learning-Wiki/Physics-Learning-Wiki", description: "社区维护的物理学习 wiki,含学习方法、科研绘图工具与各方向经验整理,适合物理方向学生。", category: "课程资料", icon: "🔭", free: true, tags: ["物理", "Wiki", "学习方法", "科研工具", "开源"], source: "github.com", subcategory: "课程笔记与讲义", cost: "免费", language_support: "zh", account_requirement: "未核验", student_requirement: "未核验", network_requirement: "连接超时（校园网）", hardware_requirement: "未核验", verification_status: "可解析但连接超时，未能连通（2026-10-15 实测：校园网直连（未用代理））", last_verified: "2026-10-15", alternative_resources: "Gitee 码云（国内可直连，https://gitee.com）" },
   { name: "build-your-own-xxx", url: "https://github.com/XiaomingX/build-your-own-xxx", description: "从零实现各种经典系统的教程合集:Web 服务器、数据库、解释器等,适合进阶理解底层原理。", category: "编程开发", icon: "🔨", free: true, tags: ["编程", "进阶", "底层原理", "开源", "项目实战"], source: "github.com", subcategory: "开发教程与课程", cost: "免费", language_support: "zh+en", account_requirement: "未核验", student_requirement: "未核验", network_requirement: "连接超时（校园网）", hardware_requirement: "未核验", verification_status: "可解析但连接超时，未能连通（2026-10-15 实测：校园网直连（未用代理））", last_verified: "2026-10-15", alternative_resources: "Gitee 码云（国内可直连，https://gitee.com）" },
-  { name: "动手学大模型 Dive into LLMs", url: "https://github.com/Jerrykooo/dive-into-llms", description: "大模型编程实践教程,面向动手复现与微调,适合已有深度学习基础后进入大模型实战。", category: "AI 与数据科学", icon: "🧗", free: true, tags: ["AI", "大语言模型", "实战教程", "开源"], source: "github.com", subcategory: "AI 编程与工具", cost: "免费", language_support: "zh", account_requirement: "未核验", student_requirement: "未核验", network_requirement: "连接超时（校园网）", hardware_requirement: "未核验", verification_status: "可解析但连接超时，未能连通（2026-10-15 实测：校园网直连（未用代理））", last_verified: "2026-10-15", alternative_resources: "Gitee 码云（国内可直连，https://gitee.com）" }
+  { name: "动手学大模型 Dive into LLMs", url: "https://github.com/Jerrykooo/dive-into-llms", description: "大模型编程实践教程,面向动手复现与微调,适合已有深度学习基础后进入大模型实战。", category: "AI 与数据科学", icon: "🧗", free: true, tags: ["AI", "大语言模型", "实战教程", "开源"], source: "github.com", subcategory: "AI 编程与工具", cost: "免费", language_support: "zh", account_requirement: "未核验", student_requirement: "未核验", network_requirement: "连接超时（校园网）", hardware_requirement: "未核验", verification_status: "可解析但连接超时，未能连通（2026-10-15 实测：校园网直连（未用代理））", last_verified: "2026-10-15", alternative_resources: "Gitee 码云（国内可直连，https://gitee.com）" },
+  { name: "综合教务系统", url: "https://jw.ustc.edu.cn", description: "最常用的系统：选课、查成绩、申请转专业、报名大研大创，也能查课表、导出电子成绩证明、申请课程替代与个性化修读。统一身份认证账号密码务必保管好。", category: "校内平台", icon: "🎓", free: true, tags: ["教务", "选课", "成绩", "转专业", "课表"], source: "jw.ustc.edu.cn", subcategory: "教务与学籍", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "教务处", url: "https://teach.ustc.edu.cn", description: "学生培养相关：培养方案、开课情况、考试安排、教室使用、课程替代关系。", category: "校内平台", icon: "🏛️", free: true, tags: ["教务处", "培养方案", "考试安排"], source: "teach.ustc.edu.cn", subcategory: "教务与学籍", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "教务处 公共查询", url: "https://catalog.ustc.edu.cn", description: "按学期、学院、课程类型、教师、地点等条件筛课；也能查考试安排、教室占用（没课的可自习）、课程替代关系。", category: "校内平台", icon: "🔎", free: true, tags: ["查课", "考试安排", "教室占用", "课程替代"], source: "catalog.ustc.edu.cn", subcategory: "教务与学籍", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "学工一体化系统", url: "https://xgyth.ustc.edu.cn", description: "开学电子注册在这里办（班主任会通知）。公告栏有奖助学金评选、表彰通知、助学贷款细则；学生服务栏有各类申报与查询。", category: "校内平台", icon: "🗂️", free: true, tags: ["电子注册", "奖助学金", "助学贷款"], source: "xgyth.ustc.edu.cn", subcategory: "教务与学籍", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "迎新网", url: "https://welcome.ustc.edu.cn", description: "新生开学前一定要看：核对完善学生信息、查宿舍安排与班级、确认待缴款项，都在这里办。", category: "校内平台", icon: "🎒", free: true, tags: ["新生", "迎新", "宿舍", "报到"], source: "welcome.ustc.edu.cn", subcategory: "教务与学籍", cost: "免费", language_support: "zh", account_requirement: "需本人信息核对", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "瀚海教学网", url: "https://course.ustc.edu.cn", description: "一站式教学平台，集网络课程、教学资源、在线视频于一体，支持直播、录播与点播，覆盖课前课中课后。", category: "校内平台", icon: "📖", free: true, tags: ["教学平台", "网课", "录播"], source: "course.ustc.edu.cn", subcategory: "教学平台", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "网络教学平台 Bb", url: "https://bb.ustc.edu.cn", description: "简称 Bb 平台，主要用于线上教学和提交作业，配合 ClassIn 直播。课程关系由教务系统排课自动导入，登录后在「我的课程」里能看到本学期和历史课程。", category: "校内平台", icon: "📝", free: true, tags: ["Bb", "作业", "线上教学"], source: "bb.ustc.edu.cn", subcategory: "教学平台", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "智慧门户", url: "https://i.ustc.edu.cn/page/site/index", description: "官方「网上办事大厅」，汇总常用入口：教学平台、邮箱、信息查询、正版软件等，几乎校园事务都能从这进。若页面打不开，可直接访问 i.ustc.edu.cn。", category: "校内平台", icon: "🧭", free: true, tags: ["办事大厅", "门户", "入口汇总"], source: "i.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "科大邮箱", url: "https://mail.ustc.edu.cn", description: "以 @mail.ustc.edu.cn 结尾。发申请、交作业、联系老师、接收考试与面试通知都要用，建议常查。注意职工邮箱是 @ustc.edu.cn（少个 mail）。", category: "校内平台", icon: "✉️", free: true, tags: ["邮箱", "邮件", "通知"], source: "mail.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需先申请开通", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "网络电子注册中心", url: "https://zczx.ustc.edu.cn", description: "在线申请校园网基础服务帐户、开通或关闭网络通、重置网络通密码。", category: "校内平台", icon: "🌐", free: true, tags: ["校园网", "网络通", "注册"], source: "zczx.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "网络通", url: "http://wlt.ustc.edu.cn", description: "接有线网或 ustcnet 无线时用它登录认证。校外访问校园网需另用工具，见网络信息中心说明。", category: "校内平台", icon: "📶", free: true, tags: ["网络通", "上网认证"], source: "wlt.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需网络通账号", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "科大云盘", url: "https://pan.ustc.edu.cn", description: "科大师生专属不限速云盘，默认 1TB 空间，支持存储、同步、分享，可建群组云盘。", category: "校内平台", icon: "☁️", free: true, tags: ["云盘", "存储", "1TB"], source: "pan.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "正版软件", url: "https://zbh.ustc.edu.cn", description: "学校购买的正版软件下载与激活（序列号、激活码也在这里查）。很多科研/办公软件走这里能省下不少钱。", category: "校内平台", icon: "💿", free: true, tags: ["正版软件", "激活", "免费"], source: "zbh.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "青春科大 智慧团学", url: "https://young.ustc.edu.cn/login", description: "二课（第二课堂）平台：报名二课项目、提交作品、查学时、学时申诉。首页显示正在报名的项目，也有小程序版本。", category: "校内平台", icon: "🎯", free: true, tags: ["二课", "学时", "团委"], source: "young.ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "飞跃网站", url: "https://www.ustcflyer.com", description: "学长学姐自发搭建的出国出境暑研留学平台，覆盖各专业。很多资料需统一身份认证才能看，能减少对中介的依赖。", category: "校内平台", icon: "✈️", free: true, tags: ["出国", "暑研", "留学"], source: "ustcflyer.com", subcategory: "升学与出国", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" },
+  { name: "中国科大官方网站", url: "https://ustc.edu.cn", description: "官方信息发布窗口：重要新闻、通知公告、学校概况。查教师邮箱可从「师资队伍-教师主页」入手。", category: "校内平台", icon: "🏫", free: true, tags: ["官网", "新闻", "通知"], source: "ustc.edu.cn", subcategory: "校园服务", cost: "免费", language_support: "zh", account_requirement: "需统一身份认证", student_requirement: "在校学生", network_requirement: "国内直连", hardware_requirement: "浏览器即可", verification_status: "已实测可访问", last_verified: "2026-10-16" }
 ];
 
 const GUIDES = [
@@ -4051,8 +4074,8 @@ function renderRights() {
   const intro = document.createElement("div");
   intro.className = "rt-intro";
   intro.innerHTML =
-    "遇到问题不知道找谁？这里汇总了校内的反馈渠道。<b>点「去反馈」直接跳转</b>，不用再翻官网。" +
-    "部分渠道还在收集中，已标注「待补充」。";
+    "遇到问题不知道找谁？这里汇总了校内的反馈渠道 —— " +
+    "<b>网页、QQ 群、电话、邮箱、公众号都有</b>，按你的习惯选一个。部分渠道还在收集中，已标注「待补充」。";
   viewCha.appendChild(intro);
 
   // 按分类渲染
@@ -4089,29 +4112,76 @@ function renderRights() {
       const foot = document.createElement("div");
       foot.className = "rt-foot";
 
-      if (ch.status === "ok" && ch.url) {
-        const ok = document.createElement("span");
-        ok.className = "rt-ok";
-        ok.textContent = "可用";
-        if (ch.verified) ok.title = ch.verified;
-        foot.appendChild(ok);
+      // 渠道有多种形态：网页链接 / QQ 号 / 电话 / 邮箱 / 公众号 / 操作说明。
+      // 统一用 kind 区分，因为"点一下就跳转"只对 link 成立，QQ 号要能复制、
+      // 电话要能拨号、公众号只能告诉同学去微信搜。
+      var kind = ch.kind || "link";
+      var val = ch.value || ch.url || "";
+      var usable = ch.status === "ok" && (kind === "guide" || val);
 
-        const a = document.createElement("a");
-        a.className = "rt-go";
-        a.href = ch.url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = "去反馈";
-        a.title = ch.url;
-        foot.appendChild(a);
+      if (usable) {
+        if (val && kind !== "guide") {
+          var v = document.createElement("span");
+          v.className = "rt-val";
+          v.textContent = val;
+          v.title = val;
+          foot.appendChild(v);
+        }
+        var sp0 = document.createElement("span");
+        sp0.className = "rt-flex";
+        foot.appendChild(sp0);
+
+        if (kind === "link") {
+          var a = document.createElement("a");
+          a.className = "rt-go";
+          a.href = val;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = "去反馈";
+          a.title = val;
+          foot.appendChild(a);
+        } else if (kind === "phone") {
+          var tel = document.createElement("a");
+          tel.className = "rt-go";
+          tel.href = "tel:" + String(val).replace(/[^0-9+]/g, "");
+          tel.textContent = "拨号";
+          foot.appendChild(tel);
+        } else if (kind === "email") {
+          var ml = document.createElement("a");
+          ml.className = "rt-go";
+          ml.href = "mailto:" + val;
+          ml.textContent = "发邮件";
+          foot.appendChild(ml);
+        } else if (kind === "qq") {
+          var cp = document.createElement("button");
+          cp.type = "button";
+          cp.className = "rt-go";
+          cp.textContent = "复制 QQ 号";
+          cp.addEventListener("click", function (ev) {
+            ev.preventDefault();
+            var txt = String(val);
+            if (typeof navigator !== "undefined" && navigator.clipboard) {
+              navigator.clipboard.writeText(txt).then(function () { cp.textContent = "已复制"; });
+            } else {
+              cp.textContent = "已复制";
+            }
+          });
+          foot.appendChild(cp);
+        } else if (kind === "wechat") {
+          var wx = document.createElement("span");
+          wx.className = "rt-wx";
+          wx.textContent = "微信里搜索关注";
+          foot.appendChild(wx);
+        }
       } else {
-        const w = document.createElement("span");
+        var w = document.createElement("span");
         w.className = "rt-wait";
-        w.textContent = "待补充链接";
-        w.title = "这个渠道还没确认官方链接，确认后会补上";
+        w.textContent = val ? "暂不可用" : "待补充链接";
+        w.title = "确认后会补上";
         foot.appendChild(w);
-        const spacer = document.createElement("span");
-        foot.appendChild(spacer);
+        var sp1 = document.createElement("span");
+        sp1.className = "rt-flex";
+        foot.appendChild(sp1);
       }
       item.appendChild(foot);
       list.appendChild(item);

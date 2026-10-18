@@ -70,8 +70,8 @@ console.log('  fetch 调用     : ' + a.fetchCalled);
 console.log('  异步(拒绝旧数据后): ' + JSON.stringify({ cards: a.async.cards, total: a.async.total, free: a.async.free }));
 check('fetch 请求了 resources.json', a.fetchCalled, 'resources.json');
 check('过期数据被拒绝，卡片保持 151（学习资源区）', a.async.cards, 151);
-check('总数未被旧数据覆盖', a.async.total, '170');
-check('免费数未被旧数据覆盖', a.async.free, '165');
+check('总数未被旧数据覆盖', a.async.total, '186');
+check('免费数未被旧数据覆盖', a.async.free, '181');
 
 console.log('\n=== 场景 2: file://（不应调用 fetch，保持内嵌数据）===');
 const b = await runOnce('file:');
@@ -80,7 +80,7 @@ console.log('  fetch 调用     : ' + b.fetchCalled);
 console.log('  异步           : ' + JSON.stringify({ cards: b.async.cards, total: b.async.total, free: b.async.free }));
 check('fetch 未被调用', b.fetchCalled, null);
 check('卡片数保持 151（学习资源区）', b.async.cards, 151);
-check('总数保持 170', b.async.total, '170');
+check('总数保持 186', b.async.total, '186');
 
 // ===== 场景 3/4：远端数据过期时的防护 =====
 // 背景：resources.json 有 10 分钟 CDN 缓存。如果浏览器拿到旧版本，
@@ -147,7 +147,7 @@ const stale = await runWithPayload('https:', { resources: FAKE.resources });
 console.log('  卡片数: ' + stale.cards + '   总数显示: ' + stale.total);
 console.log('  点第 5 张卡（应为「' + stale.want + '」）→ 详情标题: 「' + stale.got + '」');
 check('过期数据被拒绝，卡片仍为 151（学习资源区）', stale.cards, 151);
-check('总数未被旧数据覆盖', stale.total, '170');
+check('总数未被旧数据覆盖', stale.total, '186');
 check('点卡片仍打开它自己', stale.got, stale.want);
 
 console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真的覆盖内嵌数据）===');
@@ -175,8 +175,8 @@ console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真
   // 关键回归点：远端数据被采纳后，卡片标题必须仍是真实标题
   // （曾经因为内嵌数据用 name、resources.json 用 title，导致标题变成字面量 "undefined"）
   console.log('  采纳远端数据后，卡片标题: ' + JSON.stringify(ok.nameDump));
-  check('对齐数据被采纳，卡片 170（合成数据全属学习资源区）', ok.cards, 170);
-  check('总数显示 170', ok.total, '170');
+  check('对齐数据被采纳，卡片 186（合成数据全属学习资源区）', ok.cards, 186);
+  check('总数显示 186', ok.total, '186');
   check('采纳远端数据后卡片标题仍是真实标题（不是 undefined）',
     ok.nameDump[0] === '"' + ok.want + '"', true);
   check('点卡片打开的详情标题 = 卡片自己的标题', ok.got, ok.want);

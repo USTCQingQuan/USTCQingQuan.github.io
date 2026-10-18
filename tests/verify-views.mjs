@@ -100,8 +100,8 @@ check('首个分组计数变为 1 / 7', ids['view-skills'].querySelectorAll('.g-
 console.log('\n=== 7. 切回资源库，原功能仍在 ===');
 nav.go('library');
 check('资源视图已显示', ids['view-resources'].hidden, false);
-check('资源总数（全部 170 条仍在内存里）', byId.total.textContent, 170);
-// 学习资源区只显示其余 8 类：170 - 校内平台(14) - 校园信息(5) = 151
+check('资源总数（全部 186 条仍在内存里）', byId.total.textContent, 186);
+// 学习资源区只显示其余 8 类：186 - 校内平台(30) - 校园信息(5) = 151
 check('学习资源区卡片数', ids.grid.children.length, 151);
 // 分类标签：全部 + 8 类（校内平台/校园信息归到权益服务区了）
 check('学习资源区分类 chip 数', ids.chips.children.filter((c) => (c.className || '').includes('chip')).length, 9);

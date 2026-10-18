@@ -20,7 +20,7 @@ const chips = ids.chips.children.filter((c) => (c.className || '').includes('chi
 const subChips = () => ids.subchips.children.filter((c) => (c.className || '').includes('sub-chip'));
 
 console.log('=== 1. 初始状态 ===');
-check('资源总数', Number(byId.total.textContent), 170);
+check('资源总数', Number(byId.total.textContent), 186);
 check('大类标签数（学习资源区 8 类 + 全部）', chips.length, 9);
 check('初始子分类区隐藏', ids.subchips.hidden, true);
 

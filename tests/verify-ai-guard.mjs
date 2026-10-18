@@ -1,4 +1,4 @@
-// 回归测试：云函数的核心防护逻辑（不需要 API Key）
+﻿// 回归测试：云函数的核心防护逻辑（不需要 API Key）
 //
 // 为什么这个测试重要：
 //   AI 检索最大的风险是【编造资源】—— 模型可能一本正经地推荐一个根本不存在的网站。
@@ -19,7 +19,7 @@ console.log('=== 前置检查 ===');
 console.log('  提示词长度: ' + assets.promptLen + ' 字');
 console.log('  资源库条数: ' + assets.titles);
 check('提示词已加载', assets.promptLen > 10000, true);
-check('资源库有 170 条', assets.titles, 170);
+check('资源库有 186 条', assets.titles, 186);
 console.log('');
 
 console.log('=== 1. 正常返回（AI 推荐真实存在的资源）===');
