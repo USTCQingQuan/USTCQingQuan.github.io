@@ -8,6 +8,7 @@ import { existsSync } from 'node:fs';
 
 const SUITES = [
   { name: '数据闸门 · resources', cmd: ['tools/check-resources.mjs', 'resources.json'] },
+  { name: '数据闸门 · 文件编码与同步', cmd: ['tests/check-encoding.mjs'] },
   { name: '数据闸门 · guides/skills', cmd: ['tools/check-guides.mjs', 'guides.json', 'skills.json', 'resources.json'] },
   { name: '回归 · 视图与详情页', cmd: ['tests/verify-views.mjs', 'index.html'] },
   { name: '回归 · 两级筛选', cmd: ['tests/verify-filters.mjs', 'index.html'] },
