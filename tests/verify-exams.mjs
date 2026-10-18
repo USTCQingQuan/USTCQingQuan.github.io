@@ -3,15 +3,15 @@
 // 为什么用真实数据而不是假数据：之前吃过亏 —— 假数据的字段形状与真实不符，
 // 导致真 bug 在测试里看不见。这里直接读 exams.json，断言真实的条数与分布。
 import { readFile } from 'node:fs/promises';
-import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
+import { setupDom, loadScript, makeChecker, makeNav } from './dom-stub.mjs';
 
 const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const realExams = JSON.parse(await readFile('exams.json', 'utf8'));
 
 const { ids } = setupDom([
-  'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-rights', 'detail-mask', 'detail-box',
+  'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ], { protocol: 'https:' });   // 必须用 https：file:// 下页面会跳过 fetch，走"无法载入"分支
 const { check, done } = makeChecker();
 
@@ -26,20 +26,21 @@ globalThis.fetch = async (u) => {
 eval(script);
 
 const view = ids['view-exams'];
-const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
+const nav = makeNav(ids);
+const subBtns = nav.subBtns;
 
 console.log('=== 1. 切换到试卷模式 ===');
 {
-  const btn = modeBtns().find((b) => b.textContent.indexOf('历年试卷') === 0);
-  check('存在「历年试卷」按钮', !!btn, true);
-  if (btn) btn.fire('click');
+  const btn = nav.subBtns().find((b) => b.textContent.indexOf('历年试卷') === 0);
+  check('存在「历年试卷」子按钮', !!btn, true);
+  nav.go('exams');
   check('试卷视图已显示', view.hidden, false);
   check('资源视图已隐藏', ids['view-resources'].hidden, true);
   // exams.json 是异步 fetch，必须等它 resolve 后才会建控件
   await new Promise((r) => setTimeout(r, 60));
   console.log('  等待 exams.json 加载完成');
   check('数据已载入（按钮计数不再是 …）',
-    modeBtns().find((b) => b.textContent.indexOf('历年试卷') === 0).textContent.indexOf('1580') > 0, true);
+    nav.subBtns().find((b) => b.textContent.indexOf('历年试卷') === 0).textContent.indexOf('1580') > 0, true);
 }
 console.log('');
 
@@ -173,12 +174,8 @@ console.log('');
 
 console.log('=== 8. 切走再切回不报错 ===');
 {
-  const btnRes = modeBtns().find((b) => b.textContent.indexOf('资源库') === 0);
-  const btnEx = modeBtns().find((b) => b.textContent.indexOf('历年试卷') === 0);
-  btnRes.fire('click');
-  btnEx.fire('click');
-  btnRes.fire('click');
-  btnEx.fire('click');
+  nav.go('resources'); nav.go('exams');
+  nav.go('resources'); nav.go('exams');
   const rows = view.querySelectorAll('.ex-row').length;
   console.log('  反复切换后行数: ' + rows);
   check('反复切换后仍正常渲染', rows > 0, true);
@@ -187,8 +184,8 @@ console.log('=== 8. 切走再切回不报错 ===');
   inp.value = '量子力学';
   inp.fire('input');
   const n1 = view.querySelectorAll('.ex-row').length;
-  btnRes.fire('click');
-  btnEx.fire('click');
+  nav.go('resources');
+  nav.go('exams');
   const n2 = view.querySelectorAll('.ex-row').length;
   console.log('  切走再切回，结果数 ' + n1 + ' → ' + n2);
   check('切回后保留搜索条件', n1, n2);

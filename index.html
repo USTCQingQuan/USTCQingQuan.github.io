@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="拾学集:为中科大同学精选的网络学习资源,覆盖 AI 与数据科学、课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考。" />
-<title>拾学集 · 中科大学习资源</title>
+<meta name="description" content="拾学集:中科大同学的一站式站内资源站。学习资源部分精选 170 个网络资源与 1580 份历年试卷;权益服务部分汇总校内各反馈渠道,遇到问题知道找谁。" />
+<title>拾学集 · 中科大学生资源与权益服务</title>
 <style>
   :root {
     --bg: #f7f4ec;
@@ -67,6 +67,7 @@
     font-size: clamp(38px, 6vw, 60px); font-weight: 800; letter-spacing: 4px; line-height: 1.15;
   }
   .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p.sub b { color: #fff; font-weight: 600; }
   .hero p.sub {
     margin-top: 16px; max-width: 560px; font-size: 16px; color: #c6d8cf;
   }
@@ -304,6 +305,26 @@
     text-align: center; padding: 26px 16px; color: var(--muted); font-size: 13.5px; line-height: 1.8;
   }
   .rt-promo-empty b { color: var(--primary); }
+
+  /* 「服务工作」页里的待填栏目 */
+  .wk-block {
+    border: 1px dashed var(--border); border-radius: 12px;
+    padding: 14px 16px 14px; margin-bottom: 10px; background: #faf9f5;
+    position: relative;
+  }
+  .wk-block h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+  .wk-block p { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .wk-block .wk-soon {
+    position: absolute; top: 13px; right: 14px;
+    font-size: 11px; color: #9a8f7d; background: #f0ece2;
+    padding: 2px 9px; border-radius: 999px;
+  }
+  .wk-jump { text-align: center; margin-top: 18px; }
+  .wk-jump .sub-btn { border: 1px solid var(--border); background: #fff; padding: 8px 18px; font-size: 13.5px; }
+  .wk-jump .sub-btn:hover { border-color: var(--primary); background: #f2f8f5; }
+  @media (max-width: 640px) {
+    .wk-block .wk-soon { position: static; display: inline-block; margin-top: 8px; }
+  }
   @media (max-width: 720px) {
     .rt-list { grid-template-columns: 1fr; }
     .rt-intro { padding: 15px 16px; font-size: 13.5px; }
@@ -340,9 +361,8 @@
     background: rgba(247, 244, 236, 0.94);
     backdrop-filter: blur(8px);
   }
-  /* ⚠️ 必须换行：4 个模式按钮在窄屏（<420px）下总宽超过视口，
-     不换行会把整个页面撑宽，导致顶部文字、分类标签也跟着被切掉。
-     这是实测发现的：390px 视口下页面出现横向滚动，右侧全部被裁。 */
+  /* ⚠️ 必须换行：一级按钮在窄屏（<420px）下总宽超过视口，
+     不换行会把整个页面撑宽，导致顶部文字、分类标签也跟着被切掉。 */
   .modebar .wrap {
     display: flex; flex-wrap: wrap; gap: 8px;
     padding-top: 10px; padding-bottom: 10px;
@@ -355,6 +375,24 @@
   .mode-btn:hover { color: var(--primary); border-color: var(--primary); }
   .mode-btn.active { background: var(--primary-deep); border-color: var(--primary-deep); color: #fff; }
   .mode-btn .n { font-weight: 400; opacity: .75; margin-left: 4px; }
+
+  /* 二级导航：一级（权益服务 / 学习资源）下面的子项。
+     视觉上比一级轻，避免两层按钮抢视线；用左侧竖线表示从属关系。 */
+  .subnav {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 0 10px 2px; margin-top: -2px;
+  }
+  .subnav[hidden] { display: none; }
+  .sub-btn {
+    padding: 5px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    border: 1px solid transparent; background: transparent; color: var(--muted);
+    cursor: pointer; transition: all .16s; font-family: inherit;
+  }
+  .sub-btn:hover { color: var(--primary); background: #eef5f1; }
+  .sub-btn.active {
+    background: #e2f0e8; color: var(--primary-deep); border-color: #cbe4d8;
+  }
+  .sub-btn .n { font-weight: 400; opacity: .7; margin-left: 4px; }
 
   /* ===== 学习路径 ===== */
   .guide-card {
@@ -547,14 +585,14 @@
 <section class="hero">
   <div class="wrap">
     <div>
-      <span class="hero-badge">USTC LEARNING HUB</span>
+      <span class="hero-badge">USTC LEARNING HUB · 权益服务</span>
       <h1>拾<em>学</em>集</h1>
-      <p class="sub">为中科大同学精选的网络学习资源——AI 与数据科学、课程资料、视频课程、编程开发、学术科研、校内平台、效率工具、竞赛信息、校园信息与英语备考,一站式直达。</p>
+      <p class="sub">中科大同学的一站式站内资源站。<b>学习资源</b>——精选网络资源、历年试卷、学习路径; <b>权益服务</b>——校内反馈渠道汇总,遇到问题知道找谁。</p>
     </div>
     <div class="hero-stats">
       <div class="stat"><b id="total"></b><span>精选资源</span></div>
-      <div class="stat"><b id="catCount"></b><span>个分类</span></div>
-      <div class="stat"><b id="freeCount"></b><span>免费</span></div>
+      <div class="stat"><b id="examStat">—</b><span>历年试卷</span></div>
+      <div class="stat"><b id="chanStat">—</b><span>反馈渠道</span></div>
     </div>
   </div>
 </section>
@@ -572,6 +610,7 @@
 
 <div class="modebar">
   <div class="wrap" id="modebar"></div>
+  <div class="wrap subnav" id="subnav" hidden></div>
 </div>
 
 <main class="wrap">
@@ -583,7 +622,8 @@
   <div id="view-guides" hidden></div>
   <div id="view-skills" hidden></div>
   <div id="view-exams" hidden></div>
-  <div id="view-rights" hidden></div>
+  <div id="view-channels" hidden></div>
+  <div id="view-work" hidden></div>
 </main>
 
 <footer>
@@ -2004,10 +2044,17 @@ const chips = document.getElementById("chips");
 
 // 顶部统计数字统一由这里更新：分类数从 CATEGORIES 现算，
 // 避免"新增分类后 Hero 区还写着旧数字"（原先硬编码为 9）。
+/* 首页统计数字。
+   注意：这些元素可能不存在（例如测试桩只提供部分元素，或以后调整首页），
+   所以统一走 setStat() 做空值保护 —— 直接 getElementById().textContent 会抛错。 */
+function setStat(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
 function updateStats() {
-  document.getElementById("total").textContent = RESOURCES.length;
-  document.getElementById("catCount").textContent = CATEGORIES.length - 1; // 减去"全部"
-  document.getElementById("freeCount").textContent = RESOURCES.filter((r) => r.free).length;
+  setStat("total", RESOURCES.length);
+  setStat("catCount", CATEGORIES.length - 1);   // 减去"全部"
+  setStat("freeCount", RESOURCES.filter((r) => r.free).length);
 }
 
 updateStats();
@@ -2700,21 +2747,42 @@ render();
    设计取舍：用同一份数据的不同"视图"，不做多页面跳转，保持单文件可离线。
    =================================================================== */
 const modebar = document.getElementById("modebar");
+const subnav = document.getElementById("subnav");
 const viewRes = document.getElementById("view-resources");
 const viewGui = document.getElementById("view-guides");
 const viewSki = document.getElementById("view-skills");
 const viewExa = document.getElementById("view-exams");
-const viewRig = document.getElementById("view-rights");
+const viewCha = document.getElementById("view-channels");
+const viewWor = document.getElementById("view-work");
 const toolbar = document.querySelector(".toolbar");
 
-const MODES = [
-  { id: "resources", label: "资源库", n: () => RESOURCES.length },
-  { id: "guides", label: "学习路径", n: () => GUIDES.length },
-  { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
-  { id: "exams", label: "历年试卷", n: () => (EXAMS ? EXAMS.total : "…") },
-  { id: "rights", label: "权益反馈", n: () => (CHANNELS ? CHANNELS.count : "…") },
+/* 网站分两大部分：权益服务 / 学习资源。
+   为什么分两级而不是平铺 6 个按钮：权益和资源是两种完全不同的用途
+   （一个是"遇到问题找谁"，一个是"想学东西去哪"），平铺会让新用户
+   不知道从哪进。分两级后第一眼就看到两条主线。
+   默认进「学习资源 → 资源库」：网站的主体内容是资源，
+   权益是本次新增的并列部分。 */
+const SECTIONS = [
+  {
+    id: "rights", label: "权益服务",
+    subs: [
+      { id: "channels", label: "反馈渠道", n: () => (CHANNELS ? CHANNELS.count : "…") },
+      { id: "work", label: "服务工作", n: null },
+    ],
+  },
+  {
+    id: "study", label: "学习资源",
+    subs: [
+      { id: "resources", label: "资源库", n: () => RESOURCES.length },
+      { id: "guides", label: "学习路径", n: () => GUIDES.length },
+      { id: "skills", label: "技能自查", n: () => SKILLS.reduce((s, g) => s + g.items.length, 0) },
+      { id: "exams", label: "历年试卷", n: () => (EXAMS ? EXAMS.total : "…") },
+    ],
+  },
 ];
-let activeMode = "resources";
+
+let activeSection = "study";
+let activeView = "resources";
 let activeGuide = null;
 
 const byTitle = new Map();
@@ -2723,39 +2791,71 @@ function rebuildTitleIndex() {
   for (const r of RESOURCES) byTitle.set(r.name, r);
 }
 
+function currentSection() {
+  return SECTIONS.find((s) => s.id === activeSection) || SECTIONS[0];
+}
+
 function renderModebar() {
   modebar.innerHTML = "";
-  for (const m of MODES) {
+  for (const s of SECTIONS) {
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "mode-btn" + (activeMode === m.id ? " active" : "");
-    b.textContent = m.label;
-    const sp = document.createElement("span");
-    sp.className = "n";
-    sp.textContent = m.n();
-    b.appendChild(sp);
+    b.className = "mode-btn" + (activeSection === s.id ? " active" : "");
+    b.textContent = s.label;
     b.addEventListener("click", () => {
-      activeMode = m.id;
-      if (m.id !== "guides") activeGuide = null;
+      if (activeSection === s.id) return;
+      activeSection = s.id;
+      // 切一级分类时，默认落到它的第一个子项
+      activeView = s.subs[0].id;
+      if (activeView !== "guides") activeGuide = null;
       applyMode();
     });
     modebar.appendChild(b);
   }
+
+  // 二级导航
+  subnav.innerHTML = "";
+  const sec = currentSection();
+  if (sec.subs.length > 1) {
+    subnav.hidden = false;
+    for (const sub of sec.subs) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "sub-btn" + (activeView === sub.id ? " active" : "");
+      b.textContent = sub.label;
+      if (sub.n) {
+        const sp = document.createElement("span");
+        sp.className = "n";
+        sp.textContent = sub.n();
+        b.appendChild(sp);
+      }
+      b.addEventListener("click", () => {
+        activeView = sub.id;
+        if (sub.id !== "guides") activeGuide = null;
+        applyMode();
+      });
+      subnav.appendChild(b);
+    }
+  } else {
+    subnav.hidden = true;
+  }
 }
 
 function applyMode() {
-  viewRes.hidden = activeMode !== "resources";
-  viewGui.hidden = activeMode !== "guides";
-  viewSki.hidden = activeMode !== "skills";
-  viewExa.hidden = activeMode !== "exams";
-  viewRig.hidden = activeMode !== "rights";
+  viewRes.hidden = activeView !== "resources";
+  viewGui.hidden = activeView !== "guides";
+  viewSki.hidden = activeView !== "skills";
+  viewExa.hidden = activeView !== "exams";
+  viewCha.hidden = activeView !== "channels";
+  viewWor.hidden = activeView !== "work";
   // 资源筛选栏只在资源库模式下有意义
-  if (toolbar) toolbar.hidden = activeMode !== "resources";
+  if (toolbar) toolbar.hidden = activeView !== "resources";
   renderModebar();
-  if (activeMode === "guides") renderGuides();
-  if (activeMode === "skills") renderSkills();
-  if (activeMode === "exams") renderExams();
-  if (activeMode === "rights") renderRights();
+  if (activeView === "guides") renderGuides();
+  if (activeView === "skills") renderSkills();
+  if (activeView === "exams") renderExams();
+  if (activeView === "channels") renderRights();
+  if (activeView === "work") renderWork();
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
@@ -3043,8 +3143,8 @@ function applyResources(list) {
   updateStats();
   renderSubchips();
   render();
-  if (activeMode === "guides") renderGuides();
-  if (activeMode === "skills") viewSkills();
+  if (activeView === "guides") renderGuides();
+  if (activeView === "skills") viewSkills();
   return true;
 }
 
@@ -3085,8 +3185,9 @@ function loadExams() {
     .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
     .then(function (doc) {
       EXAMS = doc;
+      setStat("examStat", doc.total);
       renderModebar();
-      if (activeMode === "exams") renderExams();
+      if (activeView === "exams") renderExams();
     })
     .catch(function (e) {
       // 打印真实错误：把渲染异常和网络失败混在一起会导致"页面空白但不知为何"
@@ -3368,8 +3469,9 @@ function loadChannels() {
       });
       doc.count = ok;
       CHANNELS = doc;
+      setStat("chanStat", ok);
       renderModebar();
-      if (activeMode === "rights") renderRights();
+      if (activeView === "channels") renderRights();
     })
     .catch(function (e) {
       console.error("[拾学集] 权益渠道加载失败:", e);
@@ -3378,28 +3480,28 @@ function loadChannels() {
 }
 
 function renderRightsError(msg) {
-  viewRig.innerHTML = "";
+  viewCha.innerHTML = "";
   const p = document.createElement("p");
   p.className = "empty";
   p.textContent = msg;
-  viewRig.appendChild(p);
+  viewCha.appendChild(p);
 }
 
 function renderRights() {
   if (!CHANNELS) {
     if (!chLoaded) loadChannels();
-    if (!viewRig.querySelector(".rt-loading")) {
-      viewRig.innerHTML = "";
+    if (!viewCha.querySelector(".rt-loading")) {
+      viewCha.innerHTML = "";
       const p = document.createElement("p");
       p.className = "empty rt-loading";
       p.textContent = "正在载入反馈渠道…";
-      viewRig.appendChild(p);
+      viewCha.appendChild(p);
     }
     return;
   }
-  if (viewRig.querySelector(".rt-intro")) return;   // 已渲染过，不重复构建
+  if (viewCha.querySelector(".rt-intro")) return;   // 已渲染过，不重复构建
 
-  viewRig.innerHTML = "";
+  viewCha.innerHTML = "";
 
   // 顶部说明
   const intro = document.createElement("div");
@@ -3407,7 +3509,7 @@ function renderRights() {
   intro.innerHTML =
     "遇到问题不知道找谁？这里汇总了校内的反馈渠道。<b>点「去反馈」直接跳转</b>，不用再翻官网。" +
     "部分渠道还在收集中，已标注「待补充」。";
-  viewRig.appendChild(intro);
+  viewCha.appendChild(intro);
 
   // 按分类渲染
   for (const cat of CHANNELS.categories || []) {
@@ -3471,10 +3573,27 @@ function renderRights() {
       list.appendChild(item);
     }
     box.appendChild(list);
-    viewRig.appendChild(box);
+    viewCha.appendChild(box);
   }
+}
 
-  // 权益服务工作宣传（内容待补）
+/* 权益服务工作（宣传板块）
+   内容暂时没有 —— 陈娇说明等公众号内容起来再填。
+   所以这里做成一个「结构已就位、内容待补」的页面：把将来要填的
+   几个栏目先摆出来（工作动态 / 处理过的典型问题 / 如何联系我们），
+   而不是只放一句"敬请期待"——那样陈娇看到会以为没做。 */
+function renderWork() {
+  if (viewWor.querySelector(".wk-intro")) return;   // 已渲染过
+
+  viewWor.innerHTML = "";
+
+  const intro = document.createElement("div");
+  intro.className = "rt-intro wk-intro";
+  intro.innerHTML =
+    "这里是<b>权益服务的工作记录</b>——我们处理了哪些问题、推动了哪些改动、同学能感受到什么变化。" +
+    "内容会随公众号同步更新。";
+  viewWor.appendChild(intro);
+
   const promo = document.createElement("section");
   promo.className = "rt-promo";
   const ph = document.createElement("div");
@@ -3489,14 +3608,46 @@ function renderRights() {
 
   const pb = document.createElement("div");
   pb.className = "rt-promo-body";
-  const pe = document.createElement("div");
-  pe.className = "rt-promo-empty";
-  pe.innerHTML =
-    "这一块会放我们的<b>权益服务工作内容</b>——处理过哪些问题、推动了哪些改进、有哪些进展。<br>" +
-    "内容正在整理中，公众号发出来后这里会同步更新。";
-  pb.appendChild(pe);
+
+  // 三个将来的栏目，先占位说明各自要放什么
+  const BLOCKS = [
+    ["工作动态", "每次推动的改进、处理的问题，按时间倒序记录在这里。公众号发文后同步更新。"],
+    ["典型问题处理", "同学反映较多的问题（食堂、宿舍、教室设备等），以及目前的进展和结果。"],
+    ["如何找到我们", "权益部的联系方式、值班时间、线上反馈群等。"],
+  ];
+  for (const [title, desc] of BLOCKS) {
+    const row = document.createElement("div");
+    row.className = "wk-block";
+    const h = document.createElement("h4");
+    h.textContent = title;
+    row.appendChild(h);
+    const d = document.createElement("p");
+    d.textContent = desc;
+    row.appendChild(d);
+    const tag = document.createElement("span");
+    tag.className = "wk-soon";
+    tag.textContent = "内容准备中";
+    row.appendChild(tag);
+    pb.appendChild(row);
+  }
+
   promo.appendChild(pb);
-  viewRig.appendChild(promo);
+  viewWor.appendChild(promo);
+
+  // 引导去反馈渠道
+  const jump = document.createElement("p");
+  jump.className = "empty wk-jump";
+  jump.innerHTML = "";
+  const a = document.createElement("button");
+  a.type = "button";
+  a.className = "sub-btn";
+  a.textContent = "→ 遇到问题？去「反馈渠道」看看该找谁";
+  a.addEventListener("click", () => {
+    activeView = "channels";
+    applyMode();
+  });
+  jump.appendChild(a);
+  viewWor.appendChild(jump);
 }
 
 renderModebar();

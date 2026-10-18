@@ -216,3 +216,31 @@ export async function loadScript(file) {
   const script = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
   return { html, script };
 }
+
+/* 两级导航辅助。
+   网站结构改为「权益服务 / 学习资源」两个一级分类，下面各有子视图，
+   所以测试里"切到某个视图"要点两次（一级 + 二级）。
+   集中在这里，避免每个测试各写一份、以后改结构时漏改。 */
+export function makeNav(ids) {
+  const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
+  const subBtns = () => ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
+  const SECTION_OF = {
+    resources: '学习资源', guides: '学习资源', skills: '学习资源', exams: '学习资源',
+    channels: '权益服务', work: '权益服务',
+  };
+  const LABEL_OF = {
+    resources: '资源库', guides: '学习路径', skills: '技能自查', exams: '历年试卷',
+    channels: '反馈渠道', work: '服务工作',
+  };
+  // 切到指定子视图：先点一级（若当前不在该分类），再点二级
+  function go(subId) {
+    const sec = SECTION_OF[subId];
+    if (sec) {
+      const b = modeBtns().find((x) => x.textContent === sec);
+      if (b) b.fire('click');
+    }
+    const sb = subBtns().find((x) => x.textContent.indexOf(LABEL_OF[subId]) === 0);
+    if (sb) sb.fire('click');
+  }
+  return { go, modeBtns, subBtns };
+}

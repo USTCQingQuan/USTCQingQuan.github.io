@@ -4,8 +4,8 @@ import { makeChecker } from './dom-stub.mjs';
 
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
-  'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-rights', 'detail-mask', 'detail-box',
+  'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 eval(script);

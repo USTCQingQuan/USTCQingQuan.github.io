@@ -1,15 +1,15 @@
-// 回归测试：三个视图（资源库 / 学习路径 / 技能自查）与详情页
+﻿// 回归测试：三个视图（资源库 / 学习路径 / 技能自查）与详情页
 // 用法: node tests/verify-views.mjs [index.html]
 //
 // 这些测试跑的是 index.html 里页面自身的脚本，用的是 tests/dom-stub.mjs 提供的 DOM 桩。
 // 目的是在每次改动后确认既有功能没有被破坏 —— 项目此前没有任何测试。
-import { makeChecker, setupDom, loadScript } from './dom-stub.mjs';
+import { makeChecker, setupDom, loadScript, makeNav } from './dom-stub.mjs';
 
 const FILE = process.argv[2] || 'index.html';
 const { html, script } = await loadScript(FILE);
 const { byId, ids, store, calls } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-rights', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 
@@ -23,19 +23,24 @@ try {
 
 const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
 
-console.log('=== 1. 模式栏 ===');
-// 第 4、5 个按钮的数据都走 fetch（exams.json / channels.json），测试里没有 → 显示 …
-check('模式按钮数', modeBtns().length, 5);
-check('模式按钮文案', modeBtns().map((b) => b.textContent).join(' | '),
-  '资源库170 | 学习路径5 | 技能自查50 | 历年试卷… | 权益反馈…');
-check('默认在资源库模式', ids['view-resources'].hidden, false);
+console.log('=== 1. 两级导航 ===');
+// 网站分两部分：权益服务 / 学习资源，各自有子视图
+const nav = makeNav(ids);
+check('一级按钮数', modeBtns().length, 2);
+check('一级按钮文案', modeBtns().map((b) => b.textContent).join(' | '), '权益服务 | 学习资源');
+check('默认停在「学习资源」', modeBtns()[1].textContent, '学习资源');
+const sub0 = nav.subBtns();
+check('二级按钮数', sub0.length, 4);
+check('二级按钮文案', sub0.map((b) => b.textContent).join(' | '),
+  '资源库170 | 学习路径5 | 技能自查50 | 历年试卷…');
+check('默认显示资源库', ids['view-resources'].hidden, false);
 check('指南视图默认隐藏', ids['view-guides'].hidden, true);
 check('技能视图默认隐藏', ids['view-skills'].hidden, true);
 check('试卷视图默认隐藏', ids['view-exams'].hidden, true);
-check('权益视图默认隐藏', ids['view-rights'].hidden, true);
+check('权益视图默认隐藏', ids['view-channels'].hidden, true);
 
 console.log('\n=== 2. 切到「学习路径」 ===');
-modeBtns()[1].fire('click');
+nav.go('guides');
 check('资源视图已隐藏', ids['view-resources'].hidden, true);
 check('指南视图已显示', ids['view-guides'].hidden, false);
 const cards = ids['view-guides'].children.filter((c) => (c.className || '').includes('guide-card'));
@@ -66,7 +71,7 @@ backBtn.fire('click');
 check('回到列表（指南卡片数）', ids['view-guides'].children.filter((c) => (c.className || '').includes('guide-card')).length, 5);
 
 console.log('\n=== 5. 切到「技能自查」 ===');
-modeBtns()[2].fire('click');
+nav.go('skills');
 check('技能视图已显示', ids['view-skills'].hidden, false);
 const groups = ids['view-skills'].children.filter((c) => (c.className || '').includes('sk-group'));
 check('技能分组数', groups.length, 6);
@@ -85,7 +90,7 @@ check('写入的键名', Object.keys(saved)[0], 'm1');
 check('首个分组计数变为 1 / 7', ids['view-skills'].querySelectorAll('.g-cnt')[0].textContent, '1 / 7');
 
 console.log('\n=== 7. 切回资源库，原功能仍在 ===');
-modeBtns()[0].fire('click');
+nav.go('resources');
 check('资源视图已显示', ids['view-resources'].hidden, false);
 check('资源总数', byId.total.textContent, 170);
 check('卡片数', ids.grid.children.length, 170);
