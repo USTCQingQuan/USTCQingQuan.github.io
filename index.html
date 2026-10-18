@@ -286,7 +286,13 @@
     background: rgba(247, 244, 236, 0.94);
     backdrop-filter: blur(8px);
   }
-  .modebar .wrap { display: flex; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
+  /* ⚠️ 必须换行：4 个模式按钮在窄屏（<420px）下总宽超过视口，
+     不换行会把整个页面撑宽，导致顶部文字、分类标签也跟着被切掉。
+     这是实测发现的：390px 视口下页面出现横向滚动，右侧全部被裁。 */
+  .modebar .wrap {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding-top: 10px; padding-bottom: 10px;
+  }
   .mode-btn {
     padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 600;
     border: 1px solid var(--border); background: var(--card); color: var(--muted);
@@ -468,6 +474,17 @@
     .mode-btn { padding: 7px 14px; font-size: 13px; flex: 1 1 auto; text-align: center; }
     .guide-detail { padding: 20px 18px; }
     .gd-res li { gap: 8px; }
+
+    /* 手机端：分类标签瘦身。
+       11 个大类标签在窄屏会占 3 行，加上粘顶（sticky）约吃掉 150px 屏高（约 18%）。
+       缩小内边距与字号后通常能压到 2 行，把可视区还给内容。 */
+    .chip { padding: 6px 13px; font-size: 12.5px; }
+    .toolbar { padding: 10px 0; }
+    /* 卡片标题过长时允许断行，避免极端的长名称撑破卡片 */
+    .card-name { overflow-wrap: anywhere; }
+    .card-head { min-width: 0; }
+    /* 试卷筛选栏的搜索框在小屏允许更窄 */
+    .ex-bar input[type="search"] { min-width: 0; flex-basis: 100%; }
   }
 </style>
 </head>
