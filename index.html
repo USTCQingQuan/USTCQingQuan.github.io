@@ -593,6 +593,7 @@
     .brand-stats b { font-size: 13.5px; }
   }
   @media (max-width: 420px) {
+    /* 超窄屏：先藏「试卷」，保住「反馈渠道」和「资源」 —— 权益是站点重心 */
     .brand-stats span:nth-child(3) { display: none; }
   }
 
@@ -975,9 +976,9 @@
       <p><span class="bp-long">中科大同学的<b>权益服务</b>与<b>学习资源</b>站</span><span class="bp-short"><b>权益服务</b> · <b>学习资源</b></span></p>
     </div>
     <div class="brand-stats">
+      <span><b id="chanStat">—</b>反馈渠道</span>
       <span><b id="total"></b>资源</span>
       <span><b id="examStat">—</b>试卷</span>
-      <span><b id="chanStat">—</b>渠道</span>
     </div>
   </div>
 </section>
