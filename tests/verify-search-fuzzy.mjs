@@ -8,7 +8,7 @@ import { setupDom, loadScript, makeChecker, makeNav } from './dom-stub.mjs';
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 eval(script);

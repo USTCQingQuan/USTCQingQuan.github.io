@@ -405,6 +405,59 @@
     .news-item .news-date { flex: none; }
   }
 
+  /* ---------- 首页头条轮播 ----------
+     参考 App 首页顶部 banner：一条大字标题 + 一句说明 + 行动按钮，点击整块跳转。
+     用纯 CSS 渐变做背景，不依赖图片素材（离线也能正常显示）。 */
+  .hero-banner {
+    position: relative; border-radius: 18px; overflow: hidden;
+    margin-bottom: 14px; min-height: 148px;
+  }
+  .hb-slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .45s ease;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 26px 30px; color: #fff; text-decoration: none;
+  }
+  .hb-slide.on { opacity: 1; pointer-events: auto; position: relative; }
+  .hb-slide::after {
+    content: ""; position: absolute; right: -60px; top: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(255,255,255,.07);
+  }
+  .hb-tag {
+    display: inline-block; align-self: flex-start; font-size: 11.5px; font-weight: 700;
+    letter-spacing: 1px; padding: 3px 11px; border-radius: 999px;
+    background: rgba(255,255,255,.18); margin-bottom: 10px;
+  }
+  .hb-title { font-size: 24px; font-weight: 800; letter-spacing: .5px; line-height: 1.3; }
+  .hb-title b { color: #ffe699; font-weight: 800; }
+  .hb-desc { font-size: 13.5px; color: rgba(255,255,255,.82); margin-top: 7px; line-height: 1.55; }
+  .hb-go {
+    align-self: flex-start; margin-top: 14px; font-size: 13px; font-weight: 700;
+    padding: 7px 20px; border-radius: 999px; background: rgba(255,255,255,.92);
+    color: #175e4c; position: relative; z-index: 1;
+  }
+  .hb-slide:hover .hb-go { background: #fff; }
+
+  /* 切换圆点 */
+  .hb-dots {
+    position: absolute; right: 18px; bottom: 14px; display: flex; gap: 6px; z-index: 2;
+  }
+  .hb-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.42);
+    border: 0; padding: 0; cursor: pointer; transition: all .2s;
+  }
+  .hb-dot.on { background: #fff; width: 18px; border-radius: 999px; }
+
+  @media (max-width: 720px) {
+    .hero-banner { min-height: 128px; border-radius: 16px; margin-bottom: 10px; }
+    .hb-slide { padding: 20px 18px; }
+    .hb-title { font-size: 19px; }
+    .hb-desc { font-size: 12.5px; margin-top: 5px; }
+    .hb-go { margin-top: 11px; font-size: 12px; padding: 6px 16px; }
+    .hb-dots { right: 12px; bottom: 10px; }
+  }
+
   /* ---------- 首页图标宫格（参考 App 首页的九宫格入口） ---------- */
   /* 桌面：8 个入口排成一行（像菜单条）；手机：4 列两行（拇指区更好点） */
   .icon-grid {
@@ -872,6 +925,9 @@
   <!-- ===== 首页：权益服务工作宣传 + 两个入口 ===== -->
   <div id="view-home">
     <div class="home-wrap">
+      <!-- 头条轮播：放在最上面，点击直达对应页面 -->
+      <section class="hero-banner" id="heroBanner" aria-label="推荐入口"></section>
+
       <!-- 图标宫格：手机上一眼看到全部入口 -->
       <nav class="icon-grid" id="iconGrid" aria-label="主要入口"></nav>
 
@@ -3217,7 +3273,8 @@ function applyMode() {
   renderTabbar();
   renderIconGrid();
 
-  if (route.home) renderHome();
+  if (route.home) { renderHeroBanner(); hbResume(); renderHome(); }
+  else hbPause();
   if (isRes) { renderChips(); render(); }
   if (route.sub === "guides") renderGuides();
   if (route.sub === "skills") renderSkills();
@@ -3233,6 +3290,140 @@ function currentCats() {
 }
 
 /* ===================== 首页 ===================== */
+
+/* ---------- 首页头条轮播 ----------
+   参考 App 首页顶部的 banner：一条大字标题 + 说明 + 行动按钮，整块可点。
+   放在最上面是因为它承担"最想让同学看到的一件事"。
+   4 条按优先级排：反馈渠道 > 校园报修 > 历年试卷 > 最新简报。
+   纯 CSS 渐变背景，不用图片，离线也不会裂图。 */
+const BANNERS = [
+  {
+    tag: "遇到问题",
+    title: "校园里的事，<b>24 条渠道</b>都能反映",
+    desc: "报修、食堂、宿舍、图书馆、医保……按问题类型对口联系，比层层转达快",
+    cta: "看看该找谁",
+    to: "#/rights/channels",
+    bg: "linear-gradient(120deg,#8a6508 0%,#b8860b 55%,#d4a017 100%)",
+  },
+  {
+    tag: "最常用",
+    title: "<b>校园报修</b>，一键提交",
+    desc: "宿舍水电、家具、公共设施损坏，直接在线报修，不用跑前台",
+    cta: "去报修",
+    href: "https://xsfw.ustc.edu.cn/repair-v2/pc-app/home",
+    bg: "linear-gradient(120deg,#134a3c 0%,#175e4c 55%,#23896c 100%)",
+  },
+  {
+    tag: "学习资源",
+    title: "<b>1580 份</b>历年试卷，按课程分好",
+    desc: "期中期末都有，文件名带年份和老师，在同一课程文件夹里按时间排序",
+    cta: "去找卷子",
+    to: "#/study/exams",
+    bg: "linear-gradient(120deg,#0f4436 0%,#1a6b55 55%,#2b9a78 100%)",
+  },
+  {
+    tag: "权益简报",
+    title: "高新校区<b>第二期简报</b>发布了",
+    desc: "7 个方面 47 项议题，逐条写明哪些已办、哪些还在推进",
+    cta: "查看原文",
+    href: "https://mp.weixin.qq.com/s/23YhXJ9KP-p5KM0qH3w4Cw",
+    bg: "linear-gradient(120deg,#5a4210 0%,#8a6508 55%,#b8860b 100%)",
+  },
+];
+
+let hbIndex = 0;
+let hbTimer = null;
+
+function renderHeroBanner() {
+  var box = document.getElementById("heroBanner");
+  if (!box) return;
+  if (box.getAttribute("data-built")) return;      // 只建一次
+  box.setAttribute("data-built", "1");
+  box.innerHTML = "";
+
+  for (var i = 0; i < BANNERS.length; i++) {
+    (function (b, idx) {
+      var a = document.createElement("a");
+      a.className = "hb-slide" + (idx === 0 ? " on" : "");
+      a.setAttribute("data-i", String(idx));
+      a.href = b.href || b.to || "#";
+      if (b.href) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+      a.style.background = b.bg;
+
+      var tag = document.createElement("span");
+      tag.className = "hb-tag";
+      tag.textContent = b.tag;
+      a.appendChild(tag);
+
+      var t = document.createElement("div");
+      t.className = "hb-title";
+      t.innerHTML = b.title;                        // 标题里只有 <b>，是本站常量，不含用户输入
+      a.appendChild(t);
+
+      if (b.desc) {
+        var d = document.createElement("div");
+        d.className = "hb-desc";
+        d.textContent = b.desc;
+        a.appendChild(d);
+      }
+
+      var go = document.createElement("span");
+      go.className = "hb-go";
+      go.textContent = b.cta || "查看";
+      a.appendChild(go);
+
+      box.appendChild(a);
+    })(BANNERS[i], i);
+  }
+
+  // 圆点
+  var dots = document.createElement("div");
+  dots.className = "hb-dots";
+  for (var j = 0; j < BANNERS.length; j++) {
+    (function (k) {
+      var d = document.createElement("button");
+      d.type = "button";
+      d.className = "hb-dot" + (k === 0 ? " on" : "");
+      d.setAttribute("aria-label", "第 " + (k + 1) + " 条");
+      d.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        hbGo(k);
+      });
+      dots.appendChild(d);
+    })(j);
+  }
+  box.appendChild(dots);
+
+  hbStart();
+}
+
+function hbGo(i) {
+  hbIndex = i;
+  var box = document.getElementById("heroBanner");
+  if (!box) return;
+  var slides = box.querySelectorAll(".hb-slide");
+  var dots = box.querySelectorAll(".hb-dot");
+  for (var k = 0; k < slides.length; k++) {
+    var on = k === i;
+    if (on) slides[k].classList.add("on"); else slides[k].classList.remove("on");
+  }
+  for (var m = 0; m < dots.length; m++) {
+    if (m === i) dots[m].classList.add("on"); else dots[m].classList.remove("on");
+  }
+  hbStart();                                       // 手动切换后重新计时
+}
+
+function hbStart() {
+  if (hbTimer) clearInterval(hbTimer);
+  hbTimer = setInterval(function () {
+    hbGo((hbIndex + 1) % BANNERS.length);
+  }, 5200);
+}
+
+/* 离开首页时停掉定时器，回来再启动 —— 避免在别的页面空转 */
+function hbPause() { if (hbTimer) { clearInterval(hbTimer); hbTimer = null; } }
+function hbResume() { if (!hbTimer && route.home) hbStart(); }
 
 /* ---------- 首页图标宫格 ----------
    8 个入口一次摆开，手机上不用先选大区再选子项。

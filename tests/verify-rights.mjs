@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();
@@ -123,6 +123,31 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 }
 console.log('');
 
+console.log('=== 5a. 首页头条轮播 ===');
+{
+  nav.home();
+  const hb = ids['heroBanner'];
+  const slides = hb.querySelectorAll('.hb-slide');
+  console.log('  头条条数: ' + slides.length);
+  check('头条有 4 条', slides.length, 4);
+  check('默认只显示第 1 条', slides.filter((x) => (x.className || '').includes('on')).length, 1);
+  const dots = hb.querySelectorAll('.hb-dot');
+  check('圆点数量与头条一致', dots.length, slides.length);
+  // 每条都要有标题与跳转目标
+  const noTitle = slides.filter((x) => !x.querySelector('.hb-title'));
+  check('每条都有标题', noTitle.length, 0);
+  const badHref = slides.filter((x) => !/^#\/|^https?:/.test(String(x.href || '')));
+  check('每条都有跳转地址', badHref.length, 0);
+  // 4 条里应有站内跳转也有外链
+  const inner = slides.filter((x) => String(x.href || '').indexOf('#/') === 0);
+  const outer = slides.filter((x) => String(x.href || '').indexOf('http') === 0);
+  console.log('  站内 ' + inner.length + ' 条 / 外链 ' + outer.length + ' 条');
+  check('既有站内跳转也有外链', inner.length > 0 && outer.length > 0, true);
+  // 第一条应是权益反馈入口
+  check('第 1 条指向权益反馈', String(slides[0].href || ''), '#/rights/channels');
+}
+
+console.log('');
 console.log('=== 5. 首页图标宫格 ===');
 {
   nav.home();
