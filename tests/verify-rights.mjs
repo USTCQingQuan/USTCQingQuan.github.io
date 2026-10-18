@@ -175,12 +175,14 @@ console.log('\n=== 5c. 宣传板块已移到首页 ===');
   const body = ids['promoBody'];
   // 结构：一个「工作动态」列表块 + 两个占位栏目（典型问题处理 / 如何找到我们）
   check('有工作动态块', !!body.querySelector('.news-block'), true);
+  // 工作动态 + 典型问题处理 都有真实数据块，只剩「如何找到我们」是占位
+  check('有典型问题处理块', !!body.querySelector('.iss-block'), true);
   const rows = body.children.filter((c) => (c.className || '').includes('promo-row'));
   console.log('  占位栏目数: ' + rows.length);
-  check('剩下两个占位栏目还在', rows.length, 2);
+  check('只剩一个占位栏目', rows.length, 1);
   const firstTitle = rows[0] ? rows[0].querySelector('h4').textContent : '';
-  check('第一个占位栏目是「典型问题处理」', firstTitle, '典型问题处理');
-  check('占位栏目都标「内容准备中」', body.querySelectorAll('.promo-soon').length, 2);
+  check('剩下的占位是「如何找到我们」', firstTitle, '如何找到我们');
+  check('占位栏目标「内容准备中」', body.querySelectorAll('.promo-soon').length, 1);
   // news.json 在测试里不会被 fetch（桩返回 404），所以走占位文案分支
   const nb = body.querySelector('.news-block');
   check('工作动态块有标题', nb.querySelector('h4').textContent.indexOf('工作动态') === 0, true);

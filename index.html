@@ -480,6 +480,37 @@
     .hero.compact .hero-stats b { font-size: 22px; }
   }
 
+  /* 典型问题处理（权益简报里的逐项进展） */
+  .iss-block { padding: 2px 0 6px; }
+  .iss-block > h4 {
+    font-size: 14.5px; font-weight: 700; color: var(--ink);
+    display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding: 14px 0 2px;
+  }
+  .iss-block > h4 .iss-n { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .iss-meta {
+    font-size: 12px; color: var(--muted); padding: 2px 0 10px;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .iss-meta a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  .iss-meta a:hover { text-decoration: underline; }
+  .iss-item {
+    border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+    margin-bottom: 8px; background: #fff;
+  }
+  .iss-head { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 6px; }
+  .iss-head .iss-ico { font-size: 16px; }
+  .iss-head .iss-name { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .iss-head .iss-cnt {
+    font-size: 11px; color: var(--primary-deep); background: #e2f0e8;
+    padding: 1px 8px; border-radius: 999px;
+  }
+  .iss-done, .iss-todo { font-size: 12.5px; line-height: 1.65; margin-top: 4px; }
+  .iss-done { color: #3d5a4d; }
+  .iss-todo { color: var(--muted); }
+  .iss-done b, .iss-todo b { font-weight: 700; }
+  .iss-done b { color: #17603f; }
+  .iss-todo b { color: #9a8f7d; }
+
   /* 两个入口卡片 */
   .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .entry {
@@ -3289,6 +3320,26 @@ function renderTabbar() {
   }
 }
 
+/* 典型问题处理：数据在 issues.json。
+   这里放权益简报里的逐项进展 —— 比"我们做了什么"的空话有说服力得多。 */
+let ISSUES = null;
+let isLoaded = false;
+
+function loadIssues() {
+  if (isLoaded) return;
+  isLoaded = true;
+  if (typeof fetch !== "function" || location.protocol === "file:") return;
+  fetch("issues.json", { cache: "no-store" })
+    .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function (doc) {
+      ISSUES = doc;
+      var body = document.getElementById("promoBody");
+      if (body) body.setAttribute("data-built", "");
+      if (route.home) renderHome();
+    })
+    .catch(function (e) { console.error("[拾学集] 典型问题处理加载失败:", e); });
+}
+
 /* 权益工作动态：数据在 news.json。
    为什么单独放文件而不是写进 HTML：以后加了新活动（公众号发文），
    只要在 news.json 里加一条，不用碰代码。
@@ -3385,9 +3436,87 @@ function renderHome() {
     }
     body.appendChild(nb);
 
-    // ② 剩下两个栏目还是占位
+    // ② 典型问题处理：有简报数据就逐项列出进展，没有就占位
+    var ib = document.createElement("div");
+    ib.className = "iss-block";
+    var ih = document.createElement("h4");
+    ih.textContent = "典型问题处理";
+    var brief = ISSUES && ISSUES.briefs && ISSUES.briefs.length ? ISSUES.briefs[0] : null;
+    if (brief) {
+      var inn = document.createElement("span");
+      inn.className = "iss-n";
+      inn.textContent = "（" + brief.items.length + " 个方面 · " + brief.total + " 项议题）";
+      ih.appendChild(inn);
+    }
+    ib.appendChild(ih);
+
+    if (brief) {
+      var meta = document.createElement("div");
+      meta.className = "iss-meta";
+      var m1 = document.createElement("span");
+      m1.textContent = brief.title + " · " + brief.issuer;
+      meta.appendChild(m1);
+      if (brief.url) {
+        var ma = document.createElement("a");
+        ma.href = brief.url;
+        ma.target = "_blank";
+        ma.rel = "noopener noreferrer";
+        ma.textContent = "查看原始简报 →";
+        meta.appendChild(ma);
+      }
+      ib.appendChild(meta);
+
+      for (var q = 0; q < brief.items.length; q++) {
+        (function (it) {
+          var box = document.createElement("div");
+          box.className = "iss-item";
+          var hd = document.createElement("div");
+          hd.className = "iss-head";
+          var ic = document.createElement("span");
+          ic.className = "iss-ico";
+          ic.textContent = it.icon || "•";
+          hd.appendChild(ic);
+          var nm = document.createElement("span");
+          nm.className = "iss-name";
+          nm.textContent = it.name;
+          hd.appendChild(nm);
+          var cn = document.createElement("span");
+          cn.className = "iss-cnt";
+          cn.textContent = it.count + " 项";
+          hd.appendChild(cn);
+          box.appendChild(hd);
+          if (it.done) {
+            var dd = document.createElement("div");
+            dd.className = "iss-done";
+            var b1 = document.createElement("b");
+            b1.textContent = "已办：";
+            dd.appendChild(b1);
+            dd.appendChild(document.createTextNode(it.done));
+            box.appendChild(dd);
+          }
+          if (it.todo) {
+            var tt = document.createElement("div");
+            tt.className = "iss-todo";
+            var b2 = document.createElement("b");
+            b2.textContent = "待办：";
+            tt.appendChild(b2);
+            tt.appendChild(document.createTextNode(it.todo));
+            box.appendChild(tt);
+          }
+          ib.appendChild(box);
+        })(brief.items[q]);
+      }
+    } else {
+      var ph = document.createElement("p");
+      ph.style.color = "var(--muted)";
+      ph.style.fontSize = "13px";
+      ph.textContent = "正在整理各渠道反映的问题与处理进展。";
+      ib.appendChild(ph);
+    }
+    body.appendChild(ib);
+
+    // ③ 「如何找到我们」仍是占位（等权益部提供联系方式）
     var BLOCKS = [
-      ["🔧", "典型问题处理", "同学反映较多的问题（食堂、宿舍、教室设备等），以及目前的进展和结果。"],
       ["📮", "如何找到我们", "权益部的联系方式、值班时间、线上反馈群等。"],
     ];
     for (var i = 0; i < BLOCKS.length; i++) {
@@ -4207,6 +4336,7 @@ setTimeout(function () {
   loadExams();
   loadChannels();
   loadNews();
+  loadIssues();
 }, 400);
 </script>
 </body>
