@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
+  'view-home', 'iconGrid', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();
@@ -38,7 +38,7 @@ console.log('=== 1. 切到「权益反馈」===');
   const btn = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
   check('存在「权益反馈」子按钮', !!btn, true);
   check('权益视图已显示', view.hidden, false);
-  check('资源视图已隐藏', ids['view-home', 'view-resources'].hidden, true);
+  check('资源视图已隐藏', ids['view-resources'].hidden, true);
   await new Promise((r) => setTimeout(r, 60));
   const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
   console.log('  按钮文案: ' + btn2.textContent);
@@ -90,7 +90,51 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 }
 console.log('');
 
-console.log('=== 5. 宣传板块已移到首页 ===');
+console.log('=== 5. 首页图标宫格 ===');
+{
+  nav.home();
+  const grid = ids['iconGrid'];
+  const items = grid.querySelectorAll('.ig-item');
+  console.log('  宫格数量: ' + items.length);
+  check('宫格有 8 个入口', items.length, 8);
+  // 顺序：权益 3 个 -> 学习 4 个 -> 反馈 1 个
+  const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
+  check('前 3 个属权益服务', tones.slice(0, 3).every((t) => t === 'ig-rights'), true);
+  check('中间 4 个属学习资源', tones.slice(3, 7).every((t) => t === 'ig-study'), true);
+  check('最后 1 个是反馈建议', tones[7], 'ig-more');
+  const labels = items.map((a) => a.querySelector('.ig-label').textContent);
+  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 资源库 历年试卷 学习路径 技能自查 反馈建议');
+  // 每个入口都有可点击地址
+  const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
+  check('所有入口地址有效', badHref.length, 0);
+  // 反馈建议是外链，新窗口打开
+  const last = items[7];
+  check('反馈建议指向问卷', last.href.indexOf('wj.qq.com') >= 0 || last.href.indexOf('http') === 0, true);
+  // 有数字角标的项
+  const nums = grid.querySelectorAll('.ig-num');
+  console.log('  数字角标数: ' + nums.length);
+  check('数字角标 7 个（反馈建议无数字）', nums.length, 7);
+}
+
+console.log('\n=== 5b. 底部标签栏 ===');
+{
+  const bar = ids['tabbar'];
+  const tabs = bar.querySelectorAll('.tab-item');
+  console.log('  标签数: ' + tabs.length);
+  check('底部有 4 个标签', tabs.length, 4);
+  const tl = tabs.map((t) => t.textContent);
+  check('标签文案', tl.join(' '), '🏠首页 🛡️权益服务 📚学习资源 💬反馈建议');
+  nav.home();
+  const activeHome = ids['tabbar'].querySelectorAll('.tab-item.active');
+  check('首页时「首页」高亮', activeHome.length, 1);
+  nav.go('channels');
+  const activeIn = ids['tabbar'].querySelectorAll('.tab-item.active');
+  check('权益页时「权益服务」高亮', activeIn.length, 1);
+  check('高亮的是权益服务', activeIn[0] ? activeIn[0].textContent.indexOf('权益服务') >= 0 : false, true);
+  nav.home();
+}
+
+console.log('\n=== 5c. 宣传板块已移到首页 ===');
 {
   nav.home();
   check('首页视图已显示', ids['view-home'].hidden, false);

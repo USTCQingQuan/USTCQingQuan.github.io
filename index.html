@@ -398,6 +398,81 @@
     .news-item .news-date { flex: none; }
   }
 
+  /* ---------- 首页图标宫格（参考 App 首页的九宫格入口） ---------- */
+  /* 桌面：8 个入口排成一行（像菜单条）；手机：4 列两行（拇指区更好点） */
+  .icon-grid {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+    background: #fff; border: 1px solid var(--border); border-radius: 18px;
+    padding: 16px 8px 12px; margin-bottom: 18px;
+  }
+  .ig-item {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    padding: 8px 4px 6px; border-radius: 14px; text-decoration: none; color: inherit;
+    transition: background .16s, transform .16s;
+  }
+  .ig-item:hover { background: #f6f9f7; transform: translateY(-2px); }
+  .ig-icon {
+    width: 46px; height: 46px; border-radius: 14px; flex: none;
+    display: flex; align-items: center; justify-content: center; font-size: 23px;
+    position: relative;
+  }
+  .ig-rights .ig-icon { background: #fdf4dc; }
+  .ig-study .ig-icon { background: #e2f0e8; }
+  .ig-more .ig-icon { background: #f2f0ea; }
+  .ig-label { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+  .ig-desc { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.3; }
+  .ig-num {
+    position: absolute; top: -5px; right: -7px;
+    font-size: 10px; font-weight: 700; color: #fff; background: var(--primary);
+    padding: 1px 5px; border-radius: 999px; min-width: 17px; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .ig-rights .ig-num { background: #d4a017; }
+  @media (max-width: 900px) {
+    .icon-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .icon-grid { padding: 14px 4px 10px; gap: 2px; border-radius: 16px; }
+    .ig-icon { width: 42px; height: 42px; font-size: 21px; }
+    .ig-label { font-size: 12px; }
+    .ig-desc { display: none; }
+  }
+
+  /* ---------- 底部标签栏（只在小屏出现） ---------- */
+  .tabbar { display: none; }
+  @media (max-width: 720px) {
+    .tabbar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 7px 0 calc(7px + env(safe-area-inset-bottom, 0px));
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-size: 11px; color: var(--muted); text-decoration: none; padding: 2px 0;
+      background: none; border: 0; font-family: inherit; cursor: pointer;
+    }
+    .tab-item .tab-ico { font-size: 19px; line-height: 1.1; }
+    .tab-item.active { color: var(--primary); font-weight: 700; }
+    /* 给底部标签栏留出空间，避免盖住最后一段内容 */
+    body { padding-bottom: 62px; }
+  }
+
+  /* ---------- 紧凑 hero（首页用） ---------- */
+  .hero.compact { padding: 34px 0 30px; }
+  .hero.compact h1 { font-size: 40px; }
+  .hero.compact p.sub { margin-top: 10px; font-size: 14.5px; max-width: 520px; }
+  .hero.compact .hero-stats { gap: 26px; }
+  .hero.compact .hero-stats b { font-size: 26px; }
+  .hero.compact .hero-stats span { font-size: 12px; }
+  @media (max-width: 720px) {
+    .hero.compact { padding: 26px 0 22px; }
+    .hero.compact h1 { font-size: 32px; }
+    .hero.compact p.sub { font-size: 13.5px; }
+    .hero.compact .hero-stats { gap: 22px; margin-left: 0; }
+    .hero.compact .hero-stats b { font-size: 22px; }
+  }
+
   /* 两个入口卡片 */
   .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .entry {
@@ -708,12 +783,12 @@
 </head>
 <body>
 
-<section class="hero">
+<section class="hero compact">
   <div class="wrap">
     <div>
       <span class="hero-badge">USTC LEARNING HUB · 权益服务</span>
       <h1>拾<em>学</em>集</h1>
-      <p class="sub">中科大同学的一站式站内资源站。<b>学习资源</b>——精选网络资源、历年试卷、学习路径; <b>权益服务</b>——校内反馈渠道汇总,遇到问题知道找谁。</p>
+      <p class="sub">中科大同学的<b>权益服务与学习资源</b>站。<b>权益服务</b>——校内反馈渠道汇总,遇到问题知道找谁; <b>学习资源</b>——精选网络资源、历年试卷、学习路径。</p>
     </div>
     <div class="hero-stats">
       <div class="stat"><b id="total"></b><span>精选资源</span></div>
@@ -743,6 +818,9 @@
   <!-- ===== 首页：权益服务工作宣传 + 两个入口 ===== -->
   <div id="view-home">
     <div class="home-wrap">
+      <!-- 图标宫格：手机上一眼看到全部入口 -->
+      <nav class="icon-grid" id="iconGrid" aria-label="主要入口"></nav>
+
       <section class="promo">
         <div class="promo-head">
           <h2>权益服务工作</h2>
@@ -751,31 +829,7 @@
         <div class="promo-body" id="promoBody"></div>
       </section>
 
-      <div class="entry-grid">
-        <a class="entry entry-rights" href="#/rights/channels">
-          <span class="entry-tag">权益服务</span>
-          <h3>遇到问题，知道找谁</h3>
-          <p>把校内的反馈渠道、常用平台和校园信息整理在一起，不用再翻各个官网。</p>
-          <ul>
-            <li>权益反馈 <b id="homeChanN">6</b> 个渠道，点开直达</li>
-            <li>校内平台 <b id="homePlatN">14</b> 个，评课/论坛/图书馆</li>
-            <li>校园信息 <b id="homeCampusN">5</b> 条，升学/心理/通知</li>
-          </ul>
-          <span class="entry-go">进入权益服务 →</span>
-        </a>
 
-        <a class="entry entry-study" href="#/study/library">
-          <span class="entry-tag">学习资源</span>
-          <h3>想学东西，从这开始</h3>
-          <p>精选过的网络资源、成体系的学习路径，还有整理好的历年试卷。</p>
-          <ul>
-            <li>资源库 <b id="homeResN">151</b> 个，可搜索可筛选</li>
-            <li>历年试卷 <b id="homeExamN">1580</b> 份，按课程分类</li>
-            <li>学习路径 <b id="homeGuideN">5</b> 条 · 技能自查 <b id="homeSkillN">50</b> 项</li>
-          </ul>
-          <span class="entry-go">进入学习资源 →</span>
-        </a>
-      </div>
     </div>
   </div>
 
@@ -789,6 +843,9 @@
   <div id="view-exams" hidden></div>
   <div id="view-channels" hidden></div>
 </main>
+
+<!-- 底部标签栏：只在小屏显示，替代顶部导航（拇指更好够到） -->
+<nav class="tabbar" id="tabbar" aria-label="底部导航"></nav>
 
 <footer>
   <b>拾学集</b> · 资源由管理员筛选维护 · 点卡片看详情，点右上箭头直接跳转
@@ -3087,6 +3144,8 @@ function applyMode() {
   lastResView = isRes ? route.sub : "";
 
   renderModebar();
+  renderTabbar();
+  renderIconGrid();
 
   if (route.home) renderHome();
   if (isRes) { renderChips(); render(); }
@@ -3104,6 +3163,108 @@ function currentCats() {
 }
 
 /* ===================== 首页 ===================== */
+
+/* ---------- 首页图标宫格 ----------
+   8 个入口一次摆开，手机上不用先选大区再选子项。
+   顺序上权益服务在前（网站主体是权益服务），学习资源在后。
+   图标用 emoji：不依赖图片资源、离线也能显示，代价是各设备长得不同。 */
+const HOME_ENTRIES = [
+  { icon: "🛡️", label: "权益反馈", desc: "校内反馈渠道", to: "#/rights/channels", tone: "rights",
+    n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
+  { icon: "🏫", label: "校内平台", desc: "评课/论坛/图书馆", to: "#/rights/platforms", tone: "rights",
+    n: function () { return countIn(["校内平台"]); } },
+  { icon: "📢", label: "校园信息", desc: "升学/心理/通知", to: "#/rights/campus", tone: "rights",
+    n: function () { return countIn(["校园信息"]); } },
+  { icon: "📚", label: "资源库", desc: "精选网络资源", to: "#/study/library", tone: "study",
+    n: function () { return countIn(LIBRARY_CATS); } },
+  { icon: "📄", label: "历年试卷", desc: "按课程分类", to: "#/study/exams", tone: "study",
+    n: function () { return EXAMS ? EXAMS.total : "…"; } },
+  { icon: "🧭", label: "学习路径", desc: "按阶段规划", to: "#/study/guides", tone: "study",
+    n: function () { return GUIDES.length; } },
+  { icon: "✅", label: "技能自查", desc: "看看还缺什么", to: "#/study/skills", tone: "study",
+    n: function () { return SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0); } },
+  { icon: "💬", label: "反馈建议", desc: "告诉我们问题", href: FEEDBACK_FORM_URL, tone: "more", n: null },
+];
+
+function renderIconGrid() {
+  var grid = document.getElementById("iconGrid");
+  if (!grid) return;
+  var keep = grid.getAttribute("data-built");
+  if (keep) return;                       // 只建一次（数字会单独刷新）
+  grid.setAttribute("data-built", "1");
+  grid.innerHTML = "";
+  for (var i = 0; i < HOME_ENTRIES.length; i++) {
+    (function (e) {
+      var a = document.createElement("a");
+      a.className = "ig-item ig-" + e.tone;
+      a.href = e.href || e.to;
+      if (e.href) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+      var ic = document.createElement("span");
+      ic.className = "ig-icon";
+      ic.textContent = e.icon;
+      if (e.n) {
+        var num = document.createElement("span");
+        num.className = "ig-num";
+        num.setAttribute("data-n", String(i));
+        num.textContent = e.n();
+        ic.appendChild(num);
+      }
+      a.appendChild(ic);
+      var lb = document.createElement("span");
+      lb.className = "ig-label";
+      lb.textContent = e.label;
+      a.appendChild(lb);
+      var ds = document.createElement("span");
+      ds.className = "ig-desc";
+      ds.textContent = e.desc;
+      a.appendChild(ds);
+      grid.appendChild(a);
+    })(HOME_ENTRIES[i]);
+  }
+}
+
+/* 数据到达后刷新宫格上的数字角标（不重建 DOM，避免闪烁） */
+function refreshIconNums() {
+  var grid = document.getElementById("iconGrid");
+  if (!grid) return;
+  var nums = grid.querySelectorAll(".ig-num");
+  for (var i = 0; i < nums.length; i++) {
+    var idx = parseInt(nums[i].getAttribute("data-n"), 10);
+    if (isNaN(idx) || !HOME_ENTRIES[idx] || !HOME_ENTRIES[idx].n) continue;
+    nums[i].textContent = HOME_ENTRIES[idx].n();
+  }
+}
+
+/* ---------- 底部标签栏（仅小屏显示） ----------
+   手机上顶部导航要滚到顶才点得到，底部常驻条更顺手。
+   桌面端由 CSS 隐藏（.tabbar 默认 display:none）。 */
+function renderTabbar() {
+  var bar = document.getElementById("tabbar");
+  if (!bar) return;
+  var ITEMS = [
+    { icon: "🏠", label: "首页", to: "#/", on: route.home },
+    { icon: "🛡️", label: "权益服务", to: "#/rights/channels", on: route.sec === "rights" },
+    { icon: "📚", label: "学习资源", to: "#/study/library", on: route.sec === "study" },
+    { icon: "💬", label: "反馈建议", href: FEEDBACK_FORM_URL, on: false },
+  ];
+  bar.innerHTML = "";
+  for (var i = 0; i < ITEMS.length; i++) {
+    (function (it) {
+      var el = document.createElement("a");
+      el.className = "tab-item" + (it.on ? " active" : "");
+      el.href = it.href || it.to;
+      if (it.href) { el.target = "_blank"; el.rel = "noopener noreferrer"; }
+      var ic = document.createElement("span");
+      ic.className = "tab-ico";
+      ic.textContent = it.icon;
+      el.appendChild(ic);
+      var lb = document.createElement("span");
+      lb.textContent = it.label;
+      el.appendChild(lb);
+      bar.appendChild(el);
+    })(ITEMS[i]);
+  }
+}
 
 /* 权益工作动态：数据在 news.json。
    为什么单独放文件而不是写进 HTML：以后加了新活动（公众号发文），
@@ -3521,6 +3682,7 @@ function applyResources(list) {
   for (const r of list) RESOURCES.push(normalizeRecord(r));
   rebuildTitleIndex();
   updateStats();
+  refreshIconNums();
   renderSubchips();
   render();
   if (route.sub === "guides") renderGuides();
@@ -3566,6 +3728,7 @@ function loadExams() {
     .then(function (doc) {
       EXAMS = doc;
       setStat("examStat", doc.total);
+      refreshIconNums();
       renderModebar();
       if (route.sub === "exams") renderExams();
     })
@@ -3850,6 +4013,7 @@ function loadChannels() {
       doc.count = ok;
       CHANNELS = doc;
       setStat("chanStat", ok);
+      refreshIconNums();
       renderModebar();
       if (route.sub === "channels") renderRights();
     })
