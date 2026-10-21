@@ -23,7 +23,8 @@ globalThis.fetch = async (u) => {
   return { ok: false, status: 404, json: async () => ({}) };
 };
 
-eval(script);
+globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
+  eval(script);
 
 const view = ids['view-exams'];
 const nav = makeNav(ids);

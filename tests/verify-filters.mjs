@@ -1,4 +1,4 @@
-﻿// 回归测试：两级筛选（大类 -> 子分类）
+// 回归测试：两级筛选（大类 -> 子分类）
 // 用法: node tests/verify-filters.mjs [index.html]
 import { makeChecker, setupDom, loadScript, makeNav } from './dom-stub.mjs';
 
@@ -10,7 +10,8 @@ const { byId, ids } = setupDom([
 ]);
 const { check, done } = makeChecker();
 
-eval(script);
+globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
+  eval(script);
 
 // 新结构下资源列表在学习资源区，先导航过去
 makeNav(ids).go('library');

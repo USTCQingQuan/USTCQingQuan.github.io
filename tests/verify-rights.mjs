@@ -1,4 +1,4 @@
-﻿// 回归测试：权益反馈视图（用真实 channels.json）
+// 回归测试：权益反馈视图（用真实 channels.json）
 //
 // 为什么要测：这是给权益部用的板块，非技术同学以后会改 channels.json 加渠道。
 // 要保证「改了 JSON 就能正常显示」，以及 status 的两种取值都不会让页面崩。
@@ -129,7 +129,8 @@ console.log('=== 5a. 首页头条轮播 ===');
   const hb = ids['heroBanner'];
   const slides = hb.querySelectorAll('.hb-slide');
   console.log('  头条条数: ' + slides.length);
-  check('头条有 4 条', slides.length, 4);
+  // 学习资源已下架，轮播只剩 3 条权益相关
+  check('头条有 3 条', slides.length, 3);
   check('默认只显示第 1 条', slides.filter((x) => (x.className || '').includes('on')).length, 1);
   const dots = hb.querySelectorAll('.hb-dot');
   check('圆点数量与头条一致', dots.length, slides.length);
@@ -211,13 +212,13 @@ console.log('=== 5. 首页图标宫格 ===');
   const grid = ids['iconGrid'];
   const items = grid.querySelectorAll('.ig-item');
   console.log('  宫格数量: ' + items.length);
-  check('宫格有 8 个入口', items.length, 8);
+  // 学习资源下架后只剩权益服务的 4 个入口
+  check('宫格有 4 个入口', items.length, 4);
   // 顺序：权益服务 4 个（含反馈建议）在前 -> 学习资源 4 个在后
   const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
-  check('前 4 个属权益服务', tones.slice(0, 4).every((t) => t === 'ig-rights'), true);
-  check('后 4 个属学习资源', tones.slice(4).every((t) => t === 'ig-study'), true);
+  check('4 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
   const labels = items.map((a) => a.querySelector('.ig-label').textContent);
-  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 反馈建议 资源库 历年试卷 学习路径 技能自查');
+  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 反馈建议');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
@@ -227,13 +228,12 @@ console.log('=== 5. 首页图标宫格 ===');
   // 分组标题
   const groupHeads = grid.querySelectorAll('.ig-group-head');
   console.log('  分组数: ' + groupHeads.length);
-  check('宫格分成 2 组', groupHeads.length, 2);
-  check('第一组是「权益服务」', groupHeads[0].textContent.indexOf('权益服务') === 0, true);
-  check('第二组是「学习资源」', groupHeads[1].textContent.indexOf('学习资源') === 0, true);
+  check('宫格只剩 1 组', groupHeads.length, 1);
+  check('这一组是「权益服务」', groupHeads[0].textContent.indexOf('权益服务') === 0, true);
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
-  check('数字角标 7 个（反馈建议无数字）', nums.length, 7);
+  check('数字角标 3 个（反馈建议无数字）', nums.length, 3);
 }
 
 console.log('\n=== 5b. 底部标签栏 ===');
@@ -241,9 +241,9 @@ console.log('\n=== 5b. 底部标签栏 ===');
   const bar = ids['tabbar'];
   const tabs = bar.querySelectorAll('.tab-item');
   console.log('  标签数: ' + tabs.length);
-  check('底部有 4 个标签', tabs.length, 4);
+  check('底部有 3 个标签（学习资源已下架）', tabs.length, 3);
   const tl = tabs.map((t) => t.textContent);
-  check('标签文案', tl.join(' '), '🏠首页 🛡️权益服务 📚学习资源 💬反馈建议');
+  check('标签文案', tl.join(' '), '🏠首页 🛡️权益服务 💬反馈建议');
   nav.home();
   const activeHome = ids['tabbar'].querySelectorAll('.tab-item.active');
   check('首页时「首页」高亮', activeHome.length, 1);

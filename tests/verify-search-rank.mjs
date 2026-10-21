@@ -1,4 +1,4 @@
-﻿// 验证相关度排序与无结果建议
+// 验证相关度排序与无结果建议
 import { setupDom, loadScript, makeNav } from './dom-stub.mjs';
 import { makeChecker } from './dom-stub.mjs';
 
@@ -8,7 +8,8 @@ const { ids } = setupDom([
   'view-resources', 'view-guides', 'view-skills', 'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-exams', 'subnav', 'view-channels', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
-eval(script);
+globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
+  eval(script);
 
 // 新结构下资源列表在学习资源区，先导航过去
 makeNav(ids).go('library');

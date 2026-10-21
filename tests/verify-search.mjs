@@ -1,4 +1,4 @@
-﻿// 回归测试：搜索结果计数 + 关键词高亮 + 匹配位置提示
+// 回归测试：搜索结果计数 + 关键词高亮 + 匹配位置提示
 //
 // 为什么需要它：
 //   高亮是把用户输入拼进 DOM 的路径 —— 最容易出的问题是【文本被当成 HTML 解析】，
@@ -14,7 +14,8 @@ const { ids } = setupDom([
 ]);
 const { check, done } = makeChecker();
 
-eval(script);
+globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
+  eval(script);
 
 // 新结构下资源列表在学习资源区，先导航过去
 makeNav(ids).go('library');

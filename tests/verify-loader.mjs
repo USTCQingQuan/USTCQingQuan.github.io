@@ -1,4 +1,4 @@
-﻿// 回归测试：数据加载双路径
+// 回归测试：数据加载双路径
 //   1) https 下走 resources.json 并重绘
 //   2) file:// 下静默降级到内嵌数据
 // 用法: node tests/verify-loader.mjs [index.html]
@@ -50,6 +50,7 @@ function runOnce(protocol) {
     return { ok: true, status: 200, json: async () => FAKE };
   };
 
+  globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
   eval(script);
   // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
   globalThis.location.hash = '#/study/library';
@@ -113,6 +114,7 @@ async function runWithPayload(protocol, payload, sentinel) {
   Object.defineProperty(globalThis, 'navigator', { configurable: true, writable: true, value: {} });
   globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => payload });
 
+  globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
   eval(script);
   // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
   globalThis.location.hash = '#/study/library';

@@ -1,4 +1,4 @@
-﻿// 回归测试：三个视图（资源库 / 学习路径 / 技能自查）与详情页
+// 回归测试：三个视图（资源库 / 学习路径 / 技能自查）与详情页
 // 用法: node tests/verify-views.mjs [index.html]
 //
 // 这些测试跑的是 index.html 里页面自身的脚本，用的是 tests/dom-stub.mjs 提供的 DOM 桩。
@@ -15,6 +15,7 @@ const { byId, ids, store, calls } = setupDom([
 const { check, done } = makeChecker();
 
 try {
+  globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
   eval(script);
 } catch (e) {
   console.log('  ✗ 页面脚本执行抛错: ' + e.message);

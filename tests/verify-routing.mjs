@@ -16,7 +16,9 @@ let quiet = false;
 const origError = console.error;
 console.error = function () { if (!quiet) origError.apply(console, arguments); };
 
-function boot(hash, mode) {
+function boot(hash, mode, forceStudy) {
+  if (forceStudy) globalThis.__FORCE_STUDY__ = true;
+  else delete globalThis.__FORCE_STUDY__;
   const dom = setupDom(IDS, { protocol: 'https:', hash });
   globalThis.fetch = async (u) => {
     const url = String(u);
@@ -34,7 +36,28 @@ function whichShown(ids) {
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
-console.log('=== 1. 各种 hash 下的落地视图 ===');
+console.log('=== 1a. 学习资源【已下架】时：study 路由应回落首页 ===');
+{
+  const DOWN = [
+    ['#/study', 'view-home'],
+    ['#/study/library', 'view-home'],
+    ['#/study/guides', 'view-home'],
+    ['#/study/skills', 'view-home'],
+    ['#/study/exams', 'view-home'],
+    ['#/study/nonexistent', 'view-home'],
+    ['#/study/exams/extra', 'view-home'],
+  ];
+  for (const [hash, expect] of DOWN) {
+    const { ids, err } = boot(hash, undefined, false);
+    if (err) { check(hash + ' 不抛错', false, true); continue; }
+    const shown = whichShown(ids);
+    console.log('  ' + hash.padEnd(24) + '→ ' + (shown.join(',') || '(白屏!)'));
+    check(hash + ' 回落首页', shown[0] || '', expect);
+  }
+}
+
+console.log('');
+console.log('=== 1b. 强制打开学习资源时：16 种 hash 全部正确 ===');
 const CASES = [
   ['', 'view-home'], ['#/', 'view-home'],
   ['#/rights', 'view-channels'], ['#/rights/channels', 'view-channels'],
@@ -42,13 +65,13 @@ const CASES = [
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
-  ['#/nonexistent', 'view-home'],             // 非法分区回落首页
-  ['#/study/nonexistent', 'view-resources'],  // 非法子视图回落到分区第一个
+  ['#/nonexistent', 'view-home'],
+  ['#/study/nonexistent', 'view-resources'],
   ['#/rights/', 'view-channels'], ['#', 'view-home'], ['#/study/exams/extra', 'view-exams'],
 ];
 
 for (const [hash, expect] of CASES) {
-  const { ids, err } = boot(hash);
+  const { ids, err } = boot(hash, undefined, true);
   if (err) { check('hash=' + JSON.stringify(hash) + ' 不抛错', false, true); continue; }
   const shown = whichShown(ids);
   const label = hash || '(空)';
@@ -56,11 +79,12 @@ for (const [hash, expect] of CASES) {
   check('hash=' + label + ' 恰好一个视图', shown.length, 1);
   check('hash=' + label + ' 落到正确视图', shown[0] || '', expect);
 }
+delete globalThis.__FORCE_STUDY__;
 
 console.log('');
 console.log('=== 2. 深链下导航高亮同步 ===');
 {
-  const { ids } = boot('#/study/exams');
+  const { ids } = boot('#/study/exams', undefined, true);
   const tops = ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
   const at = tops.find((b) => (b.className || '').includes('active'));
   check('一级高亮「学习资源」', at ? at.textContent : '', '学习资源');
@@ -76,17 +100,22 @@ console.log('=== 2. 深链下导航高亮同步 ===');
 
 console.log('');
 console.log('=== 3. 底部标签栏处处存在 ===');
-for (const h of ['#/', '#/rights/channels', '#/study/library']) {
+for (const h of ['#/', '#/rights/channels']) {
   const { ids } = boot(h);
   const tabs = ids.tabbar.children.filter((c) => (c.className || '').includes('tab-item'));
-  check('hash=' + h + ' 底部标签数', tabs.length, 4);
+  check('hash=' + h + ' 底部标签数（下架后 3 项）', tabs.length, 3);
+}
+{
+  const { ids } = boot('#/', undefined, true);
+  const tabs = ids.tabbar.children.filter((c) => (c.className || '').includes('tab-item'));
+  check('强制打开学习资源时底部 4 项', tabs.length, 4);
 }
 
 console.log('');
 console.log('=== 4. 远端数据全部失败时，内嵌数据兜底 ===');
 {
   quiet = true;
-  const { ids, err } = boot('#/study/library', 'allfail');
+  const { ids, err } = boot('#/study/library', 'allfail', true);
   await new Promise((r) => setTimeout(r, 120));
   quiet = false;
   check('不抛异常', !!err, false);
@@ -100,7 +129,7 @@ console.log('');
 console.log('=== 5. 搜索框在无数据时输入不崩 ===');
 {
   quiet = true;
-  const { ids } = boot('#/study/library', 'allfail');
+  const { ids } = boot('#/study/library', 'allfail', true);
   await new Promise((r) => setTimeout(r, 80));
   ids.q.value = '<img src=x onerror=alert(1)>';
   let threw = false;
@@ -116,7 +145,7 @@ console.log('=== 5. 搜索框在无数据时输入不崩 ===');
 console.log('');
 console.log('=== 6. 重复点击同一导航项不出错 ===');
 {
-  const { ids } = boot('#/study/library');
+  const { ids } = boot('#/study/library', undefined, true);
   const tops = ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
   let threw = false;
   try {
