@@ -158,86 +158,36 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 }
 console.log('');
 
-console.log('=== 5a. 首页头条轮播 ===');
+console.log('=== 5a. 首页头条轮播（已关闭） ===');
 {
+  // 求精简，轮播区块已用 SHOW_BANNER=false 关掉。
+  // 这里验证：容器存在但隐藏、没有渲染任何 slide、圆点也没有。
   nav.home();
   const hb = ids['heroBanner'];
-  const slides = hb.querySelectorAll('.hb-slide');
-  console.log('  头条条数: ' + slides.length);
-  // 学习资源已下架，轮播只剩 3 条权益相关
-  check('头条有 3 条', slides.length, 3);
-  check('默认只显示第 1 条', slides.filter((x) => (x.className || '').includes('on')).length, 1);
-  const dots = hb.querySelectorAll('.hb-dot');
-  check('圆点数量与头条一致', dots.length, slides.length);
-  // 每条都要有标题与跳转目标
-  const noTitle = slides.filter((x) => !x.querySelector('.hb-title'));
-  check('每条都有标题', noTitle.length, 0);
-  const badHref = slides.filter((x) => !/^#\/|^https?:/.test(String(x.href || '')));
-  check('每条都有跳转地址', badHref.length, 0);
-  // 4 条里应有站内跳转也有外链
-  const inner = slides.filter((x) => String(x.href || '').indexOf('#/') === 0);
-  const outer = slides.filter((x) => String(x.href || '').indexOf('http') === 0);
-  console.log('  站内 ' + inner.length + ' 条 / 外链 ' + outer.length + ' 条');
-  check('既有站内跳转也有外链', inner.length > 0 && outer.length > 0, true);
-  // 第一条应是权益反馈入口
-  check('第 1 条指向权益反馈', String(slides[0].href || ''), '#/rights/channels');
+  console.log('  轮播容器 hidden: ' + hb.hidden);
+  check('轮播容器已隐藏', hb.hidden, true);
+  check('没有渲染 slide', hb.querySelectorAll('.hb-slide').length, 0);
+  check('没有圆点', hb.querySelectorAll('.hb-dot').length, 0);
+  // BANNERS 数据保留着，方便以后恢复（这里数一下定义里有几个 tag 字段）
+  const bannerDefs = (script.match(/const BANNERS = \[[\s\S]*?\n\];/) || [''])[0];
+  const bannerCount = (bannerDefs.match(/\btag:\s*"/g) || []).length;
+  console.log('  BANNERS 定义条数: ' + bannerCount);
+  check('BANNERS 数据仍保留 3 条', bannerCount, 3);
 }
 
-console.log('');
-console.log('=== 5a2. 手动滑动 ===');
+console.log('=== 5a2. 滑动手势（轮播已关闭） ===');
 {
+  // 轮播关了，但指针事件仍会打到容器上 —— 确认不会抛错、也不会凭空冒出一个 slide
   nav.home();
   const hb = ids['heroBanner'];
-  const cur = () => {
-    const sl = hb.querySelectorAll('.hb-slide');
-    for (let i = 0; i < sl.length; i++) if ((sl[i].className || '').includes('on')) return i;
-    return -1;
-  };
-  const before = cur();
-  console.log('  起始在第 ' + (before + 1) + ' 条');
-
-  // 模拟向左滑动 120px（应翻到下一条）
-  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-  hb.fire('pointermove', { clientX: 280, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-  hb.fire('pointerup', { clientX: 280, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-  const afterL = cur();
-  console.log('  左滑后在第 ' + (afterL + 1) + ' 条');
-  check('左滑切到下一条', afterL, (before + 1) % 4);
-
-  // 模拟向右滑动 120px（应翻回上一条）
-  hb.fire('pointerdown', { clientX: 200, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
-  hb.fire('pointermove', { clientX: 320, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
-  hb.fire('pointerup', { clientX: 320, clientY: 100, pointerType: 'touch', pointerId: 2, target: hb });
-  const afterR = cur();
-  console.log('  右滑后在第 ' + (afterR + 1) + ' 条');
-  check('右滑切回上一条', afterR, before);
-
-  // 滑动距离不足阈值：不切页
-  const b2 = cur();
-  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
-  hb.fire('pointermove', { clientX: 385, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
-  hb.fire('pointerup', { clientX: 385, clientY: 100, pointerType: 'touch', pointerId: 3, target: hb });
-  check('轻滑不切页（阈值生效）', cur(), b2);
-  console.log('  轻滑 15px 后仍在第 ' + (cur() + 1) + ' 条');
-
-  // 拖动后应吃掉 click，避免误跳转
-  hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
-  hb.fire('pointermove', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
-  hb.fire('pointerup', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 4, target: hb });
-  let prevented = false;
-  hb.fire('click', {
-    clientX: 250, clientY: 100, target: hb,
-    preventDefault() { prevented = true; },
-    stopPropagation() {},
-  });
-  check('拖完后的 click 被拦下', prevented, true);
-
-  // 圆点仍能手动切（不被拖动逻辑干扰）
-  const dots = hb.querySelectorAll('.hb-dot');
-  dots[2].fire('click', { preventDefault() {}, stopPropagation() {} });
-  check('点圆点仍能切到第 3 条', cur(), 2);
-
-  nav.home();
+  let threw = false;
+  try {
+    hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+    hb.fire('pointermove', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+    hb.fire('pointerup', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
+  } catch (e) { threw = true; }
+  check('轮播关闭时指针事件不报错', threw, false);
+  check('没有凭空渲染 slide', hb.querySelectorAll('.hb-slide').length, 0);
 }
 
 console.log('');
@@ -266,7 +216,7 @@ console.log('=== 5. 首页图标宫格 ===');
 
   // 第 2 个入口「学生会反馈渠道」：只到校学生会·研究生会那一组
   const feedback = items[1];
-  check('学生会反馈渠道指向 #/rights/union', String(feedback.href).indexOf('#/rights/union') >= 0, true);
+  check('学生会反馈渠道指向独立的 #/union/union', String(feedback.href).indexOf('#/union/union') >= 0, true);
   // 第 3 个入口「校园平台」：合并视图
   const campus = items[2];
   check('校园平台指向合并视图', String(campus.href).indexOf('#/campus/campusall') >= 0, true);
@@ -278,7 +228,7 @@ console.log('=== 5. 首页图标宫格 ===');
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
-  check('数字角标 2 个（第 1 项已改为外链，不带数字）', nums.length, 2);
+  check('所有入口都没有数字角标（求精简）', nums.length, 0);
 }
 
 console.log('\n=== 5b. 底部标签栏 ===');

@@ -293,6 +293,35 @@ console.log('=== 5g. 校园平台（校内平台 + 校园信息 合并） ===');
     chipText.some((x) => x.indexOf('校内平台') === 0) && chipText.some((x) => x.indexOf('校园信息') === 0), true);
 }
 
+console.log('=== 5h. 学生会反馈渠道（独立分区） ===');
+{
+  quiet = true;
+  const { ids } = boot('#/union/union', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+
+  const uni = ids['view-union'];
+  const cats = uni ? uni.querySelectorAll('.rt-cat') : [];
+  console.log('  分组数: ' + cats.length);
+  check('学生会页只显示一组', cats.length, 1);
+  if (cats.length) {
+    const head = cats[0].querySelector('h3').textContent.replace(/\s+/g, ' ').trim();
+    console.log('  分组名: ' + head);
+    check('这一组是校学生会·研究生会', head.indexOf('校学生会') === 0, true);
+    const items = cats[0].querySelectorAll('.rt-item');
+    console.log('  渠道数: ' + items.length);
+    check('学生会渠道 3 条', items.length, 3);
+  }
+  check('没有 "正在载入" 残留', uni.querySelectorAll('.rt-loading').length, 0);
+
+  // 独立分区不在顶部导航里 —— 不应该有任何一级按钮高亮
+  const tops = ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
+  const active = tops.filter((b) => (b.className || '').includes('active'));
+  console.log('  顶部高亮按钮数: ' + active.length + '（应为 0，因为学生会是独立页）');
+  check('学生会页不高亮任何顶部按钮', active.length, 0);
+  check('顶部导航里没有「学生会反馈渠道」按钮', tops.some((b) => b.textContent === '学生会反馈渠道'), false);
+}
+
 console.log('=== 6. 重复点击同一导航项不出错 ===');
 {
   const { ids } = boot('#/study/library', undefined, true);

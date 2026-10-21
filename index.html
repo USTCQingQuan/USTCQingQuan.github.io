@@ -579,7 +579,11 @@
     width: 38px; height: 38px; flex: none; border-radius: 50%;
     background: #fff; padding: 1px; box-shadow: 0 1px 4px rgba(0,0,0,.18);
   }
-  .brand-left { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1; }
+  .brand-left {
+    display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1;
+    /* 放不下时自然折行，而不是把品牌条撑出横向滚动 */
+    flex-wrap: wrap; row-gap: 2px;
+  }
   .brandbar .wrap { justify-content: flex-start; }
   .brandbar h1 {
     font-size: 21px; font-weight: 800; letter-spacing: 1.2px; line-height: 1;
@@ -601,12 +605,14 @@
     .bp-short { display: inline; }
     .brandbar p { font-size: 12px; }
   }
-  @media (max-width: 420px) {
-    /* 超窄屏空间紧张，按优先级依次舍弃：
-       1) 先藏「试卷」统计，保住「反馈渠道」和「资源」（权益是站点重心）
-       2) 再藏副标题 —— 下方的导航按钮已经写着「权益服务 / 学习资源」，信息不丢
-       320px 下若不藏副标题，品牌条会横向溢出约 37px（算过：61+10+108+10+120 > 272）。 */
-    .brandbar p { display: none; }
+  @media (max-width: 480px) {
+    /* 窄屏改为两行：第一行 校徽 + 权益广场，第二行 运营单位。
+       不再隐藏运营单位 —— 那是"谁在维护这个站"，手机上也需要看到。 */
+    .brandbar { padding: 8px 0 7px; }
+    .brandbar .wrap { flex-wrap: wrap; row-gap: 3px; }
+    .brandbar h1 { font-size: 21px; }
+    .brandbar p { font-size: 11.5px; }
+    .brand-seal { width: 28px; height: 28px; }
   }
 
   .hero.compact { padding: 34px 0 30px; }
@@ -3383,9 +3389,16 @@ const SECTIONS_ALL = [
     id: "rights", label: "学生权益反馈渠道",
     subs: [
       { id: "key", label: "主渠道", n: function () { return countChannelsIn(KEY_CAT_IDS); } },
-      { id: "union", label: "学生会渠道", n: function () { return countChannelsIn(UNION_CAT_IDS); } },
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
       /* 校内平台与校园信息已合并到顶部的「校园平台」，不再作为本分区的子视图 */
+    ],
+  },
+  {
+    /* 学生会反馈渠道：独立页面，不挂在「学生权益反馈渠道」分区下，
+       也不出现在顶部导航里 —— 只从首页宫格进入，点进去顶部不会误高亮别的按钮。 */
+    id: "union", label: "学生会反馈渠道", nav: false,
+    subs: [
+      { id: "union", label: "全部", n: function () { return countChannelsIn(UNION_CAT_IDS); } },
     ],
   },
   {
@@ -3430,6 +3443,10 @@ const SECTIONS_ALL = [
 /* 分类条开关，见《备份-分类条与内页入口.md》。
    测试里会设 __FORCE_SUBNAV__ 打开它 —— 测试要靠点分类条来切换视图，
    关掉就点不到了。这样分类条那部分代码每轮仍被验证，不会悄悄坏掉。 */
+/* 首页头条轮播暂时不要（求精简）。DOM、BANNERS 数据、渲染函数都保留，
+   恢复只需把这里改成 true。 */
+var SHOW_BANNER = false;
+
 var SHOW_SUBNAV = (typeof __FORCE_SUBNAV__ !== "undefined" && __FORCE_SUBNAV__) ? true : false;
 
 var SECTIONS = SECTIONS_ALL.filter(function (s) {
@@ -3479,7 +3496,7 @@ function renderModebar() {
 
   // 一级：首页 / 权益服务 / 学习资源
   var HOME = { id: "", label: "首页" };
-  var tops = [HOME].concat(SECTIONS);
+  var tops = [HOME].concat(SECTIONS.filter(function (x) { return x.nav !== false; }));
   for (var i = 0; i < tops.length; i++) {
     (function (s) {
       var b = document.createElement("button");
@@ -3545,11 +3562,18 @@ function applyMode() {
   }
   lastResView = isRes ? route.sub : "";
 
+  var hbBox = document.getElementById("heroBanner");
+  if (hbBox) hbBox.hidden = !SHOW_BANNER;
+
   renderModebar();
   renderTabbar();
   renderIconGrid();
 
-  if (route.home) { renderHeroBanner(); hbResume(); renderHome(); }
+  if (route.home) {
+    if (SHOW_BANNER) { renderHeroBanner(); hbResume(); }
+    else hbPause();
+    renderHome();
+  }
   else hbPause();
   if (isRes) { renderChips(); render(); }
   if (route.sub === "guides") renderGuides();
@@ -3810,25 +3834,21 @@ const HOME_GROUPS = [
       { icon: "🛡️", label: "青权中心​权益反馈渠道", desc: "",
         href: "https://young.ustc.edu.cn/login/sc-wisdom-group-learning/suggestions/Lists/suggestionsList", n: null },
       /* 只到「校学生会 · 研究生会」这一组：权益柜 QQ / 研会 QQ 群 / 权益服务部邮箱 */
-      { icon: "🎓", label: "学生会反馈渠道", desc: "权益柜 QQ / 研会群 / 邮箱", to: "#/rights/union",
-        n: function () { return countChannelsIn(UNION_CAT_IDS); } },
+      { icon: "🎓", label: "学生会反馈渠道", desc: "权益柜 QQ / 研会群 / 邮箱", to: "#/union/union",
+        n: null },
       /* 校内平台 + 校园信息 已合并成一个入口，与顶部导航的说法保持一致 */
       { icon: "🏫", label: "校园平台", desc: "评课/论坛/图书馆/通知", to: "#/campus/campusall",
-        n: function () { return countIn(CAMPUS_CATS); } },
+        n: null },
     ],
   },
   {
     label: "学习资源",
     tone: "study",
     items: [
-      { icon: "📚", label: "资源库", desc: "精选网络资源", to: "#/study/library",
-        n: function () { return countIn(LIBRARY_CATS); } },
-      { icon: "📄", label: "历年试卷", desc: "按课程分类", to: "#/study/exams",
-        n: function () { return EXAMS ? EXAMS.total : "…"; } },
-      { icon: "🧭", label: "学习路径", desc: "按阶段规划", to: "#/study/guides",
-        n: function () { return GUIDES.length; } },
-      { icon: "✅", label: "技能自查", desc: "看看还缺什么", to: "#/study/skills",
-        n: function () { return SKILLS.reduce(function (a, g) { return a + g.items.length; }, 0); } },
+      { icon: "📚", label: "资源库", desc: "精选网络资源", to: "#/study/library", n: null },
+      { icon: "📄", label: "历年试卷", desc: "按课程分类", to: "#/study/exams", n: null },
+      { icon: "🧭", label: "学习路径", desc: "按阶段规划", to: "#/study/guides", n: null },
+      { icon: "✅", label: "技能自查", desc: "看看还缺什么", to: "#/study/skills", n: null },
     ],
   },
 ];
@@ -3881,6 +3901,9 @@ function renderIconGrid() {
 
     var row = document.createElement("div");
     row.className = "ig-row";
+    /* 列数跟着入口数走：3 个就 3 列。
+       固定 4 列时，3 个入口每格只有 ~72px（320 屏），「青权中心权益反馈渠道」会被挤成三行。 */
+    row.style.gridTemplateColumns = "repeat(" + grp.items.length + ", 1fr)";
     for (var i = 0; i < grp.items.length; i++) {
       (function (e) {
         var a = document.createElement("a");
