@@ -228,6 +228,23 @@ console.log('=== 5e. 教学服务页 ===');
   check('不再停在载入提示', tea.querySelectorAll('.rt-loading').length, 0);
 }
 
+console.log('=== 5e2. 四个快捷页都不带说明框 ===');
+{
+  quiet = true;
+  const PAGES = ['key', 'repair', 'dept', 'teach'];
+  for (const sub of PAGES) {
+    const { ids } = boot('#/' + (sub === 'key' ? 'rights/key' : sub), undefined, true);
+    await new Promise((r) => setTimeout(r, 120));
+    const view = ids['view-' + sub];
+    const intro = view ? view.querySelectorAll('.rt-intro') : [];
+    const cats = view ? view.querySelectorAll('.rt-cat') : [];
+    console.log('  ' + sub + ': 说明框 ' + intro.length + ' / 分组 ' + cats.length);
+    check(sub + ' 页没有说明框', intro.length, 0);
+    check(sub + ' 页仍有内容', cats.length > 0, true);
+  }
+  quiet = false;
+}
+
 console.log('=== 5f. 分类条与说明框已隐藏（真实状态） ===');
 {
   // 临时关掉测试开关，看用户实际看到的样子

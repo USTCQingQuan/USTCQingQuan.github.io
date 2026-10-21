@@ -43,6 +43,19 @@ var SHOW_SUBNAV = false;   // 改成 true
 ```
 
 ### 恢复说明框
+
+**注意：说明框已从四个快捷页全部移除**（学生权益反馈渠道 / 校园报修 / 部门直拨电话 / 教学服务），
+不是只去掉了精简页那一处。`QUICK_PAGES` 里四条 `intro` 现在都是 `null`，
+想恢复哪一页就把哪一页改回对应常量：
+
+| 页面 | 改回 |
+|---|---|
+| 学生权益反馈渠道 | `INTRO_KEY` |
+| 校园报修 | `INTRO_REPAIR` |
+| 部门直拨电话 | `INTRO_DEPT` |
+| 教学服务 | `INTRO_TEACH` |
+
+（「全部渠道」完整页仍然保留说明框，用的是 `INTRO_FULL`，没动。）
 `QUICK_PAGES` 里 key 这一条的 `intro`：
 
 ```js

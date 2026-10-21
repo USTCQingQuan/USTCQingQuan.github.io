@@ -3333,11 +3333,15 @@ function countChannelsIn(catIds) {
    放在文件前面会拿到 undefined，导致过滤条件失效、显示全部 9 组（踩过）。
    加新的快捷页 = 这里加一条 + 加一个 <div> + SECTIONS 里加一个分区，
    隐藏/渲染/数据到达/出错兜底都由下面几处统一按这张表处理。 */
+/* 四个快捷页的顶部说明框目前都设为 null（不要说明框）。
+   文案常量 INTRO_KEY / INTRO_REPAIR / INTRO_DEPT / INTRO_TEACH 都还留着，
+   想恢复某页就把对应 intro 从 null 改回常量即可。
+   详见《备份-分类条与内页入口.md》。 */
 const QUICK_PAGES = {
   key:    { el: viewKey, catIds: KEY_CAT_IDS,    intro: null },   // 说明框暂时不要，恢复改成 INTRO_KEY
-  repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: INTRO_REPAIR },
-  dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: INTRO_DEPT },
-  teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: INTRO_TEACH },
+  repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: null },   // 恢复改成 INTRO_REPAIR
+  dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: null },   // 恢复改成 INTRO_DEPT
+  teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: null },   // 恢复改成 INTRO_TEACH
 };
 
 /* 是不是某个快捷页路由 */
