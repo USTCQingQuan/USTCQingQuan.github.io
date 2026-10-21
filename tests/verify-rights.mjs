@@ -258,6 +258,12 @@ console.log('=== 5. 首页图标宫格 ===');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
+  // 第 1 个入口「青权中心权益反馈渠道」：直接跳外部网址，新窗口打开
+  const first = items[0];
+  check('青权中心权益反馈渠道直接跳外链',
+    String(first.href).indexOf('young.ustc.edu.cn') >= 0 && String(first.href).indexOf('suggestionsList') >= 0, true);
+  check('外链在新窗口打开', first.target, '_blank');
+
   // 第 2 个入口「学生权益反馈渠道」：站内精简页
   const feedback = items[1];
   check('学生权益反馈渠道指向站内精简页', String(feedback.href).indexOf('#/rights/key') >= 0, true);
@@ -272,7 +278,7 @@ console.log('=== 5. 首页图标宫格 ===');
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
-  check('数字角标 3 个（3 个入口都有数字）', nums.length, 3);
+  check('数字角标 2 个（第 1 项已改为外链，不带数字）', nums.length, 2);
 }
 
 console.log('\n=== 5b. 底部标签栏 ===');
