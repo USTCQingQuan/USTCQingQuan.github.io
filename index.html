@@ -1046,6 +1046,7 @@
   <div id="view-exams" hidden></div>
   <div id="view-channels" hidden></div>
 <div id="view-key" hidden></div>
+<div id="view-repair" hidden></div>
 </main>
 
 <!-- 底部标签栏：只在小屏显示，替代顶部导航（拇指更好够到） -->
@@ -3241,6 +3242,7 @@ const viewSki = document.getElementById("view-skills");
 const viewExa = document.getElementById("view-exams");
 const viewCha = document.getElementById("view-channels");
 const viewKey = document.getElementById("view-key");
+const viewRep = document.getElementById("view-repair");
 const toolbar = document.querySelector(".toolbar");
 
 /* ===================== 站点结构 =====================
@@ -3270,6 +3272,36 @@ var SHOW_STUDY = (typeof __FORCE_STUDY__ !== "undefined" && __FORCE_STUDY__) ? t
    其余渠道（报修、部门电话、专题问卷等）留在「权益反馈」完整页里。 */
 var KEY_CAT_IDS = ["youth", "student", "park"];
 
+/* 报修入口单独成页 —— 这是使用频率最高的一条，值得在顶部导航给一个直接入口。 */
+var REPAIR_CAT_IDS = ["urgent"];
+
+var INTRO_FULL =
+  "遇到问题不知道找谁？这里汇总了校内的反馈渠道 —— " +
+  "<b>网页、QQ 群、电话、邮箱、公众号都有</b>，按你的习惯选一个。部分渠道还在收集中，已标注「待补充」。";
+
+var INTRO_KEY =
+  "这三条是最直接的学生权益反馈渠道 —— " +
+  "按你所属的组织选一个，<b>提交后会有人跟进</b>。想找报修、部门电话等其他渠道，" +
+  "请到「全部渠道」完整页。";
+
+var INTRO_REPAIR =
+  "宿舍水电、家具、公共设施损坏，<b>走这里最快</b> —— " +
+  "不用跑前台，在线提交即可，报修后可在原系统查进度。教学设备故障请用第三个入口。";
+
+function countRepairChannels() {
+  if (!CHANNELS) return "…";
+  var n = 0;
+  for (var i = 0; i < CHANNELS.categories.length; i++) {
+    var c = CHANNELS.categories[i];
+    if (REPAIR_CAT_IDS.indexOf(c.id) >= 0) {
+      for (var j = 0; j < c.channels.length; j++) {
+        if (c.channels[j].status === "ok") n++;
+      }
+    }
+  }
+  return n;
+}
+
 function countKeyChannels() {
   if (!CHANNELS) return "…";
   var n = 0;
@@ -3294,6 +3326,13 @@ const SECTIONS_ALL = [
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
       { id: "platforms", label: "校内平台", n: function () { return countIn(["校内平台"]); } },
       { id: "campus", label: "校园信息", n: function () { return countIn(["校园信息"]); } },
+    ],
+  },
+  {
+    /* 报修是高频操作，单列一个顶部入口 */
+    id: "repair", label: "校园报修",
+    subs: [
+      { id: "repair", label: "报修入口", n: function () { return countRepairChannels(); } },
     ],
   },
   {
@@ -3404,6 +3443,7 @@ function applyMode() {
   viewExa.hidden = route.sub !== "exams";
   viewCha.hidden = route.sub !== "channels";
   viewKey.hidden = route.sub !== "key";
+  viewRep.hidden = route.sub !== "repair";
   // 搜索与筛选栏只对资源类视图有意义
   if (toolbar) toolbar.hidden = !isRes;
 
@@ -3426,6 +3466,7 @@ function applyMode() {
   if (route.sub === "exams") renderExams();
   if (route.sub === "channels") renderRights();
   if (route.sub === "key") renderRightsKey();
+  if (route.sub === "repair") renderRepair();
 
   window.scrollTo({ top: 0, behavior: "auto" });
 }
@@ -4722,6 +4763,7 @@ function loadChannels() {
       // 按当前所在视图重渲染 —— 精简页和完整页是两个容器，漏掉任何一个都会停在「正在载入…」
       if (route.sub === "channels") renderRights();
       if (route.sub === "key") renderRightsKey();
+      if (route.sub === "repair") renderRepair();
     })
     .catch(function (e) {
       console.error("[权益广场] 权益渠道加载失败:", e);
@@ -4731,7 +4773,7 @@ function loadChannels() {
 
 function renderRightsError(msg) {
   // 精简页与完整页是两个容器，错误要写在当前正看的那个
-  const host = route.sub === "key" ? viewKey : viewCha;
+  const host = route.sub === "key" ? viewKey : (route.sub === "repair" ? viewRep : viewCha);
   host.innerHTML = "";
   const p = document.createElement("p");
   p.className = "empty";
@@ -4739,7 +4781,7 @@ function renderRightsError(msg) {
   host.appendChild(p);
 }
 
-function renderChannelsInto(host, catFilter) {
+function renderChannelsInto(host, catFilter, introText) {
   if (!CHANNELS) {
     if (!chLoaded) loadChannels();
     if (!host.querySelector(".rt-loading")) {
@@ -4758,12 +4800,7 @@ function renderChannelsInto(host, catFilter) {
   // 顶部说明
   const intro = document.createElement("div");
   intro.className = "rt-intro";
-  intro.innerHTML = catFilter
-    ? "这三条是最直接的学生权益反馈渠道 —— " +
-      "按你所属的组织选一个，<b>提交后会有人跟进</b>。想找报修、部门电话等其他渠道，" +
-      "请到「权益反馈」完整页。"
-    : "遇到问题不知道找谁？这里汇总了校内的反馈渠道 —— " +
-      "<b>网页、QQ 群、电话、邮箱、公众号都有</b>，按你的习惯选一个。部分渠道还在收集中，已标注「待补充」。";
+  intro.innerHTML = introText || INTRO_FULL;
   host.appendChild(intro);
 
   // 按分类渲染
@@ -4883,10 +4920,13 @@ function renderChannelsInto(host, catFilter) {
 }
 
 /* 完整渠道页（9 组） */
-function renderRights() { renderChannelsInto(viewCha, null); }
+function renderRights() { renderChannelsInto(viewCha, null, INTRO_FULL); }
 
 /* 学生权益反馈渠道精简页（只 3 组） */
-function renderRightsKey() { renderChannelsInto(viewKey, KEY_CAT_IDS); }
+function renderRightsKey() { renderChannelsInto(viewKey, KEY_CAT_IDS, INTRO_KEY); }
+
+/* 校园报修页（只 1 组） */
+function renderRepair() { renderChannelsInto(viewRep, REPAIR_CAT_IDS, INTRO_REPAIR); }
 
 
 

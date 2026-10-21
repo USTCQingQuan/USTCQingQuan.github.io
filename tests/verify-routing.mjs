@@ -9,7 +9,7 @@ const { check, done } = makeChecker();
 const IDS = [
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides',
-  'view-skills', 'view-exams', 'view-channels', 'view-key', 'promoBody', 'detail-mask', 'detail-box',
+  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'promoBody', 'detail-mask', 'detail-box',
 ];
 
 let quiet = false;
@@ -32,7 +32,7 @@ function boot(hash, mode, forceStudy) {
 }
 
 function whichShown(ids) {
-  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key']
+  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair']
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
@@ -62,6 +62,7 @@ const CASES = [
   ['', 'view-home'], ['#/', 'view-home'],
   ['#/rights', 'view-key'], ['#/rights/channels', 'view-channels'],
   ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
+  ['#/repair', 'view-repair'], ['#/repair/repair', 'view-repair'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
@@ -156,6 +157,27 @@ console.log('=== 5b. 精简页在数据异步到达后也能渲染 ===');
   console.log('  异步加载后精简页分组数: ' + cats.length);
   check('精简页最终渲染出 3 组', cats.length, 3);
   check('不再停在载入提示', key.querySelectorAll('.rt-loading').length, 0);
+}
+
+console.log('=== 5c. 校园报修页 ===');
+{
+  quiet = true;
+  const { ids } = boot('#/repair', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+  const rep = ids['view-repair'];
+  const cats = rep.querySelectorAll('.rt-cat');
+  console.log('  报修页分组数: ' + cats.length);
+  check('报修页只显示一组', cats.length, 1);
+  if (cats.length) {
+    const head = cats[0].querySelector('h3').textContent.replace(/\s+/g, ' ').trim();
+    console.log('  分组名: ' + head);
+    check('这一组是校园报修', head.indexOf('校园报修') === 0, true);
+    const items = cats[0].querySelectorAll('.rt-item');
+    console.log('  报修渠道数: ' + items.length);
+    check('报修渠道 3 条', items.length, 3);
+  }
+  check('不再停在载入提示', rep.querySelectorAll('.rt-loading').length, 0);
 }
 
 console.log('=== 6. 重复点击同一导航项不出错 ===');

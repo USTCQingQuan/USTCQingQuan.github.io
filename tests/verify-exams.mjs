@@ -11,7 +11,7 @@ const realExams = JSON.parse(await readFile('exams.json', 'utf8'));
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-work', 'detail-mask', 'detail-box',
 ], { protocol: 'https:' });   // 必须用 https：file:// 下页面会跳过 fetch，走"无法载入"分支
 const { check, done } = makeChecker();
 
