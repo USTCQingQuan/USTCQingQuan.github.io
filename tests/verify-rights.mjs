@@ -248,18 +248,22 @@ console.log('=== 5. 首页图标宫格 ===');
   const items = grid.querySelectorAll('.ig-item');
   console.log('  宫格数量: ' + items.length);
   // 学习资源下架后只剩权益服务的 4 个入口
-  check('宫格有 4 个入口', items.length, 4);
+  check('宫格有 3 个入口（校内平台与校园信息已合并）', items.length, 3);
   // 顺序：权益服务 4 个（含反馈建议）在前 -> 学习资源 4 个在后
   const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
-  check('4 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
-  const labels = items.map((a) => a.querySelector('.ig-label').textContent);
-  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 学生权益反馈渠道');
+  check('3 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
+  // 标签里可能含零宽空格（控制手机折行位置），比对前先去掉
+  const labels = items.map((a) => a.querySelector('.ig-label').textContent.replace(/\u200B/g, ''));
+  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生权益反馈渠道 校园平台');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
-  // 第 4 个入口「学生权益反馈渠道」：站内精简页，不再是外部问卷
-  const feedback = items[3];
+  // 第 2 个入口「学生权益反馈渠道」：站内精简页
+  const feedback = items[1];
   check('学生权益反馈渠道指向站内精简页', String(feedback.href).indexOf('#/rights/key') >= 0, true);
+  // 第 3 个入口「校园平台」：合并视图
+  const campus = items[2];
+  check('校园平台指向合并视图', String(campus.href).indexOf('#/campus/campusall') >= 0, true);
   // 分组标题
   const groupHeads = grid.querySelectorAll('.ig-group-head');
   console.log('  分组数: ' + groupHeads.length);
@@ -268,7 +272,7 @@ console.log('=== 5. 首页图标宫格 ===');
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
-  check('数字角标 4 个（4 个入口都有数字）', nums.length, 4);
+  check('数字角标 3 个（3 个入口都有数字）', nums.length, 3);
 }
 
 console.log('\n=== 5b. 底部标签栏 ===');
