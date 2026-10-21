@@ -88,12 +88,12 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
   console.log('  精简页渠道条目数: ' + chans.length);
   check('精简页渠道数（1+3+2=6）', chans.length, 6);
 
-  // 回到完整页，确认两个视图互不污染
+  // 回到完整页，确认两个视图互不污染（组数从数据读，不写死）
   ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'))
     .find((b) => b.textContent === '学生权益反馈渠道').fire('click');
   const subs = ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
   subs.find((b) => b.textContent.indexOf('全部渠道') === 0).fire('click');
-  check('完整页仍是 9 组', ids['view-channels'].querySelectorAll('.rt-cat').length, 9);
+  check('完整页是全部组（与数据一致）', ids['view-channels'].querySelectorAll('.rt-cat').length, real.categories.length);
 }
 
 console.log('');

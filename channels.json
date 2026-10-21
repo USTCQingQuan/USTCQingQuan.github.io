@@ -237,21 +237,6 @@
       ]
     },
     {
-      "id": "appeal",
-      "name": "监督与申诉",
-      "desc": "违规违纪、作风问题",
-      "channels": [
-        {
-          "name": "纪检监察 监督举报",
-          "kind": "link",
-          "value": "https://jjjc.ustc.edu.cn/jdjb.htm",
-          "desc": "对违纪违规、作风问题的监督举报",
-          "status": "ok",
-          "verified": "2026-10-16 实测可访问（126ms）"
-        }
-      ]
-    },
-    {
       "id": "survey",
       "name": "专题问卷",
       "desc": "针对具体事项的专项收集",
