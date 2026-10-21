@@ -3405,25 +3405,15 @@ function applyMode() {
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
-/* 长链接在窄卡片里会被省略号截断，截断后往往只剩域名 ——
-   看起来跟首页一样，看不出指向哪个具体页面（比如「权益反馈」）。
-   这里做智能缩略：保留域名 + 末尾最有辨识度的路径段，中间用 … 省略。
-   完整的 URL 仍然保留在 href 和 title（悬停可见）里，不影响跳转。 */
-function shortUrl(u) {
-  var str = String(u == null ? "" : u);
-  var m = str.match(/^https?:\/\/([^\/]+)(\/.*)?$/);
-  if (!m) return str;
-  var host = m[1].replace(/^www\./, "");
-  var path = m[2] || "";
-  if (!path || path === "/") return host;
-  var full = host + path;
-  if (full.length <= 30) return full;
-  var segs = path.split("/").filter(function (x) { return x; });
-  if (!segs.length) return host;
-  var last = segs[segs.length - 1];
-  // 最后一段本身就是一长串 id 时，截断它
-  if (last.length > 20) last = last.slice(0, 18) + "…";
-  return host + "/…/" + last;
+/* 渠道卡片上的地址显示。
+   卡片底部的 chip 只有 190px，装不下完整 URL —— 直接显示全地址会被截成
+   「https://young.ustc.edu.cn/...」，看起来跟首页一模一样，看不出是哪个具体页面；
+   做智能缩略也仍会被二次截断。所以 link 类型只显示域名：
+   去处由卡片标题与说明交代，完整地址保留在 href 与 title（悬停可见）里。 */
+function hostOf(u) {
+  var m = String(u == null ? "" : u).match(/^https?:\/\/([^\/]+)/);
+  if (!m) return String(u == null ? "" : u);
+  return m[1].replace(/^www\./, "");
 }
 
 /* 从试卷的 y 字段里取出年份数字。
@@ -4788,7 +4778,8 @@ function renderRights() {
         if (val && kind !== "guide") {
           var v = document.createElement("span");
           v.className = "rt-val";
-          v.textContent = shortUrl(val);   // 卡片上显示缩略版
+          // 链接类只显示域名；邮箱/QQ/电话显示原值（那些本身就是完整信息）
+          v.textContent = kind === "link" ? hostOf(val) : val;
           v.title = val;                   // 悬停可见完整地址
           foot.appendChild(v);
         }
