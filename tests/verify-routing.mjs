@@ -61,10 +61,12 @@ console.log('=== 1b. 强制打开学习资源时：16 种 hash 全部正确 ==='
 const CASES = [
   ['', 'view-home'], ['#/', 'view-home'],
   ['#/rights', 'view-key'], ['#/rights/channels', 'view-channels'],
-  ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
+  ['#/rights/platforms', 'view-key'],   // 已合并到「校园平台」，旧路由回落到分区首个子视图
+  ['#/rights/campus', 'view-key'],
   ['#/repair', 'view-repair'], ['#/repair/repair', 'view-repair'],
   ['#/dept', 'view-dept'], ['#/dept/dept', 'view-dept'],
   ['#/teach', 'view-teach'], ['#/teach/teach', 'view-teach'],
+  ['#/campus', 'view-resources'], ['#/campus/campusall', 'view-resources'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
@@ -271,6 +273,24 @@ console.log('=== 5f. 分类条与说明框已隐藏（真实状态） ===');
   check('深链接仍可直达全部渠道', ids2['view-channels'].hidden, false);
 
   globalThis.__FORCE_SUBNAV__ = true;   // 还原，后面的用例还要用
+}
+
+console.log('=== 5g. 校园平台（校内平台 + 校园信息 合并） ===');
+{
+  quiet = true;
+  const { ids } = boot('#/campus/campusall', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+  const grid = ids.grid;
+  const cards = grid.children.length;
+  console.log('  合并后卡片数: ' + cards);
+  check('校园平台合并后 35 条（30+5）', cards, 35);
+
+  const chips = ids.chips.querySelectorAll('.chip');
+  const chipText = chips.map((c) => c.textContent);
+  console.log('  分类 chips: ' + chipText.join(' / '));
+  check('chips 里同时含校内平台与校园信息',
+    chipText.some((x) => x.indexOf('校内平台') === 0) && chipText.some((x) => x.indexOf('校园信息') === 0), true);
 }
 
 console.log('=== 6. 重复点击同一导航项不出错 ===');

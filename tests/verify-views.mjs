@@ -28,8 +28,8 @@ const modeBtns = () => ids.modebar.children.filter((c) => (c.className || '').in
 console.log('=== 1. 导航结构 ===');
 // 首页 + 两个分区；每个分区下有子视图
 const nav = makeNav(ids);
-check('一级按钮数（首页/学生权益反馈渠道/校园报修/部门直拨电话/教学服务/学习资源）', modeBtns().length, 6);
-check('一级按钮文案', modeBtns().map((b) => b.textContent).join(' | '), '首页 | 学生权益反馈渠道 | 校园报修 | 部门直拨电话 | 教学服务 | 学习资源');
+check('一级按钮数（首页/学生权益反馈渠道/校园报修/部门直拨电话/教学服务/校园平台/学习资源）', modeBtns().length, 7);
+check('一级按钮文案', modeBtns().map((b) => b.textContent).join(' | '), '首页 | 学生权益反馈渠道 | 校园报修 | 部门直拨电话 | 教学服务 | 校园平台 | 学习资源');
 check('默认停在「首页」', modeBtns()[0].textContent, '首页');
 check('首页视图默认显示', ids['view-home'].hidden, false);
 check('资源网格默认隐藏', ids['view-resources'].hidden, true);

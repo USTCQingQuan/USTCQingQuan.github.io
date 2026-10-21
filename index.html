@@ -3269,7 +3269,16 @@ const PLATFORM_CATS = ["校内平台", "校园信息"];
 const LIBRARY_CATS = CATEGORIES.slice(1).filter((c) => PLATFORM_CATS.indexOf(c) < 0);
 
 // 这些视图复用同一个资源网格，各自限定可见分类
-const RESOURCE_VIEWS = { platforms: ["校内平台"], campus: ["校园信息"], library: LIBRARY_CATS };
+/* campusall = 校内平台 + 校园信息 合并后的视图。
+   platforms / campus 两个旧视图保留着（导航里不再出现，但深链接仍可用，
+   以后想拆回去也方便）。 */
+const CAMPUS_CATS = ["校内平台", "校园信息"];
+const RESOURCE_VIEWS = {
+  platforms: ["校内平台"],
+  campus: ["校园信息"],
+  campusall: CAMPUS_CATS,
+  library: LIBRARY_CATS,
+};
 
 /* 学习资源分区暂时下架。
    保留数据文件与全部渲染代码，只要把这里改成 true 就能恢复 ——
@@ -3361,8 +3370,7 @@ const SECTIONS_ALL = [
     subs: [
       { id: "key", label: "主渠道", n: function () { return countChannelsIn(KEY_CAT_IDS); } },
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
-      { id: "platforms", label: "校内平台", n: function () { return countIn(["校内平台"]); } },
-      { id: "campus", label: "校园信息", n: function () { return countIn(["校园信息"]); } },
+      /* 校内平台与校园信息已合并到顶部的「校园平台」，不再作为本分区的子视图 */
     ],
   },
   {
@@ -3384,6 +3392,13 @@ const SECTIONS_ALL = [
     id: "teach", label: "教学服务",
     subs: [
       { id: "teach", label: "教学与课程", n: function () { return countChannelsIn(TEACH_CAT_IDS); } },
+    ],
+  },
+  {
+    /* 校内平台 + 校园信息 合并成一个顶部入口 */
+    id: "campus", label: "校园平台",
+    subs: [
+      { id: "campusall", label: "全部", n: function () { return countIn(CAMPUS_CATS); } },
     ],
   },
   {
