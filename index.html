@@ -3819,7 +3819,7 @@ function loadIssues() {
       if (body) body.setAttribute("data-built", "");
       if (route.home) renderHome();
     })
-    .catch(function (e) { console.error("[拾学集] 典型问题处理加载失败:", e); });
+    .catch(function (e) { console.error("[权益广场] 典型问题处理加载失败:", e); });
 }
 
 /* 权益工作动态：数据在 news.json。
@@ -3841,7 +3841,7 @@ function loadNews() {
       if (body) body.setAttribute("data-built", "");   // 让首页重画一次，带上动态
       if (route.home) renderHome();
     })
-    .catch(function (e) { console.error("[拾学集] 工作动态加载失败:", e); });
+    .catch(function (e) { console.error("[权益广场] 工作动态加载失败:", e); });
 }
 
 function renderHome() {
@@ -4349,7 +4349,7 @@ function applyResources(list) {
   const cover = coversEmbedded(list);
   if (!cover.ok) {
     // 远端数据比页面旧，不足以覆盖当前卡片 —— 宁可不用它，也不能让索引错位。
-    console.warn("[拾学集] resources.json 版本落后于页面，已忽略。缺少 " +
+    console.warn("[权益广场] resources.json 版本落后于页面，已忽略。缺少 " +
       cover.missing.length + " 条，例如：" + cover.missing.slice(0, 3).join("、"));
     return false;
   }
@@ -4409,7 +4409,7 @@ function loadExams() {
     })
     .catch(function (e) {
       // 打印真实错误：把渲染异常和网络失败混在一起会导致"页面空白但不知为何"
-      console.error("[拾学集] 试卷索引加载失败:", e);
+      console.error("[权益广场] 试卷索引加载失败:", e);
       renderExamsError("试卷索引加载失败，请刷新重试。");
     });
 }
@@ -4699,7 +4699,7 @@ function loadChannels() {
       if (route.sub === "channels") renderRights();
     })
     .catch(function (e) {
-      console.error("[拾学集] 权益渠道加载失败:", e);
+      console.error("[权益广场] 权益渠道加载失败:", e);
       renderRightsError("渠道数据加载失败，请刷新重试。");
     });
 }

@@ -1,5 +1,5 @@
 // cloudbase/ask/index.js
-// 拾学集 · AI 资源检索云函数（腾讯云 CloudBase，通过 HTTP 网关访问）
+// 权益广场 · AI 资源检索云函数（腾讯云 CloudBase，通过 HTTP 网关访问）
 //
 // 设计要点：
 //   1. API Key 只存在于云函数环境变量 DEEPSEEK_API_KEY，前端永远接触不到；
