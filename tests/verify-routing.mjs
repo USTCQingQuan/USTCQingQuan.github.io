@@ -9,7 +9,7 @@ const { check, done } = makeChecker();
 const IDS = [
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides',
-  'view-skills', 'view-exams', 'view-channels', 'promoBody', 'detail-mask', 'detail-box',
+  'view-skills', 'view-exams', 'view-channels', 'view-key', 'promoBody', 'detail-mask', 'detail-box',
 ];
 
 let quiet = false;
@@ -32,7 +32,7 @@ function boot(hash, mode, forceStudy) {
 }
 
 function whichShown(ids) {
-  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels']
+  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key']
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
@@ -60,14 +60,14 @@ console.log('');
 console.log('=== 1b. 强制打开学习资源时：16 种 hash 全部正确 ===');
 const CASES = [
   ['', 'view-home'], ['#/', 'view-home'],
-  ['#/rights', 'view-channels'], ['#/rights/channels', 'view-channels'],
+  ['#/rights', 'view-channels', 'view-key'], ['#/rights/channels', 'view-channels', 'view-key'],
   ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
   ['#/nonexistent', 'view-home'],
   ['#/study/nonexistent', 'view-resources'],
-  ['#/rights/', 'view-channels'], ['#', 'view-home'], ['#/study/exams/extra', 'view-exams'],
+  ['#/rights/', 'view-channels', 'view-key'], ['#', 'view-home'], ['#/study/exams/extra', 'view-exams'],
 ];
 
 for (const [hash, expect] of CASES) {

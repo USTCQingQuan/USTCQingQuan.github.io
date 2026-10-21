@@ -20,7 +20,7 @@ const FAKE = {
 function runOnce(protocol) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);
@@ -89,7 +89,7 @@ check('总数保持 186', b.async.total, '186');
 async function runWithPayload(protocol, payload, sentinel) {
   const ids = {};
   for (const id of ['grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-    'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
+    'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-work', 'detail-mask', 'detail-box']) ids[id] = makeEl('div');
   const byId = { total: makeEl('b'), freeCount: makeEl('b'), catCount: makeEl('b'), ...ids };
   ids.q.value = ''; ids.freeOnly.checked = false; ids.subchips.hidden = true; ids['detail-mask'].hidden = true;
   const ft = makeEl('label'); ft.className = 'free-toggle'; ids.chips.children.push(ft);

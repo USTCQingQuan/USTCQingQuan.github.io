@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'promoBody',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();
@@ -62,6 +62,41 @@ console.log('=== 2. 结构 ===');
 }
 console.log('');
 
+console.log('=== 2b. 学生权益反馈渠道精简页 ===');
+{
+  // 通过导航进入精简页（stub 里点 <a> 不会自动改 hash，用 nav.go）
+  nav.go('key');
+  const key = ids['view-key'];
+  check('精简页已显示', key.hidden, false);
+  check('完整渠道页已隐藏', ids['view-channels'].hidden, true);
+
+  const cats = key.querySelectorAll('.rt-cat');
+  const names = cats.map((c) => c.querySelector('h3').textContent.replace(/\s+/g, ' ').trim());
+  console.log('  精简页分组数: ' + cats.length);
+  cats.forEach((c, i) => console.log('    ' + (i + 1) + '. ' + names[i]));
+  check('精简页只显示三组', cats.length, 3);
+  if (cats.length === 3) {
+    check('第一组是青权中心', names[0].indexOf('青权中心') === 0, true);
+    check('第二组是校学生会·研究生会', names[1].indexOf('校学生会') === 0, true);
+    check('第三组是高新园区团工委', names[2].indexOf('高新园区团工委') === 0, true);
+  }
+  const allText = names.join(' ');
+  check('不含校园报修', allText.indexOf('校园报修') < 0, true);
+  check('不含各部门直拨电话', allText.indexOf('各部门直拨电话') < 0, true);
+
+  const chans = key.querySelectorAll('.rt-item');
+  console.log('  精简页渠道条目数: ' + chans.length);
+  check('精简页渠道数（1+3+2=6）', chans.length, 6);
+
+  // 回到完整页，确认两个视图互不污染
+  ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'))
+    .find((b) => b.textContent === '权益服务').fire('click');
+  const subs = ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
+  subs.find((b) => b.textContent.indexOf('权益反馈') === 0).fire('click');
+  check('完整页仍是 9 组', ids['view-channels'].querySelectorAll('.rt-cat').length, 9);
+}
+
+console.log('');
 console.log('=== 3. 可用条目：按 kind 给出正确操作 ===');
 {
   const items = view.querySelectorAll('.rt-item');
@@ -218,13 +253,13 @@ console.log('=== 5. 首页图标宫格 ===');
   const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
   check('4 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
   const labels = items.map((a) => a.querySelector('.ig-label').textContent);
-  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 反馈建议');
+  check('入口名称', labels.join(' '), '权益反馈 校内平台 校园信息 学生权益反馈渠道');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
-  // 反馈建议虽在权益组里，但指向外部问卷
+  // 第 4 个入口「学生权益反馈渠道」：站内精简页，不再是外部问卷
   const feedback = items[3];
-  check('反馈建议指向问卷', String(feedback.href).indexOf('wj.qq.com') >= 0 || String(feedback.href).indexOf('http') === 0, true);
+  check('学生权益反馈渠道指向站内精简页', String(feedback.href).indexOf('#/rights/key') >= 0, true);
   // 分组标题
   const groupHeads = grid.querySelectorAll('.ig-group-head');
   console.log('  分组数: ' + groupHeads.length);
@@ -233,7 +268,7 @@ console.log('=== 5. 首页图标宫格 ===');
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
-  check('数字角标 3 个（反馈建议无数字）', nums.length, 3);
+  check('数字角标 4 个（4 个入口都有数字）', nums.length, 4);
 }
 
 console.log('\n=== 5b. 底部标签栏 ===');
