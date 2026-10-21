@@ -143,6 +143,21 @@ console.log('=== 5. 搜索框在无数据时输入不崩 ===');
 }
 
 console.log('');
+console.log('=== 5b. 精简页在数据异步到达后也能渲染 ===');
+{
+  // 直接深链到精简页：首次渲染时 CHANNELS 还没到，会先显示「正在载入…」。
+  // 数据到达后必须重新渲染，否则会一直卡在载入提示（线上实测踩过）。
+  quiet = true;
+  const { ids } = boot('#/rights/key');
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+  const key = ids['view-key'];
+  const cats = key.querySelectorAll('.rt-cat');
+  console.log('  异步加载后精简页分组数: ' + cats.length);
+  check('精简页最终渲染出 3 组', cats.length, 3);
+  check('不再停在载入提示', key.querySelectorAll('.rt-loading').length, 0);
+}
+
 console.log('=== 6. 重复点击同一导航项不出错 ===');
 {
   const { ids } = boot('#/study/library', undefined, true);

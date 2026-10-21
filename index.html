@@ -4717,7 +4717,9 @@ function loadChannels() {
       setStat("chanStat", ok);
       refreshIconNums();
       renderModebar();
+      // 按当前所在视图重渲染 —— 精简页和完整页是两个容器，漏掉任何一个都会停在「正在载入…」
       if (route.sub === "channels") renderRights();
+      if (route.sub === "key") renderRightsKey();
     })
     .catch(function (e) {
       console.error("[权益广场] 权益渠道加载失败:", e);
@@ -4726,11 +4728,13 @@ function loadChannels() {
 }
 
 function renderRightsError(msg) {
-  viewCha.innerHTML = "";
+  // 精简页与完整页是两个容器，错误要写在当前正看的那个
+  const host = route.sub === "key" ? viewKey : viewCha;
+  host.innerHTML = "";
   const p = document.createElement("p");
   p.className = "empty";
   p.textContent = msg;
-  viewCha.appendChild(p);
+  host.appendChild(p);
 }
 
 function renderChannelsInto(host, catFilter) {
