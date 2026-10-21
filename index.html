@@ -573,6 +573,7 @@
     background: #fff; padding: 1px; box-shadow: 0 1px 4px rgba(0,0,0,.18);
   }
   .brand-left { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1; }
+  .brandbar .wrap { justify-content: flex-start; }
   .brandbar h1 {
     font-size: 21px; font-weight: 800; letter-spacing: 1.2px; line-height: 1;
     white-space: nowrap; flex: none;
@@ -584,14 +585,6 @@
   }
   .brandbar p b { color: #fff; font-weight: 600; }
   .bp-short { display: none; }
-  .brand-stats {
-    margin-left: auto; display: flex; gap: 16px; align-items: baseline;
-    font-size: 11.5px; color: #a9c3b8; white-space: nowrap; flex: none;
-  }
-  .brand-stats b {
-    font-size: 15px; font-weight: 800; color: #fff; margin-right: 3px;
-    font-variant-numeric: tabular-nums;
-  }
   @media (max-width: 780px) {
     .brandbar { padding: 7px 0; }
     .brandbar .wrap { min-height: 36px; gap: 9px; }
@@ -600,15 +593,12 @@
     .bp-long { display: none; }
     .bp-short { display: inline; }
     .brandbar p { font-size: 12px; }
-    .brand-stats { gap: 11px; font-size: 10.5px; }
-    .brand-stats b { font-size: 13.5px; }
   }
   @media (max-width: 420px) {
     /* 超窄屏空间紧张，按优先级依次舍弃：
        1) 先藏「试卷」统计，保住「反馈渠道」和「资源」（权益是站点重心）
        2) 再藏副标题 —— 下方的导航按钮已经写着「权益服务 / 学习资源」，信息不丢
        320px 下若不藏副标题，品牌条会横向溢出约 37px（算过：61+10+108+10+120 > 272）。 */
-    .brand-stats span:nth-child(3) { display: none; }
     .brandbar p { display: none; }
   }
 
@@ -1004,10 +994,6 @@
     <div class="brand-left">
       <h1>权益广场</h1>
       <p><span class="bp-long">运营单位：<b>共青团中国科学技术大学委员会 青年权益服务中心</b></span><span class="bp-short"><b>校团委青权中心</b></span></p>
-    </div>
-    <div class="brand-stats">
-      <span><b id="chanStat">—</b>反馈渠道</span>
-      <span><b id="issueStat">47</b>项议题</span>
     </div>
   </div>
 </section>
