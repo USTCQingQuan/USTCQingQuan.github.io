@@ -127,6 +127,10 @@ export function parseFragment(str) {
 }
 
 // 建立完整页面环境。idList 里列出的 id 都会提供对应元素；返回 { byId, ids, calls }
+// 测试里默认打开分类条：多数用例靠点分类条切换视图。
+// 想验证「分类条已关闭」的真实状态，用例里 delete globalThis.__FORCE_SUBNAV__ 再 boot。
+globalThis.__FORCE_SUBNAV__ = true;
+
 export function setupDom(idList, opts = {}) {
   const ids = {};
   for (const id of idList) ids[id] = makeEl('div');

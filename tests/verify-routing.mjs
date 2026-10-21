@@ -228,6 +228,34 @@ console.log('=== 5e. 教学服务页 ===');
   check('不再停在载入提示', tea.querySelectorAll('.rt-loading').length, 0);
 }
 
+console.log('=== 5f. 分类条与说明框已隐藏（真实状态） ===');
+{
+  // 临时关掉测试开关，看用户实际看到的样子
+  delete globalThis.__FORCE_SUBNAV__;
+  quiet = true;
+  const { ids } = boot('#/rights/key', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+
+  console.log('  subnav.hidden = ' + ids.subnav.hidden);
+  check('分类条默认隐藏', ids.subnav.hidden, true);
+  check('分类条里没有子按钮', ids.subnav.children.length, 0);
+
+  const key = ids['view-key'];
+  const intro = key.querySelectorAll('.rt-intro');
+  console.log('  说明框数量: ' + intro.length);
+  check('精简页没有说明框', intro.length, 0);
+  check('精简页仍有 3 组内容', key.querySelectorAll('.rt-cat').length, 3);
+
+  // 深链接仍能直达（分类条没了，但路由还在）
+  const { ids: ids2 } = boot('#/rights/channels', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  console.log('  深链 #/rights/channels 显示: ' + (ids2['view-channels'].hidden ? '(隐藏)' : 'view-channels'));
+  check('深链接仍可直达全部渠道', ids2['view-channels'].hidden, false);
+
+  globalThis.__FORCE_SUBNAV__ = true;   // 还原，后面的用例还要用
+}
+
 console.log('=== 6. 重复点击同一导航项不出错 ===');
 {
   const { ids } = boot('#/study/library', undefined, true);

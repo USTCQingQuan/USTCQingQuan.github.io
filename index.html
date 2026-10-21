@@ -3334,7 +3334,7 @@ function countChannelsIn(catIds) {
    加新的快捷页 = 这里加一条 + 加一个 <div> + SECTIONS 里加一个分区，
    隐藏/渲染/数据到达/出错兜底都由下面几处统一按这张表处理。 */
 const QUICK_PAGES = {
-  key:    { el: viewKey, catIds: KEY_CAT_IDS,    intro: INTRO_KEY },
+  key:    { el: viewKey, catIds: KEY_CAT_IDS,    intro: null },   // 说明框暂时不要，恢复改成 INTRO_KEY
   repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: INTRO_REPAIR },
   dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: INTRO_DEPT },
   teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: INTRO_TEACH },
@@ -3392,6 +3392,11 @@ const SECTIONS_ALL = [
     ],
   },
 ];
+
+/* 分类条开关，见《备份-分类条与内页入口.md》。
+   测试里会设 __FORCE_SUBNAV__ 打开它 —— 测试要靠点分类条来切换视图，
+   关掉就点不到了。这样分类条那部分代码每轮仍被验证，不会悄悄坏掉。 */
+var SHOW_SUBNAV = (typeof __FORCE_SUBNAV__ !== "undefined" && __FORCE_SUBNAV__) ? true : false;
 
 var SECTIONS = SECTIONS_ALL.filter(function (s) {
   return SHOW_STUDY || s.id !== "study";
@@ -3454,8 +3459,12 @@ function renderModebar() {
   }
 
   // 二级：当前分区下的子视图
+  /* 分类条暂时隐藏。
+     它是「全部渠道 / 校内平台 / 校园信息」唯一的入口，关掉后这三个页面没有入口，
+     但代码与路由都还在，手动输网址（#/rights/channels 等）仍可访问。
+     恢复只需把这里改成 true，详见《备份-分类条与内页入口.md》。 */
   subnav.innerHTML = "";
-  var sec = currentSection();
+  var sec = SHOW_SUBNAV ? currentSection() : null;
   if (sec) {
     subnav.hidden = false;
     for (var k = 0; k < sec.subs.length; k++) {
@@ -4844,11 +4853,13 @@ function renderChannelsInto(host, catFilter, introText) {
 
   host.innerHTML = "";
 
-  // 顶部说明
-  const intro = document.createElement("div");
-  intro.className = "rt-intro";
-  intro.innerHTML = introText || INTRO_FULL;
-  host.appendChild(intro);
+  // 顶部说明：传 null 表示这一页不要说明框
+  if (introText !== null) {
+    const intro = document.createElement("div");
+    intro.className = "rt-intro";
+    intro.innerHTML = introText || INTRO_FULL;
+    host.appendChild(intro);
+  }
 
   // 按分类渲染
   for (const cat of CHANNELS.categories || []) {
