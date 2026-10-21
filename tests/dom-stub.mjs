@@ -264,11 +264,11 @@ export function makeNav(ids) {
   const subBtns = () => ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
   const SECTION_OF = {
     library: '学习资源', guides: '学习资源', skills: '学习资源', exams: '学习资源',
-    channels: '权益服务', key: '权益服务', platforms: '权益服务', campus: '权益服务',
+    channels: '学生权益反馈渠道', key: '学生权益反馈渠道', platforms: '学生权益反馈渠道', campus: '学生权益反馈渠道',
   };
   const LABEL_OF = {
     library: '资源库', guides: '学习路径', skills: '技能自查', exams: '历年试卷',
-    channels: '权益反馈', key: '学生权益反馈渠道', platforms: '校内平台', campus: '校园信息',
+    channels: '全部渠道', key: '主渠道', platforms: '校内平台', campus: '校园信息',
   };
   // 切到指定子视图：先点一级（若当前不在该分类），再点二级
   function go(subId) {

@@ -60,14 +60,14 @@ console.log('');
 console.log('=== 1b. 强制打开学习资源时：16 种 hash 全部正确 ===');
 const CASES = [
   ['', 'view-home'], ['#/', 'view-home'],
-  ['#/rights', 'view-channels', 'view-key'], ['#/rights/channels', 'view-channels', 'view-key'],
+  ['#/rights', 'view-key'], ['#/rights/channels', 'view-channels'],
   ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
   ['#/nonexistent', 'view-home'],
   ['#/study/nonexistent', 'view-resources'],
-  ['#/rights/', 'view-channels', 'view-key'], ['#', 'view-home'], ['#/study/exams/extra', 'view-exams'],
+  ['#/rights/', 'view-key'], ['#', 'view-home'], ['#/study/exams/extra', 'view-exams'],
 ];
 
 for (const [hash, expect] of CASES) {
@@ -95,7 +95,7 @@ console.log('=== 2. 深链下导航高亮同步 ===');
   const { ids: ids2 } = boot('#/rights/channels');
   const tops2 = ids2.modebar.children.filter((c) => (c.className || '').includes('mode-btn'));
   const at2 = tops2.find((b) => (b.className || '').includes('active'));
-  check('权益深链一级高亮「权益服务」', at2 ? at2.textContent : '', '权益服务');
+  check('权益深链一级高亮「学生权益反馈渠道」', at2 ? at2.textContent : '', '学生权益反馈渠道');
 }
 
 console.log('');

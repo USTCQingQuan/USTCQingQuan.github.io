@@ -35,17 +35,17 @@ const nav = makeNav(ids);
 console.log('=== 1. 切到「权益反馈」===');
 {
   nav.go('channels');
-  const btn = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
-  check('存在「权益反馈」子按钮', !!btn, true);
+  const btn = nav.subBtns().find((b) => b.textContent.indexOf('全部渠道') === 0);
+  check('存在「全部渠道」子按钮', !!btn, true);
   check('权益视图已显示', view.hidden, false);
   check('资源视图已隐藏', ids['view-resources'].hidden, true);
   await new Promise((r) => setTimeout(r, 60));
-  const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('权益反馈') === 0);
+  const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('全部渠道') === 0);
   console.log('  按钮文案: ' + btn2.textContent);
   const okCount = real.categories.reduce((a, c) => a + c.channels.filter((x) => x.status === 'ok').length, 0);
-  check('二级按钮显示可用条数', btn2.textContent, '权益反馈' + okCount);
+  check('二级按钮显示可用条数', btn2.textContent, '全部渠道' + okCount);
   const activeTop = nav.modeBtns().find((b) => (b.className || '').includes('active'));
-  check('当前激活的一级按钮是「权益服务」', activeTop ? activeTop.textContent : '', '权益服务');
+  check('当前激活的一级按钮是「学生权益反馈渠道」', activeTop ? activeTop.textContent : '', '学生权益反馈渠道');
 }
 console.log('');
 
@@ -90,9 +90,9 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
 
   // 回到完整页，确认两个视图互不污染
   ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'))
-    .find((b) => b.textContent === '权益服务').fire('click');
+    .find((b) => b.textContent === '学生权益反馈渠道').fire('click');
   const subs = ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
-  subs.find((b) => b.textContent.indexOf('权益反馈') === 0).fire('click');
+  subs.find((b) => b.textContent.indexOf('全部渠道') === 0).fire('click');
   check('完整页仍是 9 组', ids['view-channels'].querySelectorAll('.rt-cat').length, 9);
 }
 

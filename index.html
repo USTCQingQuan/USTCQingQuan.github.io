@@ -3286,10 +3286,12 @@ function countKeyChannels() {
 
 const SECTIONS_ALL = [
   {
-    id: "rights", label: "权益服务",
+    /* 顶部导航第二个按钮就是「学生权益反馈渠道」，点它直接落到三组主渠道精简页。
+       所以 key 放在 subs 第一位 —— 分区默认视图 = 第一个子视图。 */
+    id: "rights", label: "学生权益反馈渠道",
     subs: [
-      { id: "channels", label: "权益反馈", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
-      { id: "key", label: "学生权益反馈渠道", n: function () { return countKeyChannels(); } },
+      { id: "key", label: "主渠道", n: function () { return countKeyChannels(); } },
+      { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
       { id: "platforms", label: "校内平台", n: function () { return countIn(["校内平台"]); } },
       { id: "campus", label: "校园信息", n: function () { return countIn(["校园信息"]); } },
     ],
