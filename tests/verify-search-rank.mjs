@@ -5,7 +5,7 @@ import { makeChecker } from './dom-stub.mjs';
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-resources', 'view-guides', 'view-skills', 'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开

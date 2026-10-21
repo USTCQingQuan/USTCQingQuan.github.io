@@ -270,13 +270,13 @@ export function makeNav(ids) {
     library: '学习资源', guides: '学习资源', skills: '学习资源', exams: '学习资源',
     channels: '学生权益反馈渠道', key: '学生权益反馈渠道', platforms: '学生权益反馈渠道', campus: '学生权益反馈渠道',
     repair: '校园报修', dept: '部门直拨电话', teach: '教学服务',
-    campusall: '校园平台', campus: '校园平台', platforms: '校园平台',
+    campusall: '校园平台', campus: '校园平台', platforms: '校园平台', union: '学生权益反馈渠道',
   };
   const LABEL_OF = {
     library: '资源库', guides: '学习路径', skills: '技能自查', exams: '历年试卷',
     channels: '全部渠道', key: '主渠道', platforms: '校内平台', campus: '校园信息',
     repair: '报修入口', dept: '电话清单', teach: '教学与课程',
-    campusall: '全部',
+    campusall: '全部', union: '学生会渠道',
   };
   // 切到指定子视图：先点一级（若当前不在该分类），再点二级
   function go(subId) {

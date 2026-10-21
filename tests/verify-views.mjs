@@ -10,7 +10,7 @@ const FILE = process.argv[2] || 'index.html';
 const { html, script } = await loadScript(FILE);
 const { byId, ids, store, calls } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 

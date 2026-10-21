@@ -1064,6 +1064,7 @@
 <div id="view-repair" hidden></div>
 <div id="view-dept" hidden></div>
 <div id="view-teach" hidden></div>
+<div id="view-union" hidden></div>
 </main>
 
 <!-- 底部标签栏：只在小屏显示，替代顶部导航（拇指更好够到） -->
@@ -3260,6 +3261,7 @@ const viewKey = document.getElementById("view-key");
 const viewRep = document.getElementById("view-repair");
 const viewDep = document.getElementById("view-dept");
 const viewTea = document.getElementById("view-teach");
+const viewUni = document.getElementById("view-union");
 
 const toolbar = document.querySelector(".toolbar");
 
@@ -3298,6 +3300,9 @@ var SHOW_STUDY = (typeof __FORCE_STUDY__ !== "undefined" && __FORCE_STUDY__) ? t
 /* 「学生权益反馈渠道」精简页只展示这三组 —— 这是学生最该走的官方入口。
    其余渠道（报修、部门电话、专题问卷等）留在「权益反馈」完整页里。 */
 var KEY_CAT_IDS = ["youth", "student", "park"];
+
+/* 首页「学生会反馈渠道」只看校学生会与研究生会这一组（3 条：权益柜 QQ / 研会 QQ 群 / 权益部邮箱） */
+var UNION_CAT_IDS = ["student"];
 
 /* 报修入口单独成页 —— 这是使用频率最高的一条，值得在顶部导航给一个直接入口。 */
 var REPAIR_CAT_IDS = ["urgent"];
@@ -3359,6 +3364,7 @@ const QUICK_PAGES = {
   repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: null },   // 恢复改成 INTRO_REPAIR
   dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: null },   // 恢复改成 INTRO_DEPT
   teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: null },   // 恢复改成 INTRO_TEACH
+  union:  { el: viewUni, catIds: UNION_CAT_IDS,  intro: null },
 };
 
 /* 是不是某个快捷页路由 */
@@ -3377,6 +3383,7 @@ const SECTIONS_ALL = [
     id: "rights", label: "学生权益反馈渠道",
     subs: [
       { id: "key", label: "主渠道", n: function () { return countChannelsIn(KEY_CAT_IDS); } },
+      { id: "union", label: "学生会渠道", n: function () { return countChannelsIn(UNION_CAT_IDS); } },
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
       /* 校内平台与校园信息已合并到顶部的「校园平台」，不再作为本分区的子视图 */
     ],
@@ -3802,8 +3809,9 @@ const HOME_GROUPS = [
          没有 n，所以不显示数字角标（原数字是站内渠道数，跟这个外链无关）。 */
       { icon: "🛡️", label: "青权中心​权益反馈渠道", desc: "",
         href: "https://young.ustc.edu.cn/login/sc-wisdom-group-learning/suggestions/Lists/suggestionsList", n: null },
-      { icon: "💬", label: "学生权益反馈渠道", desc: "按组织找对入口", to: "#/rights/key",
-        n: function () { return countChannelsIn(KEY_CAT_IDS); } },
+      /* 只到「校学生会 · 研究生会」这一组：权益柜 QQ / 研会 QQ 群 / 权益服务部邮箱 */
+      { icon: "🎓", label: "学生会反馈渠道", desc: "权益柜 QQ / 研会群 / 邮箱", to: "#/rights/union",
+        n: function () { return countChannelsIn(UNION_CAT_IDS); } },
       /* 校内平台 + 校园信息 已合并成一个入口，与顶部导航的说法保持一致 */
       { icon: "🏫", label: "校园平台", desc: "评课/论坛/图书馆/通知", to: "#/campus/campusall",
         n: function () { return countIn(CAMPUS_CATS); } },

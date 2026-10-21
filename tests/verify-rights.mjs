@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'promoBody',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();
@@ -254,7 +254,7 @@ console.log('=== 5. 首页图标宫格 ===');
   check('3 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
   // 标签里可能含零宽空格（控制手机折行位置），比对前先去掉
   const labels = items.map((a) => a.querySelector('.ig-label').textContent.replace(/\u200B/g, ''));
-  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生权益反馈渠道 校园平台');
+  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生会反馈渠道 校园平台');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
@@ -264,9 +264,9 @@ console.log('=== 5. 首页图标宫格 ===');
     String(first.href).indexOf('young.ustc.edu.cn') >= 0 && String(first.href).indexOf('suggestionsList') >= 0, true);
   check('外链在新窗口打开', first.target, '_blank');
 
-  // 第 2 个入口「学生权益反馈渠道」：站内精简页
+  // 第 2 个入口「学生会反馈渠道」：只到校学生会·研究生会那一组
   const feedback = items[1];
-  check('学生权益反馈渠道指向站内精简页', String(feedback.href).indexOf('#/rights/key') >= 0, true);
+  check('学生会反馈渠道指向 #/rights/union', String(feedback.href).indexOf('#/rights/union') >= 0, true);
   // 第 3 个入口「校园平台」：合并视图
   const campus = items[2];
   check('校园平台指向合并视图', String(campus.href).indexOf('#/campus/campusall') >= 0, true);

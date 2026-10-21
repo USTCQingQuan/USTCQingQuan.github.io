@@ -9,7 +9,7 @@ const { check, done } = makeChecker();
 const IDS = [
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides',
-  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'promoBody', 'detail-mask', 'detail-box',
+  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union', 'promoBody', 'detail-mask', 'detail-box',
 ];
 
 let quiet = false;
@@ -32,7 +32,7 @@ function boot(hash, mode, forceStudy) {
 }
 
 function whichShown(ids) {
-  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach']
+  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union']
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
