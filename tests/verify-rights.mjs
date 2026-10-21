@@ -11,7 +11,7 @@ const real = JSON.parse(raw);
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'promoBody',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'promoBody',
   'detail-mask', 'detail-box',
 ], { protocol: 'https:' });
 const { check, done } = makeChecker();

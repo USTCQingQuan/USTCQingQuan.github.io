@@ -9,7 +9,7 @@ const { check, done } = makeChecker();
 const IDS = [
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides',
-  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'promoBody', 'detail-mask', 'detail-box',
+  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'promoBody', 'detail-mask', 'detail-box',
 ];
 
 let quiet = false;
@@ -32,7 +32,7 @@ function boot(hash, mode, forceStudy) {
 }
 
 function whichShown(ids) {
-  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair']
+  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept']
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
@@ -63,6 +63,7 @@ const CASES = [
   ['#/rights', 'view-key'], ['#/rights/channels', 'view-channels'],
   ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
   ['#/repair', 'view-repair'], ['#/repair/repair', 'view-repair'],
+  ['#/dept', 'view-dept'], ['#/dept/dept', 'view-dept'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
@@ -178,6 +179,30 @@ console.log('=== 5c. 校园报修页 ===');
     check('报修渠道 3 条', items.length, 3);
   }
   check('不再停在载入提示', rep.querySelectorAll('.rt-loading').length, 0);
+}
+
+console.log('=== 5d. 部门直拨电话页 ===');
+{
+  quiet = true;
+  const { ids } = boot('#/dept', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+  const dep = ids['view-dept'];
+  const cats = dep.querySelectorAll('.rt-cat');
+  console.log('  电话页分组数: ' + cats.length);
+  check('电话页只显示一组', cats.length, 1);
+  if (cats.length) {
+    const head = cats[0].querySelector('h3').textContent.replace(/\s+/g, ' ').trim();
+    console.log('  分组名: ' + head);
+    check('这一组是各部门直拨电话', head.indexOf('各部门直拨电话') === 0, true);
+    const items = cats[0].querySelectorAll('.rt-item');
+    console.log('  电话渠道数: ' + items.length);
+    check('电话渠道 11 条', items.length, 11);
+    const phones = cats[0].querySelectorAll('.rt-item .rt-go');
+    console.log('  拨号按钮数: ' + phones.length);
+    check('每条都有拨号按钮', phones.length, 11);
+  }
+  check('不再停在载入提示', dep.querySelectorAll('.rt-loading').length, 0);
 }
 
 console.log('=== 6. 重复点击同一导航项不出错 ===');

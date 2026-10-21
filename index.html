@@ -1054,6 +1054,7 @@
   <div id="view-channels" hidden></div>
 <div id="view-key" hidden></div>
 <div id="view-repair" hidden></div>
+<div id="view-dept" hidden></div>
 </main>
 
 <!-- 底部标签栏：只在小屏显示，替代顶部导航（拇指更好够到） -->
@@ -3248,6 +3249,7 @@ const viewExa = document.getElementById("view-exams");
 const viewCha = document.getElementById("view-channels");
 const viewKey = document.getElementById("view-key");
 const viewRep = document.getElementById("view-repair");
+const viewDep = document.getElementById("view-dept");
 const toolbar = document.querySelector(".toolbar");
 
 /* ===================== 站点结构 =====================
@@ -3280,6 +3282,9 @@ var KEY_CAT_IDS = ["youth", "student", "park"];
 /* 报修入口单独成页 —— 这是使用频率最高的一条，值得在顶部导航给一个直接入口。 */
 var REPAIR_CAT_IDS = ["urgent"];
 
+/* 部门直拨电话：11 个号码，遇到具体问题直接打过去通常最快 */
+var DEPT_CAT_IDS = ["dept"];
+
 var INTRO_FULL =
   "遇到问题不知道找谁？这里汇总了校内的反馈渠道 —— " +
   "<b>网页、QQ 群、电话、邮箱、公众号都有</b>，按你的习惯选一个。部分渠道还在收集中，已标注「待补充」。";
@@ -3289,33 +3294,25 @@ var INTRO_KEY =
   "按你所属的组织选一个，<b>提交后会有人跟进</b>。想找报修、部门电话等其他渠道，" +
   "请到「全部渠道」完整页。";
 
+var INTRO_DEPT =
+  "知道是哪个部门的事，<b>直接打电话最快</b> —— " +
+  "宿舍、食堂、图书馆、医保、教务等都有对应号码。记不清该找谁？" +
+  "回到「学生权益反馈渠道」按问题类型选。";
+
 var INTRO_REPAIR =
   "宿舍水电、家具、公共设施损坏，<b>走这里最快</b> —— " +
   "不用跑前台，在线提交即可，报修后可在原系统查进度。教学设备故障请用第三个入口。";
 
-function countRepairChannels() {
-  if (!CHANNELS) return "…";
-  var n = 0;
-  for (var i = 0; i < CHANNELS.categories.length; i++) {
-    var c = CHANNELS.categories[i];
-    if (REPAIR_CAT_IDS.indexOf(c.id) >= 0) {
-      for (var j = 0; j < c.channels.length; j++) {
-        if (c.channels[j].status === "ok") n++;
-      }
-    }
-  }
-  return n;
-}
 
-function countKeyChannels() {
+/* 统计某几组里"可用"的渠道数。原来 key / repair 各写了一份，收敛成这一个。 */
+function countChannelsIn(catIds) {
   if (!CHANNELS) return "…";
   var n = 0;
   for (var i = 0; i < CHANNELS.categories.length; i++) {
     var c = CHANNELS.categories[i];
-    if (KEY_CAT_IDS.indexOf(c.id) >= 0) {
-      for (var j = 0; j < c.channels.length; j++) {
-        if (c.channels[j].status === "ok") n++;
-      }
+    if (catIds.indexOf(c.id) < 0) continue;
+    for (var j = 0; j < c.channels.length; j++) {
+      if (c.channels[j].status === "ok") n++;
     }
   }
   return n;
@@ -3327,7 +3324,7 @@ const SECTIONS_ALL = [
        所以 key 放在 subs 第一位 —— 分区默认视图 = 第一个子视图。 */
     id: "rights", label: "学生权益反馈渠道",
     subs: [
-      { id: "key", label: "主渠道", n: function () { return countKeyChannels(); } },
+      { id: "key", label: "主渠道", n: function () { return countChannelsIn(KEY_CAT_IDS); } },
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
       { id: "platforms", label: "校内平台", n: function () { return countIn(["校内平台"]); } },
       { id: "campus", label: "校园信息", n: function () { return countIn(["校园信息"]); } },
@@ -3337,7 +3334,14 @@ const SECTIONS_ALL = [
     /* 报修是高频操作，单列一个顶部入口 */
     id: "repair", label: "校园报修",
     subs: [
-      { id: "repair", label: "报修入口", n: function () { return countRepairChannels(); } },
+      { id: "repair", label: "报修入口", n: function () { return countChannelsIn(REPAIR_CAT_IDS); } },
+    ],
+  },
+  {
+    /* 部门电话也是高频，单列一个顶部入口 */
+    id: "dept", label: "部门直拨电话",
+    subs: [
+      { id: "dept", label: "电话清单", n: function () { return countChannelsIn(DEPT_CAT_IDS); } },
     ],
   },
   {
@@ -3449,6 +3453,7 @@ function applyMode() {
   viewCha.hidden = route.sub !== "channels";
   viewKey.hidden = route.sub !== "key";
   viewRep.hidden = route.sub !== "repair";
+  viewDep.hidden = route.sub !== "dept";
   // 搜索与筛选栏只对资源类视图有意义
   if (toolbar) toolbar.hidden = !isRes;
 
@@ -3472,6 +3477,7 @@ function applyMode() {
   if (route.sub === "channels") renderRights();
   if (route.sub === "key") renderRightsKey();
   if (route.sub === "repair") renderRepair();
+  if (route.sub === "dept") renderDept();
 
   window.scrollTo({ top: 0, behavior: "auto" });
 }
@@ -3724,7 +3730,7 @@ const HOME_GROUPS = [
       { icon: "📢", label: "校园信息", desc: "升学/心理/通知", to: "#/rights/campus",
         n: function () { return countIn(["校园信息"]); } },
       { icon: "💬", label: "学生权益反馈渠道", desc: "按组织找对入口", to: "#/rights/key",
-        n: function () { return countKeyChannels(); } },
+        n: function () { return countChannelsIn(KEY_CAT_IDS); } },
     ],
   },
   {
@@ -4769,6 +4775,7 @@ function loadChannels() {
       if (route.sub === "channels") renderRights();
       if (route.sub === "key") renderRightsKey();
       if (route.sub === "repair") renderRepair();
+      if (route.sub === "dept") renderDept();
     })
     .catch(function (e) {
       console.error("[权益广场] 权益渠道加载失败:", e);
@@ -4778,7 +4785,11 @@ function loadChannels() {
 
 function renderRightsError(msg) {
   // 精简页与完整页是两个容器，错误要写在当前正看的那个
-  const host = route.sub === "key" ? viewKey : (route.sub === "repair" ? viewRep : viewCha);
+  /* 四个渠道类视图各有一个容器，错误提示要写在当前正看的那个 */
+  var host = viewCha;
+  if (route.sub === "key") host = viewKey;
+  else if (route.sub === "repair") host = viewRep;
+  else if (route.sub === "dept") host = viewDep;
   host.innerHTML = "";
   const p = document.createElement("p");
   p.className = "empty";
@@ -4932,6 +4943,9 @@ function renderRightsKey() { renderChannelsInto(viewKey, KEY_CAT_IDS, INTRO_KEY)
 
 /* 校园报修页（只 1 组） */
 function renderRepair() { renderChannelsInto(viewRep, REPAIR_CAT_IDS, INTRO_REPAIR); }
+
+/* 部门直拨电话页（只 1 组） */
+function renderDept() { renderChannelsInto(viewDep, DEPT_CAT_IDS, INTRO_DEPT); }
 
 
 
