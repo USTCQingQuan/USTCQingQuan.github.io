@@ -6,7 +6,7 @@ const FILE = process.argv[2] || 'index.html';
 const { script } = await loadScript(FILE);
 const { byId, ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar',
-  'view-resources', 'view-guides', 'view-skills', 'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'detail-mask', 'detail-box',
+  'view-resources', 'view-guides', 'view-skills', 'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 

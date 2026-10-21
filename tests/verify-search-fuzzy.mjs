@@ -8,7 +8,7 @@ import { setupDom, loadScript, makeChecker, makeNav } from './dom-stub.mjs';
 const { script } = await loadScript(process.argv[2] || 'index.html');
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
-  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-work', 'detail-mask', 'detail-box',
+  'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'subnav', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-work', 'detail-mask', 'detail-box',
 ]);
 const { check, done } = makeChecker();
 globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开

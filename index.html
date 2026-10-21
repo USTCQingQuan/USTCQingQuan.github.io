@@ -1055,6 +1055,7 @@
 <div id="view-key" hidden></div>
 <div id="view-repair" hidden></div>
 <div id="view-dept" hidden></div>
+<div id="view-teach" hidden></div>
 </main>
 
 <!-- 底部标签栏：只在小屏显示，替代顶部导航（拇指更好够到） -->
@@ -3250,6 +3251,8 @@ const viewCha = document.getElementById("view-channels");
 const viewKey = document.getElementById("view-key");
 const viewRep = document.getElementById("view-repair");
 const viewDep = document.getElementById("view-dept");
+const viewTea = document.getElementById("view-teach");
+
 const toolbar = document.querySelector(".toolbar");
 
 /* ===================== 站点结构 =====================
@@ -3285,6 +3288,9 @@ var REPAIR_CAT_IDS = ["urgent"];
 /* 部门直拨电话：11 个号码，遇到具体问题直接打过去通常最快 */
 var DEPT_CAT_IDS = ["dept"];
 
+/* 教学服务：教务、选课、教学平台，以及图书馆等学习支持 */
+var TEACH_CAT_IDS = ["teaching", "study"];
+
 var INTRO_FULL =
   "遇到问题不知道找谁？这里汇总了校内的反馈渠道 —— " +
   "<b>网页、QQ 群、电话、邮箱、公众号都有</b>，按你的习惯选一个。部分渠道还在收集中，已标注「待补充」。";
@@ -3293,6 +3299,10 @@ var INTRO_KEY =
   "这三条是最直接的学生权益反馈渠道 —— " +
   "按你所属的组织选一个，<b>提交后会有人跟进</b>。想找报修、部门电话等其他渠道，" +
   "请到「全部渠道」完整页。";
+
+var INTRO_TEACH =
+  "选课、成绩、学籍、教学平台、图书馆资源 —— <b>教学相关的事都在这里</b>。 " +
+  "教务问题先看「综合教务系统」与教务处；平台用不了先看「教学平台支持」。";
 
 var INTRO_DEPT =
   "知道是哪个部门的事，<b>直接打电话最快</b> —— " +
@@ -3316,6 +3326,27 @@ function countChannelsIn(catIds) {
     }
   }
   return n;
+}
+
+/* 顶部导航上那几个"只看某几组渠道"的快捷页。
+   注意：这里会读取 KEY_CAT_IDS 等常量，所以必须放在它们之后定义 ——
+   放在文件前面会拿到 undefined，导致过滤条件失效、显示全部 9 组（踩过）。
+   加新的快捷页 = 这里加一条 + 加一个 <div> + SECTIONS 里加一个分区，
+   隐藏/渲染/数据到达/出错兜底都由下面几处统一按这张表处理。 */
+const QUICK_PAGES = {
+  key:    { el: viewKey, catIds: KEY_CAT_IDS,    intro: INTRO_KEY },
+  repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: INTRO_REPAIR },
+  dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: INTRO_DEPT },
+  teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: INTRO_TEACH },
+};
+
+/* 是不是某个快捷页路由 */
+function isQuick(sub) { return Object.prototype.hasOwnProperty.call(QUICK_PAGES, sub); }
+
+/* 统一渲染：完整页单独处理，其余按表取容器与文案 */
+function renderQuick(sub) {
+  const q = QUICK_PAGES[sub];
+  if (q) renderChannelsInto(q.el, q.catIds, q.intro);
 }
 
 const SECTIONS_ALL = [
@@ -3342,6 +3373,13 @@ const SECTIONS_ALL = [
     id: "dept", label: "部门直拨电话",
     subs: [
       { id: "dept", label: "电话清单", n: function () { return countChannelsIn(DEPT_CAT_IDS); } },
+    ],
+  },
+  {
+    /* 教务与教学平台也是高频入口 */
+    id: "teach", label: "教学服务",
+    subs: [
+      { id: "teach", label: "教学与课程", n: function () { return countChannelsIn(TEACH_CAT_IDS); } },
     ],
   },
   {
@@ -3451,9 +3489,9 @@ function applyMode() {
   viewSki.hidden = route.sub !== "skills";
   viewExa.hidden = route.sub !== "exams";
   viewCha.hidden = route.sub !== "channels";
-  viewKey.hidden = route.sub !== "key";
-  viewRep.hidden = route.sub !== "repair";
-  viewDep.hidden = route.sub !== "dept";
+  for (var qk in QUICK_PAGES) {
+    QUICK_PAGES[qk].el.hidden = route.sub !== qk;
+  }
   // 搜索与筛选栏只对资源类视图有意义
   if (toolbar) toolbar.hidden = !isRes;
 
@@ -3475,9 +3513,7 @@ function applyMode() {
   if (route.sub === "skills") renderSkills();
   if (route.sub === "exams") renderExams();
   if (route.sub === "channels") renderRights();
-  if (route.sub === "key") renderRightsKey();
-  if (route.sub === "repair") renderRepair();
-  if (route.sub === "dept") renderDept();
+  if (isQuick(route.sub)) renderQuick(route.sub);
 
   window.scrollTo({ top: 0, behavior: "auto" });
 }
@@ -4773,9 +4809,7 @@ function loadChannels() {
       renderModebar();
       // 按当前所在视图重渲染 —— 精简页和完整页是两个容器，漏掉任何一个都会停在「正在载入…」
       if (route.sub === "channels") renderRights();
-      if (route.sub === "key") renderRightsKey();
-      if (route.sub === "repair") renderRepair();
-      if (route.sub === "dept") renderDept();
+      if (isQuick(route.sub)) renderQuick(route.sub);
     })
     .catch(function (e) {
       console.error("[权益广场] 权益渠道加载失败:", e);
@@ -4785,11 +4819,8 @@ function loadChannels() {
 
 function renderRightsError(msg) {
   // 精简页与完整页是两个容器，错误要写在当前正看的那个
-  /* 四个渠道类视图各有一个容器，错误提示要写在当前正看的那个 */
-  var host = viewCha;
-  if (route.sub === "key") host = viewKey;
-  else if (route.sub === "repair") host = viewRep;
-  else if (route.sub === "dept") host = viewDep;
+  /* 错误提示要写在当前正看的那个容器里 */
+  var host = isQuick(route.sub) ? QUICK_PAGES[route.sub].el : viewCha;
   host.innerHTML = "";
   const p = document.createElement("p");
   p.className = "empty";
@@ -4938,14 +4969,8 @@ function renderChannelsInto(host, catFilter, introText) {
 /* 完整渠道页（9 组） */
 function renderRights() { renderChannelsInto(viewCha, null, INTRO_FULL); }
 
-/* 学生权益反馈渠道精简页（只 3 组） */
-function renderRightsKey() { renderChannelsInto(viewKey, KEY_CAT_IDS, INTRO_KEY); }
-
-/* 校园报修页（只 1 组） */
-function renderRepair() { renderChannelsInto(viewRep, REPAIR_CAT_IDS, INTRO_REPAIR); }
-
-/* 部门直拨电话页（只 1 组） */
-function renderDept() { renderChannelsInto(viewDep, DEPT_CAT_IDS, INTRO_DEPT); }
+/* 其余几个快捷页（学生权益反馈渠道 / 校园报修 / 部门直拨电话 / 教学服务）
+   都由 renderQuick(sub) 按 QUICK_PAGES 表统一渲染，不再逐个写包装函数。 */
 
 
 

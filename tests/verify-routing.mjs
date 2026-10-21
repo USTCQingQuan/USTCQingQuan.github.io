@@ -9,7 +9,7 @@ const { check, done } = makeChecker();
 const IDS = [
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides',
-  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'promoBody', 'detail-mask', 'detail-box',
+  'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'promoBody', 'detail-mask', 'detail-box',
 ];
 
 let quiet = false;
@@ -32,7 +32,7 @@ function boot(hash, mode, forceStudy) {
 }
 
 function whichShown(ids) {
-  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept']
+  return ['view-home', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach']
     .filter((v) => ids[v] && ids[v].hidden === false);
 }
 
@@ -64,6 +64,7 @@ const CASES = [
   ['#/rights/platforms', 'view-resources'], ['#/rights/campus', 'view-resources'],
   ['#/repair', 'view-repair'], ['#/repair/repair', 'view-repair'],
   ['#/dept', 'view-dept'], ['#/dept/dept', 'view-dept'],
+  ['#/teach', 'view-teach'], ['#/teach/teach', 'view-teach'],
   ['#/study', 'view-resources'], ['#/study/library', 'view-resources'],
   ['#/study/guides', 'view-guides'], ['#/study/skills', 'view-skills'],
   ['#/study/exams', 'view-exams'],
@@ -203,6 +204,28 @@ console.log('=== 5d. 部门直拨电话页 ===');
     check('每条都有拨号按钮', phones.length, 11);
   }
   check('不再停在载入提示', dep.querySelectorAll('.rt-loading').length, 0);
+}
+
+console.log('=== 5e. 教学服务页 ===');
+{
+  quiet = true;
+  const { ids } = boot('#/teach', undefined, true);
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+  const tea = ids['view-teach'];
+  const cats = tea.querySelectorAll('.rt-cat');
+  console.log('  教学服务页分组数: ' + cats.length);
+  check('教学服务页只显示两组', cats.length, 2);
+  if (cats.length === 2) {
+    const heads = cats.map((c) => c.querySelector('h3').textContent.replace(/\s+/g, ' ').trim());
+    heads.forEach((h, i) => console.log('    ' + (i + 1) + '. ' + h));
+    check('第一组是教学与课程', heads[0].indexOf('教学与课程') === 0, true);
+    check('第二组是学习资源与服务', heads[1].indexOf('学习资源与服务') === 0, true);
+  }
+  const items = tea.querySelectorAll('.rt-item');
+  console.log('  渠道条目数: ' + items.length);
+  check('教学服务 3 条渠道（1+2）', items.length, 3);
+  check('不再停在载入提示', tea.querySelectorAll('.rt-loading').length, 0);
 }
 
 console.log('=== 6. 重复点击同一导航项不出错 ===');
