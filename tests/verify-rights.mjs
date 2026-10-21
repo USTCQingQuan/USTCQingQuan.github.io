@@ -13,7 +13,7 @@ const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
   'view-home', 'iconGrid', 'heroBanner', 'tabbar', 'view-resources', 'view-guides', 'view-skills', 'view-exams', 'view-channels', 'view-key', 'view-repair', 'view-dept', 'view-teach', 'view-union', 'promoBody',
   'detail-mask', 'detail-box',
-], { protocol: 'https:' });
+], { protocol: 'https:', hash: '#/rights/channels' });
 const { check, done } = makeChecker();
 
 globalThis.fetch = async (u) => {
@@ -32,22 +32,22 @@ const view = ids['view-channels'];
 const workView = ids['view-work'];
 const nav = makeNav(ids);
 
-console.log('=== 1. 切到「权益反馈」===');
+console.log('=== 1. 全部渠道页 ===');
 {
-  nav.go('channels');
-  const btn = nav.subBtns().find((b) => b.textContent.indexOf('全部渠道') === 0);
-  check('存在「全部渠道」子按钮', !!btn, true);
-  check('权益视图已显示', view.hidden, false);
-  check('资源视图已隐藏', ids['view-resources'].hidden, true);
-  await new Promise((r) => setTimeout(r, 60));
-  const btn2 = nav.subBtns().find((b) => b.textContent.indexOf('全部渠道') === 0);
-  console.log('  按钮文案: ' + btn2.textContent);
-  const okCount = real.categories.reduce((a, c) => a + c.channels.filter((x) => x.status === 'ok').length, 0);
-  check('二级按钮显示可用条数', btn2.textContent, '全部渠道' + okCount);
+  // channels.json 是异步加载的，等它到达再断言
+  await new Promise((r) => setTimeout(r, 120));
+  // 分类条已移除，页面初始就停在 #/rights/channels
+  check('全部渠道页已显示', view.hidden, false);
+  check('校园平台页已隐藏', ids['view-resources'].hidden, true);
+
   const activeTop = nav.modeBtns().find((b) => (b.className || '').includes('active'));
   check('当前激活的一级按钮是「学生权益反馈渠道」', activeTop ? activeTop.textContent : '', '学生权益反馈渠道');
+
+  const okCount = real.categories.reduce((a, c) => a + c.channels.filter((x) => x.status === 'ok').length, 0);
+  const allCount = real.categories.reduce((a, c) => a + c.channels.length, 0);
+  console.log('  可用 ' + okCount + ' 条 / 全部 ' + allCount + ' 条');
+  check('卡片数等于全部渠道数', view.querySelectorAll('.rt-item').length, allCount);
 }
-console.log('');
 
 console.log('=== 2. 结构 ===');
 {
@@ -66,6 +66,7 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
 {
   // 通过导航进入精简页（stub 里点 <a> 不会自动改 hash，用 nav.go）
   nav.go('key');
+  await new Promise((r) => setTimeout(r, 120));
   const key = ids['view-key'];
   check('精简页已显示', key.hidden, false);
   check('完整渠道页已隐藏', ids['view-channels'].hidden, true);
@@ -88,12 +89,11 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
   console.log('  精简页渠道条目数: ' + chans.length);
   check('精简页渠道数（1+3+2=6）', chans.length, 6);
 
-  // 回到完整页，确认两个视图互不污染（组数从数据读，不写死）
-  ids.modebar.children.filter((c) => (c.className || '').includes('mode-btn'))
-    .find((b) => b.textContent === '学生权益反馈渠道').fire('click');
-  const subs = ids.subnav.children.filter((c) => (c.className || '').includes('sub-btn'));
-  subs.find((b) => b.textContent.indexOf('全部渠道') === 0).fire('click');
-  check('完整页是全部组（与数据一致）', ids['view-channels'].querySelectorAll('.rt-cat').length, real.categories.length);
+  // 两个视图是独立容器，互不污染：精简页 3 组，完整页仍是全部组
+  check('完整页仍是全部组（与数据一致）',
+    ids['view-channels'].querySelectorAll('.rt-cat').length, real.categories.length);
+  check('精简页仍是 3 组',
+    ids['view-key'].querySelectorAll('.rt-cat').length, 3);
 }
 
 console.log('');
@@ -158,39 +158,6 @@ console.log('=== 4. status=todo 的条目：不显示死链接 ===');
 }
 console.log('');
 
-console.log('=== 5a. 首页头条轮播（已关闭） ===');
-{
-  // 求精简，轮播区块已用 SHOW_BANNER=false 关掉。
-  // 这里验证：容器存在但隐藏、没有渲染任何 slide、圆点也没有。
-  nav.home();
-  const hb = ids['heroBanner'];
-  console.log('  轮播容器 hidden: ' + hb.hidden);
-  check('轮播容器已隐藏', hb.hidden, true);
-  check('没有渲染 slide', hb.querySelectorAll('.hb-slide').length, 0);
-  check('没有圆点', hb.querySelectorAll('.hb-dot').length, 0);
-  // BANNERS 数据保留着，方便以后恢复（这里数一下定义里有几个 tag 字段）
-  const bannerDefs = (script.match(/const BANNERS = \[[\s\S]*?\n\];/) || [''])[0];
-  const bannerCount = (bannerDefs.match(/\btag:\s*"/g) || []).length;
-  console.log('  BANNERS 定义条数: ' + bannerCount);
-  check('BANNERS 数据仍保留 3 条', bannerCount, 3);
-}
-
-console.log('=== 5a2. 滑动手势（轮播已关闭） ===');
-{
-  // 轮播关了，但指针事件仍会打到容器上 —— 确认不会抛错、也不会凭空冒出一个 slide
-  nav.home();
-  const hb = ids['heroBanner'];
-  let threw = false;
-  try {
-    hb.fire('pointerdown', { clientX: 400, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-    hb.fire('pointermove', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-    hb.fire('pointerup', { clientX: 250, clientY: 100, pointerType: 'touch', pointerId: 1, target: hb });
-  } catch (e) { threw = true; }
-  check('轮播关闭时指针事件不报错', threw, false);
-  check('没有凭空渲染 slide', hb.querySelectorAll('.hb-slide').length, 0);
-}
-
-console.log('');
 console.log('=== 5. 首页图标宫格 ===');
 {
   nav.home();
@@ -198,13 +165,13 @@ console.log('=== 5. 首页图标宫格 ===');
   const items = grid.querySelectorAll('.ig-item');
   console.log('  宫格数量: ' + items.length);
   // 学习资源下架后只剩权益服务的 4 个入口
-  check('宫格有 3 个入口（校内平台与校园信息已合并）', items.length, 3);
+  check('宫格有 4 个入口', items.length, 4);
   // 顺序：权益服务 4 个（含反馈建议）在前 -> 学习资源 4 个在后
   const tones = items.map((a) => (a.className || '').split(' ').filter((c) => c.indexOf('ig-') === 0 && c !== 'ig-item').join(''));
   check('3 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
   // 标签里可能含零宽空格（控制手机折行位置），比对前先去掉
   const labels = items.map((a) => a.querySelector('.ig-label').textContent.replace(/\u200B/g, ''));
-  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生会反馈渠道 校园平台');
+  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生会反馈渠道 校园报修 部门直拨电话');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
@@ -219,7 +186,9 @@ console.log('=== 5. 首页图标宫格 ===');
   check('学生会反馈渠道指向独立的 #/union/union', String(feedback.href).indexOf('#/union/union') >= 0, true);
   // 第 3 个入口「校园平台」：合并视图
   const campus = items[2];
-  check('校园平台指向合并视图', String(campus.href).indexOf('#/campus/campusall') >= 0, true);
+  check('第 3 个入口是校园报修', String(campus.href).indexOf('#/repair') >= 0, true);
+  // 第 4 个入口「部门直拨电话」
+  check('第 4 个入口是部门直拨电话', String(items[3].href).indexOf('#/dept') >= 0, true);
   // 分组标题
   const groupHeads = grid.querySelectorAll('.ig-group-head');
   console.log('  分组数: ' + groupHeads.length);
@@ -231,22 +200,12 @@ console.log('=== 5. 首页图标宫格 ===');
   check('所有入口都没有数字角标（求精简）', nums.length, 0);
 }
 
-console.log('\n=== 5b. 底部标签栏 ===');
+console.log('\n=== 5b. 底部标签栏已移除 ===');
 {
-  const bar = ids['tabbar'];
-  const tabs = bar.querySelectorAll('.tab-item');
-  console.log('  标签数: ' + tabs.length);
-  check('底部有 3 个标签（学习资源已下架）', tabs.length, 3);
-  const tl = tabs.map((t) => t.textContent);
-  check('标签文案', tl.join(' '), '🏠首页 🛡️权益服务 💬反馈建议');
-  nav.home();
-  const activeHome = ids['tabbar'].querySelectorAll('.tab-item.active');
-  check('首页时「首页」高亮', activeHome.length, 1);
-  nav.go('channels');
-  const activeIn = ids['tabbar'].querySelectorAll('.tab-item.active');
-  check('权益页时「权益服务」高亮', activeIn.length, 1);
-  check('高亮的是权益服务', activeIn[0] ? activeIn[0].textContent.indexOf('权益服务') >= 0 : false, true);
-  nav.home();
+  // stub 会按 IDS 列表凭空造元素，所以「已移除」必须查页面源码
+  const html = await readFile('index.html', 'utf8');
+  check('页面源码里没有 tabbar 容器', html.indexOf('id="tabbar"') >= 0, false);
+  check('页面源码里没有 renderTabbar', html.indexOf('function renderTabbar') >= 0, false);
 }
 
 console.log('\n=== 5c. 宣传板块已移到首页 ===');

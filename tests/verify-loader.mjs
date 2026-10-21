@@ -52,8 +52,8 @@ function runOnce(protocol) {
 
   globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
   eval(script);
-  // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
-  globalThis.location.hash = '#/study/library';
+  // 新结构默认停在首页；资源卡片在校园平台，导航过去才有内容
+  globalThis.location.hash = '#/campus/campusall';
   const sync = { cards: ids.grid.children.length, total: byId.total.textContent, free: byId.freeCount.textContent };
   return new Promise((resolve) => setTimeout(() => {
     const badges = ids.grid.children.map((c) => {
@@ -70,9 +70,9 @@ console.log('  同步(内嵌兜底): ' + JSON.stringify(a.sync));
 console.log('  fetch 调用     : ' + a.fetchCalled);
 console.log('  异步(拒绝旧数据后): ' + JSON.stringify({ cards: a.async.cards, total: a.async.total, free: a.async.free }));
 check('fetch 请求了 resources.json', a.fetchCalled, 'resources.json');
-check('过期数据被拒绝，卡片保持 151（学习资源区）', a.async.cards, 151);
-check('总数未被旧数据覆盖', a.async.total, '186');
-check('免费数未被旧数据覆盖', a.async.free, '181');
+check('过期数据被拒绝，卡片保持 6（校园平台）', a.async.cards, 6);
+check('总数未被旧数据覆盖', a.async.total, '157');
+check('免费数未被旧数据覆盖', a.async.free, '152');
 
 console.log('\n=== 场景 2: file://（不应调用 fetch，保持内嵌数据）===');
 const b = await runOnce('file:');
@@ -80,8 +80,8 @@ console.log('  同步           : ' + JSON.stringify(b.sync));
 console.log('  fetch 调用     : ' + b.fetchCalled);
 console.log('  异步           : ' + JSON.stringify({ cards: b.async.cards, total: b.async.total, free: b.async.free }));
 check('fetch 未被调用', b.fetchCalled, null);
-check('卡片数保持 151（学习资源区）', b.async.cards, 151);
-check('总数保持 186', b.async.total, '186');
+check('卡片数保持 6（校园平台）', b.async.cards, 6);
+check('总数保持 157', b.async.total, '157');
 
 // ===== 场景 3/4：远端数据过期时的防护 =====
 // 背景：resources.json 有 10 分钟 CDN 缓存。如果浏览器拿到旧版本，
@@ -116,8 +116,8 @@ async function runWithPayload(protocol, payload, sentinel) {
 
   globalThis.__FORCE_STUDY__ = true;   // 学习资源已下架，测试里强制打开
   eval(script);
-  // 新结构默认停在首页；资源卡片在学习资源区，导航过去才有内容
-  globalThis.location.hash = '#/study/library';
+  // 新结构默认停在首页；资源卡片在校园平台，导航过去才有内容
+  globalThis.location.hash = '#/campus/campusall';
   await new Promise((r) => setTimeout(r, 60));
 
   // 点第 5 张卡，看详情打开的是不是它自己
@@ -148,8 +148,8 @@ console.log('\n=== 场景 3: 远端数据【过期】（只有 3 条，与页面
 const stale = await runWithPayload('https:', { resources: FAKE.resources });
 console.log('  卡片数: ' + stale.cards + '   总数显示: ' + stale.total);
 console.log('  点第 5 张卡（应为「' + stale.want + '」）→ 详情标题: 「' + stale.got + '」');
-check('过期数据被拒绝，卡片仍为 151（学习资源区）', stale.cards, 151);
-check('总数未被旧数据覆盖', stale.total, '186');
+check('过期数据被拒绝，卡片仍为 6（校园平台）', stale.cards, 6);
+check('总数未被旧数据覆盖', stale.total, '157');
 check('点卡片仍打开它自己', stale.got, stale.want);
 
 console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真的覆盖内嵌数据）===');
@@ -163,9 +163,9 @@ console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真
   const full = {
     resources: names.map((t, k) => ({
       title: t, url: k === 5 ? SENTINEL : 'https://x.test/',
-      // 必须是【学习资源区】的分类 —— 校内平台/校园信息现在归权益服务区，
-      // 用它们构造会让学习资源区一张卡都没有（实测踩过）。
-      description: 'd', category: '课程资料', subcategory: '课程资源合集',
+      // 必须是【校园平台】的分类 —— 校内平台/校园信息现在归权益服务区，
+      // 用它们构造会让校园平台一张卡都没有（实测踩过）。
+      description: 'd', category: '校内平台', subcategory: '课程资源合集',
       icon: 'A', free: true, tags: ['t'], source: 'x.test', cost: '免费',
     })),
   };
@@ -177,8 +177,8 @@ console.log('\n=== 场景 4: 远端数据【完整对齐】应被采纳（并真
   // 关键回归点：远端数据被采纳后，卡片标题必须仍是真实标题
   // （曾经因为内嵌数据用 name、resources.json 用 title，导致标题变成字面量 "undefined"）
   console.log('  采纳远端数据后，卡片标题: ' + JSON.stringify(ok.nameDump));
-  check('对齐数据被采纳，卡片 186（合成数据全属学习资源区）', ok.cards, 186);
-  check('总数显示 186', ok.total, '186');
+  check('对齐数据被采纳，卡片 157（合成数据全属校园平台）', ok.cards, 157);
+  check('总数显示 157', ok.total, '157');
   check('采纳远端数据后卡片标题仍是真实标题（不是 undefined）',
     ok.nameDump[0] === '"' + ok.want + '"', true);
   check('点卡片打开的详情标题 = 卡片自己的标题', ok.got, ok.want);
