@@ -3405,6 +3405,27 @@ function applyMode() {
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
+/* 长链接在窄卡片里会被省略号截断，截断后往往只剩域名 ——
+   看起来跟首页一样，看不出指向哪个具体页面（比如「权益反馈」）。
+   这里做智能缩略：保留域名 + 末尾最有辨识度的路径段，中间用 … 省略。
+   完整的 URL 仍然保留在 href 和 title（悬停可见）里，不影响跳转。 */
+function shortUrl(u) {
+  var str = String(u == null ? "" : u);
+  var m = str.match(/^https?:\/\/([^\/]+)(\/.*)?$/);
+  if (!m) return str;
+  var host = m[1].replace(/^www\./, "");
+  var path = m[2] || "";
+  if (!path || path === "/") return host;
+  var full = host + path;
+  if (full.length <= 30) return full;
+  var segs = path.split("/").filter(function (x) { return x; });
+  if (!segs.length) return host;
+  var last = segs[segs.length - 1];
+  // 最后一段本身就是一长串 id 时，截断它
+  if (last.length > 20) last = last.slice(0, 18) + "…";
+  return host + "/…/" + last;
+}
+
 /* 从试卷的 y 字段里取出年份数字。
    数据里 y 有四种形态：「2025」「2025春」「2017/2018/2019/2025」「2001-2020」「年份未知」。
    排序只认前四位，否则「2025春」会被当成"没有年份"，2026 年的卷子会沉到列表底部 —— 实测踩过。 */
@@ -4767,8 +4788,8 @@ function renderRights() {
         if (val && kind !== "guide") {
           var v = document.createElement("span");
           v.className = "rt-val";
-          v.textContent = val;
-          v.title = val;
+          v.textContent = shortUrl(val);   // 卡片上显示缩略版
+          v.title = val;                   // 悬停可见完整地址
           foot.appendChild(v);
         }
         var sp0 = document.createElement("span");
