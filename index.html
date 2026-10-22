@@ -124,7 +124,6 @@ body {
     font-size: 16px; font-weight: 700; color: var(--primary);
     display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px;
   }
-.rt-cat h3 .rt-cat-desc { font-size: 12.5px; font-weight: 400; color: var(--muted); }
 .rt-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 10px; }
 .rt-item {
     border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px;
@@ -2084,12 +2083,6 @@ function renderChannelsInto(host, catFilter, introText) {
 
     const h = document.createElement("h3");
     h.textContent = cat.name;
-    if (cat.desc) {
-      const d = document.createElement("span");
-      d.className = "rt-cat-desc";
-      d.textContent = cat.desc;
-      h.appendChild(d);
-    }
     box.appendChild(h);
 
     const list = document.createElement("div");
