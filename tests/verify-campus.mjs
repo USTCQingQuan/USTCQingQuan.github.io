@@ -1,4 +1,5 @@
-// 回归 · 校园平台页（6 条资源 + 搜索 + 筛选）
+// 回归 · 校园平台页（静态列表 + 详情弹层）
+// 搜索与分类筛选已按"力求简洁"的要求整体移除，校园平台只剩 6 张静态卡片。
 import { readFile } from 'node:fs/promises';
 import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
 
@@ -18,75 +19,51 @@ function boot(hash) {
   return dom.ids;
 }
 
-console.log('=== 1. 默认显示全部 6 条 ===');
+console.log('=== 1. 列表直接显示全部 6 条 ===');
 {
   const ids = boot('#/campus/campusall');
   const cards = ids.grid.children.length;
   console.log('  卡片数: ' + cards);
   check('校园平台 6 条', cards, CAMPUS.length);
-  check('分类条显示「全部」', ids.chips.querySelectorAll('.chip').length > 0, true);
+  check('空态提示隐藏', ids.empty.hidden, true);
 }
 
 console.log('');
-console.log('=== 2. 分类筛选 ===');
+console.log('=== 2. 页面上没有搜索框与筛选按钮 ===');
+{
+  const html = await readFile('index.html', 'utf8');
+  check('源码里没有搜索输入框', html.indexOf('id="q"'), -1);
+  check('源码里没有「只看免费」', html.indexOf('只看免费'), -1);
+  check('源码里没有工具栏容器', html.indexOf('class="toolbar"'), -1);
+  check('源码里没有结果计数条', html.indexOf('resultBar'), -1);
+}
+
+console.log('');
+console.log('=== 3. 卡片内容 ===');
 {
   const ids = boot('#/campus/campusall');
-  const chips = ids.chips.querySelectorAll('.chip');
-  const labels = chips.map((c) => c.textContent);
-  console.log('  chips: ' + labels.join(' / '));
-  check('只有「全部 / 校内平台」两个 chip', labels.length, 2);
-
-  const only = chips.find((c) => c.textContent.indexOf('校内平台') === 0);
-  only.fire('click');
-  console.log('  点「校内平台」后卡片数: ' + ids.grid.children.length);
-  check('筛选后仍是 6 条', ids.grid.children.length, CAMPUS.length);
+  const first = ids.grid.children[0];
+  const name = first.querySelector('.card-name').textContent;
+  const badge = first.querySelector('.badge.cat').textContent;
+  console.log('  首张: ' + name + ' / ' + badge);
+  check('首张是评课社区', name.indexOf('评课') >= 0, true);
+  check('分类标签是校内平台', badge, '校内平台');
+  check('有跳转链接', String(first.href).indexOf('http') === 0, true);
 }
 
 console.log('');
-console.log('=== 3. 搜索 ===');
-{
-  const ids = boot('#/campus/campusall');
-  const q = ids.q;
-
-  q.value = '评课';
-  q.fire('input');
-  const n1 = ids.grid.children.length;
-  console.log('  搜「评课」: ' + n1 + ' 条');
-  check('搜到评课社区', n1, 1);
-
-  q.value = 'zzz不存在的关键词zzz';
-  q.fire('input');
-  const n2 = ids.grid.children.length;
-  console.log('  搜不存在的词: ' + n2 + ' 条');
-  check('搜不到时 0 条', n2, 0);
-  check('显示空状态提示', ids.empty.hidden, false);
-
-  q.value = '';
-  q.fire('input');
-  console.log('  清空后: ' + ids.grid.children.length + ' 条');
-  check('清空搜索恢复 6 条', ids.grid.children.length, CAMPUS.length);
-}
-
-console.log('');
-console.log('=== 4. 只看免费 ===');
-{
-  const ids = boot('#/campus/campusall');
-  const freeCount = CAMPUS.filter((r) => r.free).length;
-  ids.freeOnly.checked = true;
-  ids.freeOnly.fire('change');
-  console.log('  勾选「只看免费」: ' + ids.grid.children.length + ' / 免费共 ' + freeCount);
-  check('只看免费后条数正确', ids.grid.children.length, freeCount);
-}
-
-console.log('');
-console.log('=== 5. 详情弹层 ===');
+console.log('=== 4. 点击卡片打开详情 ===');
 {
   const ids = boot('#/campus/campusall');
   const first = ids.grid.children[0];
   first.fire('click');
-  console.log('  detail-mask hidden: ' + ids['detail-mask'].hidden);
-  check('点击卡片打开详情', ids['detail-mask'].hidden, false);
-  check('详情里显示标题', ids['detail-box'].textContent.length > 0, true);
+  check('详情遮罩已打开', ids['detail-mask'].hidden, false);
+  check('详情里有标题', ids['detail-box'].textContent.length > 0, true);
 }
+
+console.log('');
+console.log('=== 5. 全部资源数 ===');
+console.log('  resources.json: ' + res.resources.length + ' 条');
+check('资源总数与 _count 一致', res.resources.length, res._count);
 
 process.exit(done() ? 0 : 1);

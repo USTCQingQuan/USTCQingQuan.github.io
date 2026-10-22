@@ -172,7 +172,7 @@ console.log('=== 5. 首页图标宫格 ===');
   check('3 个都属权益服务', tones.every((t) => t === 'ig-rights'), true);
   // 标签里可能含零宽空格（控制手机折行位置），比对前先去掉
   const labels = items.map((a) => a.querySelector('.ig-label').textContent.replace(/\u200B/g, ''));
-  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生会反馈渠道 校园报修 部门直拨电话');
+  check('入口名称', labels.join(' '), '青权中心权益反馈渠道 学生会权益反馈渠道 校园报修 部门直拨电话');
   // 每个入口都有可点击地址
   const badHref = items.filter((a) => !/^#\/|^https?:/.test(a.href));
   check('所有入口地址有效', badHref.length, 0);
