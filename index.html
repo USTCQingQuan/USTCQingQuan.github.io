@@ -649,6 +649,14 @@ body.modal-open { overflow: hidden; }
     .dept-go { order: 4; padding: 3px 12px; }
   }
 
+  /* 超窄屏（≤360px）：4 列时每格只有 ~66px，「权益反馈渠道」放不下会二次折行。
+     改成 2x2，每格 ~140px，标签稳定两排。 */
+  @media (max-width: 360px) {
+    .ig-row { grid-template-columns: repeat(2, 1fr) !important; row-gap: 12px; }
+    .ig-label { font-size: 12.5px; }
+    .ig-label-2 { font-size: 11.5px; }
+  }
+
 </style>
 </head>
 <body>
