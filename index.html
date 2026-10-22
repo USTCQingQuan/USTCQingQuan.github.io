@@ -716,6 +716,36 @@ body.modal-open { overflow: hidden; }
     .card-name { overflow-wrap: anywhere; }
 .card-head { min-width: 0; }
 }
+  /* ---------- 部门直拨电话：单列列表（方案 B） ---------- */
+  .dept-list { display: flex; flex-direction: column; }
+  .dept-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 2px; border-bottom: 1px dashed #e6ecf5;
+  }
+  .dept-row:last-child { border-bottom: 0; }
+  .dept-name {
+    flex: none; width: 170px; font-size: 13.5px; font-weight: 600; color: var(--ink);
+  }
+  .dept-desc { flex: 1; font-size: 12px; color: var(--muted); min-width: 0; }
+  .dept-no {
+    flex: none; font-family: ui-monospace, Consolas, monospace; font-size: 13px;
+    color: var(--ustc-blue-deep); letter-spacing: .3px;
+  }
+  .dept-go {
+    flex: none; font-size: 12px; color: var(--primary); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px;
+    white-space: nowrap;
+  }
+  .dept-go:hover { border-color: var(--primary); background: #f2f7fd; }
+  @media (max-width: 720px) {
+    /* 窄屏换成两行：第一行 部门名 + 号码，第二行 说明 + 拨号 */
+    .dept-row { flex-wrap: wrap; gap: 4px 10px; padding: 11px 2px; }
+    .dept-name { width: auto; flex: 1 1 auto; font-size: 13px; }
+    .dept-no { order: 2; }
+    .dept-desc { order: 3; flex: 1 1 100%; font-size: 11.5px; }
+    .dept-go { order: 4; padding: 3px 12px; }
+  }
+
 </style>
 </head>
 <body>
