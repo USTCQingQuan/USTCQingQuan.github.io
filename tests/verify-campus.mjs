@@ -66,4 +66,32 @@ console.log('=== 5. 全部资源数 ===');
 console.log('  resources.json: ' + res.resources.length + ' 条');
 check('资源总数与 _count 一致', res.resources.length, res._count);
 
+console.log('');
+console.log('=== 6. 任何路由都不能渲染学习类资源 ===');
+{
+  // 本站是权益服务类站点，学习资源已整体下线。
+  // resources.json 里仍留着历史数据，但页面上一个都不许出现。
+  const ALLOWED = new Set(CAMPUS.map((r) => r.title));
+  const ROUTES = ['#/', '#/campus/campusall', '#/campus/whatever',
+    '#/study/library', '#/study/exams', '#/rights/exams',
+    '#/rights/channels', '#/rights/key', '#/union/union', '#/repair', '#/dept', '#/teach'];
+
+  let leaked = 0;
+  for (const hash of ROUTES) {
+    const ids = boot(hash);
+    const names = ids.grid.children.map((c) => {
+      const n = c.querySelector('.card-name');
+      return n ? n.textContent : '';
+    }).filter(Boolean);
+    const bad = names.filter((n) => !ALLOWED.has(n));
+    if (bad.length) {
+      console.log('  ✗ ' + hash + ' 出现了非校内平台资源: ' + bad.slice(0, 3).join('、'));
+      leaked += bad.length;
+    } else {
+      console.log('  ✓ ' + hash.padEnd(22) + '卡片 ' + names.length + ' 条，全部是校内平台');
+    }
+  }
+  check('所有路由都没有学习类资源', leaked, 0);
+}
+
 process.exit(done() ? 0 : 1);
