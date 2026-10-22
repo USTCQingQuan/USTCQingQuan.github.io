@@ -250,10 +250,7 @@ body {
     width: 6px; height: 6px; border-radius: 50%; flex: none;
   }
 .ig-group-rights .ig-group-dot { background: var(--ustc-blue); }
-.ig-group-cnt {
-    margin-left: auto; font-size: 11px; font-weight: 400; color: var(--muted);
-  }
-.ig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .ig-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 .ig-item {
     display: flex; flex-direction: column; align-items: center; gap: 7px;
     padding: 8px 4px 6px; border-radius: 14px; text-decoration: none; color: inherit;
@@ -280,7 +277,6 @@ body {
 .ig-label { font-size: 12px; line-height: 1.3; }
   
 }
-.ig-desc { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.3; }
 .ig-num {
     position: absolute; top: -5px; right: -7px;
     font-size: 10px; font-weight: 700; color: #fff; background: var(--primary);
@@ -294,7 +290,6 @@ body {
 .ig-row { gap: 0; }
 .ig-icon { width: 42px; height: 42px; font-size: 21px; }
 .ig-label { font-size: 12px; }
-.ig-desc { display: none; }
   
 }
 /* 给底部标签栏留出空间，避免盖住最后一段内容 */
@@ -1533,16 +1528,16 @@ const HOME_GROUPS = [
       /* 直接跳外部：青春科大智慧团学平台的「权益广场 - 权益反馈」提交页。
          用 href 而不是 to —— 渲染时会自动加 target=_blank 与 rel=noopener。
          没有 n，所以不显示数字角标（原数字是站内渠道数，跟这个外链无关）。 */
-      { icon: "🛡️", label: "青权中心", label2: "权益反馈渠道", desc: "",
+      { icon: "🛡️", label: "青权中心", label2: "权益反馈渠道", 
         href: "https://young.ustc.edu.cn/login/sc-wisdom-group-learning/suggestions/Lists/suggestionsList", n: null },
       /* 只到「校学生会 · 研究生会」这一组：权益柜 QQ / 研会 QQ 群 / 权益服务部邮箱 */
-      { icon: "🎓", label: "学生会", label2: "权益反馈渠道", desc: "权益柜 QQ / 研会群 / 邮箱", to: "#/union/union",
+      { icon: "🎓", label: "学生会", label2: "权益反馈渠道", to: "#/union/union",
         n: null },
       /* 报修是最高频的操作，直接在首页给入口 */
-      { icon: "🔧", label: "校园报修", desc: "宿舍水电/家具/教学设备", to: "#/repair",
+      { icon: "🔧", label: "校园报修", to: "#/repair",
         n: null },
       /* 第四个快捷入口 */
-      { icon: "📞", label: "部门直拨电话", desc: "11 个部门号码直接打", to: "#/dept",
+      { icon: "📞", label: "部门直拨电话", to: "#/dept",
         n: null },
     ],
   },
@@ -1582,10 +1577,6 @@ function renderIconGrid() {
     var nm = document.createElement("span");
     nm.textContent = grp.label;
     head.appendChild(nm);
-    var cnt = document.createElement("span");
-    cnt.className = "ig-group-cnt";
-    cnt.textContent = grp.items.length + " 个入口";
-    head.appendChild(cnt);
     wrap.appendChild(head);
 
     var row = document.createElement("div");
@@ -1626,12 +1617,6 @@ function renderIconGrid() {
           lb.textContent = e.label;
         }
         a.appendChild(lb);
-        if (e.desc) {                     // 没写说明就不渲染那一行
-          var ds = document.createElement("span");
-          ds.className = "ig-desc";
-          ds.textContent = e.desc;
-          a.appendChild(ds);
-        }
         row.appendChild(a);
         idx++;
       })(grp.items[i]);
