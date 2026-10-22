@@ -146,8 +146,6 @@ body {
   }
 .rt-item .rt-flex { flex: 1; }
 .rt-item .rt-wx { font-size: 12px; color: var(--primary-deep); }
-.rt-item .rt-ok { font-size: 11px; color: #0a63bd; }
-.rt-item .rt-ok::before { content: "●"; font-size: 8px; margin-right: 4px; vertical-align: middle; }
 /* 权益服务工作宣传（内容待补，先占位） */
 
   /* 「服务工作」页里的待填栏目 */
@@ -179,18 +177,8 @@ body {
     padding: 15px 0; border-bottom: 1px dashed #e6ecf5;
   }
 .promo-row:last-child { border-bottom: 0; }
-.promo-ico {
-    flex: none; width: 38px; height: 38px; border-radius: 11px;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-    background: color-mix(in srgb, var(--primary) 9%, #fff);
-  }
-.promo-row .promo-txt { flex: 1; min-width: 0; }
 .promo-row h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); }
 .promo-row p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-top: 4px; }
-.promo-soon {
-    flex: none; font-size: 11px; color: #8b93a3; background: #eef2f8;
-    padding: 3px 10px; border-radius: 999px; white-space: nowrap; margin-top: 3px;
-  }
 /* 工作动态列表（首页宣传区里的真实条目） */
   .news-block { padding: 2px 0 6px; }
 .news-block > h4 {
@@ -262,8 +250,6 @@ body {
     position: relative;
   }
 .ig-rights .ig-icon { background: #e8f0fa; }
-.ig-study .ig-icon { background: #e8f0fa; }
-.ig-more .ig-icon { background: #f2f0ea; }
 .ig-label-1, .ig-label-2 { display: block; }
 .ig-label-2 { font-size: .94em; }
 .ig-label {
@@ -312,11 +298,6 @@ body {
 .brand-seal {
     width: 38px; height: 38px; flex: none; border-radius: 50%;
     background: #fff; padding: 1px; box-shadow: 0 1px 4px rgba(0,0,0,.18);
-  }
-.brand-left {
-    display: flex; align-items: baseline; gap: 12px; min-width: 0; flex: 1;
-    /* 放不下时自然折行，而不是把品牌条撑出横向滚动 */
-    flex-wrap: wrap; row-gap: 2px;
   }
 .brandbar .wrap { justify-content: flex-start; }
 .brandbar h1 {
@@ -372,56 +353,10 @@ body {
 .iss-done b { color: #0a63bd; }
 .iss-todo b { color: #8b93a3; }
 /* 两个入口卡片 */
-  .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.entry {
-    display: block; text-decoration: none; color: inherit;
-    border: 1px solid var(--border); border-radius: 18px; padding: 26px 26px 22px;
-    background: #fff; position: relative; overflow: hidden;
-    transition: transform .2s, box-shadow .2s, border-color .2s;
-  }
-.entry::before {
-    content: ""; position: absolute; inset: 0 0 auto 0; height: 5px;
-    background: var(--primary);
-  }
-.entry-rights::before { background: linear-gradient(90deg, #b8860b, #d4a017); }
-.entry-study::before { background: linear-gradient(90deg, var(--primary-deep), #146cc7); }
-.entry:hover {
-    transform: translateY(-3px); border-color: rgba(23,94,76,.35);
-    box-shadow: 0 14px 34px rgba(34,48,43,.12);
-  }
-.entry-tag {
-    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px;
-    padding: 3px 11px; border-radius: 999px; margin-bottom: 12px;
-  }
-.entry-rights .entry-tag { background: #fdf4dc; color: #8a6508; }
-.entry-study .entry-tag { background: #e8f0fa; color: var(--primary-deep); }
-.entry h3 { font-size: 20px; font-weight: 800; letter-spacing: .3px; color: var(--ink); }
-.entry > p { font-size: 13.5px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
-.entry ul { margin: 16px 0 0; padding: 0; list-style: none; }
-.entry li {
-    font-size: 13px; color: #475569; padding: 6px 0 6px 20px; position: relative;
-    border-bottom: 1px solid #eef2f8;
-  }
-.entry li:last-child { border-bottom: 0; }
-.entry li::before {
-    content: ""; position: absolute; left: 4px; top: 13px;
-    width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
-  }
-.entry-rights li::before { background: #d4a017; }
-.entry li b { color: var(--ink); font-weight: 700; }
-.entry-go {
-    display: inline-block; margin-top: 18px; font-size: 14px; font-weight: 700;
-    color: var(--primary);
-  }
-.entry-rights .entry-go { color: #8a6508; }
 @media (max-width: 760px) {
-.entry-grid { grid-template-columns: 1fr; gap: 14px; }
-.entry { padding: 22px 20px 18px; }
-.entry h3 { font-size: 18px; }
 .promo-head { padding: 18px 18px; }
 .promo-body { padding: 4px 18px 16px; }
 .promo-row { gap: 11px; }
-.promo-soon { display: none; }
   
 }
 @media (max-width: 720px) {
@@ -435,10 +370,8 @@ footer {
   }
 footer b { color: var(--primary); }
 .foot-line { line-height: 1.9; }
-.foot-sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
 @media (max-width: 720px) {
 .foot-line { font-size: 12.5px; }
-.foot-sub { font-size: 11px; }
   
 }
 /* ===== 二级子分类 ===== */
@@ -466,31 +399,6 @@ footer b { color: var(--primary); }
      视觉上比一级轻，避免两层按钮抢视线；用左侧竖线表示从属关系。 */
 
   /* ===== 学习路径 ===== */
-  .guide-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
-    padding: 22px 24px; margin-bottom: 14px; cursor: pointer; transition: all .2s;
-  }
-.guide-card:hover { border-color: rgba(23,94,76,.35); box-shadow: 0 10px 28px rgba(34,48,43,.10); transform: translateY(-2px); }
-.guide-card .g-top { display: flex; align-items: center; gap: 14px; }
-.guide-card .g-icon {
-    width: 46px; height: 46px; flex: none; border-radius: 13px; font-size: 22px;
-    display: flex; align-items: center; justify-content: center;
-    background: color-mix(in srgb, var(--primary) 10%, #fff);
-    border: 1px solid color-mix(in srgb, var(--primary) 20%, #fff);
-  }
-.guide-card h3 { font-size: 17px; font-weight: 700; }
-.guide-card .g-sub { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
-.guide-card .g-meta { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
-.guide-card .g-meta span { background: #f1efe6; padding: 3px 11px; border-radius: 999px; }
-.guide-detail { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 26px 28px; }
-.guide-detail .gd-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 6px; }
-.guide-detail h2 { font-size: 22px; font-weight: 800; }
-.guide-detail .gd-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
-.back-btn {
-    margin-bottom: 16px; padding: 7px 16px; border-radius: 999px; font-size: 13.5px;
-    border: 1px solid var(--border); background: var(--card); color: var(--ink); cursor: pointer;
-  }
-.back-btn:hover { border-color: var(--primary); color: var(--primary); }
 /* ===== 技能自查表 ===== */
 
   /* ===== 资源详情弹层 =====
@@ -591,7 +499,6 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 720px) {
 .modebar .wrap { gap: 6px; }
 .mode-btn { padding: 7px 14px; font-size: 13px; flex: 1 1 auto; text-align: center; }
-.guide-detail { padding: 20px 18px; }
 /* 手机端：分类标签瘦身。
        11 个大类标签在窄屏会占 3 行，加上粘顶（sticky）约吃掉 150px 屏高（约 18%）。
        缩小内边距与字号后通常能压到 2 行，把可视区还给内容。 */
@@ -870,7 +777,7 @@ const RESOURCES = [
 ];
 /* ===== DATA:END ===== */
 
-const CATEGORIES = ["全部", "AI 与数据科学", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "校园信息", "英语备考"];
+const CATEGORIES = ["全部", "AI 与数据科学", "课程资料", "视频课程", "编程开发", "学术科研", "校内平台", "效率工具", "竞赛信息", "英语备考"];
 const CAT_COLORS = {
   "课程资料": "var(--c-kecheng)",
   "AI 与数据科学": "var(--c-ai)",
@@ -880,7 +787,6 @@ const CAT_COLORS = {
   "校内平台": "var(--c-xiaonei)",
   "效率工具": "var(--c-xiaolv)",
   "竞赛信息": "var(--c-jingsai)",
-  "校园信息": "var(--c-xiaoyuan)",
   "英语备考": "var(--c-yingyu)"
 };
 
@@ -1171,18 +1077,17 @@ const viewUni = document.getElementById("view-union");
    首页（权益服务工作宣传 + 两个入口）→ 权益服务区 / 学习资源区
 
    分类归属按需求划分：
-   - 权益服务区：权益反馈（渠道）、校内平台、校园信息
+   - 校园平台页：校内平台的资源（原「校园信息」分类已随精简下线）
    - 学习资源区：资源库（其余 8 类）、学习路径、技能自查、历年试卷
 
    为什么用 hash 路由而不是拆成多个 HTML：每个视图都有可分享链接
    （#/rights/channels 贴到群里能直接打开对应页），切换不用重新加载，
    而且保持单文件、离线也能用。要拆真多页随时可以，逻辑已经分好了。 */
-const PLATFORM_CATS = ["校内平台", "校园信息"];
 // 这些视图复用同一个资源网格，各自限定可见分类
-/* campusall = 校内平台 + 校园信息 合并后的视图。
+/* campusall = 校园平台页唯一视图（原「校园信息」分类已删）。
    platforms / campus 两个旧视图保留着（导航里不再出现，但深链接仍可用，
    以后想拆回去也方便）。 */
-const CAMPUS_CATS = ["校内平台", "校园信息"];
+const CAMPUS_CATS = ["校内平台"];
 /* 目前只有一个资源网格视图：校园平台（6 条，全部属「校内平台」分类）。 */
 const RESOURCE_VIEWS = { campusall: ["校内平台"] };
 
@@ -1341,7 +1246,7 @@ const SECTIONS_ALL = [
     subs: [
       { id: "key", label: "主渠道", n: function () { return countChannelsIn(KEY_CAT_IDS); } },
       { id: "channels", label: "全部渠道", n: function () { return CHANNELS ? CHANNELS.count : "…"; } },
-      /* 校内平台与校园信息已合并到顶部的「校园平台」，不再作为本分区的子视图 */
+      /* 校内平台统一放在顶部的「校园平台」，不再作为本分区的子视图 */
     ],
   },
   {
@@ -1374,7 +1279,7 @@ const SECTIONS_ALL = [
     ],
   },
   {
-    /* 校内平台 + 校园信息 合并成一个顶部入口 */
+    /* 校内平台合并成一个顶部入口 */
     id: "campus", label: "校园平台",
     subs: [
       { id: "campusall", label: "全部", n: function () { return countIn(CAMPUS_CATS); } },
@@ -1389,7 +1294,6 @@ function countIn(cats) {
 }
 
 let route = { home: true, sec: "", sub: "" };
-let activeGuide = null;
 
 function parseRoute() {
   var h = String(location.hash || "").replace(/^#\/?/, "");
@@ -1414,11 +1318,6 @@ const byTitle = new Map();
 function rebuildTitleIndex() {
   byTitle.clear();
   for (const r of RESOURCES) byTitle.set(r.name, r);
-}
-
-function currentSection() {
-  for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].id === route.sec) return SECTIONS[i];
-  return null;
 }
 
 function renderModebar() {
@@ -1823,13 +1722,6 @@ function renderHome() {
     body.appendChild(ib);
 
   }
-}
-
-/* ---------- 学习路径 ---------- */
-function countRefs(g) {
-  let n = 0;
-  for (const st of g.steps) for (const b of st.blocks) if (b.type === "resources") n += b.items.length;
-  return n;
 }
 
 /* ---------- 技能自查表（勾选存 localStorage，不上传） ---------- */
