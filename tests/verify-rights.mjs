@@ -194,7 +194,7 @@ console.log('=== 5. 首页图标宫格 ===');
   const groupHeads = grid.querySelectorAll('.ig-group-head');
   console.log('  分组数: ' + groupHeads.length);
   check('宫格只剩 1 组', groupHeads.length, 1);
-  check('这一组是「权益服务」', groupHeads[0].textContent.indexOf('权益服务') === 0, true);
+  check('这一组是「常用通道」', groupHeads[0].textContent.indexOf('常用通道') === 0, true);
   // 有数字角标的项
   const nums = grid.querySelectorAll('.ig-num');
   console.log('  数字角标数: ' + nums.length);
