@@ -371,21 +371,6 @@ body {
 .iss-done b, .iss-todo b { font-weight: 700; }
 .iss-done b { color: #0a63bd; }
 .iss-todo b { color: #8b93a3; }
-/* 联系方式速查（首页「如何找到我们」） */
-  .ct-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2px 20px; margin-top: 8px;
-  }
-.ct-row {
-    display: flex; align-items: baseline; gap: 10px; justify-content: space-between;
-    padding: 7px 0; border-bottom: 1px dashed #e6ecf5; font-size: 13px;
-  }
-.ct-row .ct-name { color: var(--ink); font-weight: 600; }
-.ct-row .ct-val {
-    color: var(--primary); text-decoration: none; font-variant-numeric: tabular-nums;
-    font-family: ui-monospace, Consolas, monospace; font-size: 12.5px;
-  }
-.ct-row .ct-val:hover { text-decoration: underline; }
 /* 两个入口卡片 */
   .entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .entry {
@@ -1837,78 +1822,7 @@ function renderHome() {
     }
     body.appendChild(ib);
 
-    // ③ 如何找到我们：直接把关键联系方式摆出来
-    var cb = document.createElement("div");
-    cb.className = "iss-block";
-    var ch = document.createElement("h4");
-    ch.textContent = "如何找到我们";
-    cb.appendChild(ch);
-
-    var cmeta = document.createElement("div");
-    cmeta.className = "iss-meta";
-    var cspan = document.createElement("span");
-    cspan.textContent = "按问题类型对口联系，比层层转达快得多";
-    cmeta.appendChild(cspan);
-    var clink = document.createElement("a");
-    clink.href = "#/rights/channels";
-    clink.textContent = "查看全部 " + (CHANNELS ? (CHANNELS.total || CHANNELS.count) + " 条渠道" : "渠道") + " →";
-    cmeta.appendChild(clink);
-    cb.appendChild(cmeta);
-
-    // 把渠道按"关键程度"挑几条直接展示：团工委、保卫、后勤、医务、网络、权益柜
-    var WANT = ["高新团工委", "保卫与校园管理处", "基建修缮服务中心（高新区服务网点）",
-                "高新医务所（急诊）", "网络信息中心", "校车队", "中科大权益柜（QQ）"];
-    var picked = [];
-    if (CHANNELS && CHANNELS.categories) {
-      for (var ci = 0; ci < CHANNELS.categories.length; ci++) {
-        var cc = CHANNELS.categories[ci];
-        for (var cj = 0; cj < cc.channels.length; cj++) {
-          var it2 = cc.channels[cj];
-          if (it2.status === "ok" && WANT.indexOf(it2.name) >= 0) picked.push(it2);
-        }
-      }
-    }
-    if (picked.length) {
-      var tbl = document.createElement("div");
-      tbl.className = "ct-grid";
-      for (var ck = 0; ck < picked.length; ck++) {
-        (function (x) {
-          var row = document.createElement("div");
-          row.className = "ct-row";
-          var nm2 = document.createElement("span");
-          nm2.className = "ct-name";
-          nm2.textContent = x.name.replace(/（.*?）/g, "");
-          row.appendChild(nm2);
-          var vv = document.createElement("a");
-          vv.className = "ct-val";
-          if (x.kind === "phone") {
-            vv.href = "tel:" + String(x.value).replace(/[^0-9+]/g, "");
-          } else if (x.kind === "email") {
-            vv.href = "mailto:" + x.value;
-          } else if (x.kind === "qq") {
-            vv.href = "#/rights/channels";
-          } else {
-            vv.href = x.value || "#/rights/channels";
-          }
-          vv.textContent = x.value;
-          row.appendChild(vv);
-          tbl.appendChild(row);
-        })(picked[ck]);
-      }
-      cb.appendChild(tbl);
-    } else {
-      var cph = document.createElement("p");
-      cph.style.color = "var(--muted)";
-      cph.style.fontSize = "13px";
-      cph.textContent = "联系方式正在整理，可先到「权益反馈」页查看全部渠道。";
-      cb.appendChild(cph);
-    }
-    body.appendChild(cb);
   }
-  // 入口卡片上的数字
-  setStat("homeChanN", CHANNELS ? CHANNELS.count : 6);
-  setStat("homePlatN", countIn(["校内平台"]));
-  setStat("homeCampusN", countIn(["校园信息"]));
 }
 
 /* ---------- 学习路径 ---------- */

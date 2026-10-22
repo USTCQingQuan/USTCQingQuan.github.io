@@ -215,18 +215,19 @@ console.log('\n=== 5c. 宣传板块已移到首页 ===');
   check('首页视图已显示', ids['view-home'].hidden, false);
   // 宣传栏目由 renderHome() 建进 #promoBody（静态 HTML 里的 .promo 外壳不在桩里）
   const body = ids['promoBody'];
-  // 结构：一个「工作动态」列表块 + 两个占位栏目（典型问题处理 / 如何找到我们）
+  // 结构：工作动态 + 典型问题处理 两块（「如何找到我们」已按求精简删除）
   check('有工作动态块', !!body.querySelector('.news-block'), true);
-  // 工作动态 + 典型问题处理 都有真实数据块，只剩「如何找到我们」是占位
   check('有典型问题处理块', !!body.querySelector('.iss-block'), true);
   const rows = body.children.filter((c) => (c.className || '').includes('promo-row'));
   console.log('  占位栏目数: ' + rows.length);
   check('首页已无占位栏目', rows.length, 0);
-  // 三个真实块：工作动态 / 典型问题处理 / 如何找到我们
   const heads = body.querySelectorAll('.iss-block h4').map((h) => h.textContent.replace(/（.*$/, ''));
   console.log('  内容块: ' + heads.join(' | '));
   check('有「典型问题处理」块', heads.some((h) => h.indexOf('典型问题处理') === 0), true);
-  check('有「如何找到我们」块', heads.some((h) => h.indexOf('如何找到我们') === 0), true);
+  // 「如何找到我们」整块已删，源码里不该再有
+  const htmlSrc = await readFile('index.html', 'utf8');
+  check('「如何找到我们」已从源码移除', htmlSrc.indexOf('如何找到我们') >= 0, false);
+  check('渠道速查表样式已移除', htmlSrc.indexOf('ct-grid') >= 0, false);
   // news.json 在测试里不会被 fetch（桩返回 404），所以走占位文案分支
   const nb = body.querySelector('.news-block');
   check('工作动态块有标题', nb.querySelector('h4').textContent.indexOf('工作动态') === 0, true);
