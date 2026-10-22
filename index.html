@@ -1827,7 +1827,7 @@ function countChannelsIn(catIds) {
 const QUICK_PAGES = {
   key:    { el: viewKey, catIds: KEY_CAT_IDS,    intro: null },   // 说明框暂时不要，恢复改成 INTRO_KEY
   repair: { el: viewRep, catIds: REPAIR_CAT_IDS, intro: null },   // 恢复改成 INTRO_REPAIR
-  dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: null },   // 恢复改成 INTRO_DEPT
+  dept:   { el: viewDep, catIds: DEPT_CAT_IDS,   intro: null, render: "renderDeptList" },   // 单列列表版
   teach:  { el: viewTea, catIds: TEACH_CAT_IDS,  intro: null },   // 恢复改成 INTRO_TEACH
   union:  { el: viewUni, catIds: UNION_CAT_IDS,  intro: null },
 };
@@ -1838,7 +1838,76 @@ function isQuick(sub) { return Object.prototype.hasOwnProperty.call(QUICK_PAGES,
 /* 统一渲染：完整页单独处理，其余按表取容器与文案 */
 function renderQuick(sub) {
   const q = QUICK_PAGES[sub];
-  if (q) renderChannelsInto(q.el, q.catIds, q.intro);
+  if (!q) return;
+  // 个别页有专门的版式（目前只有部门直拨电话用单列列表）
+  if (q.render === "renderDeptList") { renderDeptList(); return; }
+  renderChannelsInto(q.el, q.catIds, q.intro);
+}
+
+/* 部门直拨电话页：单列大列表（方案 B）。
+   为什么不复用渠道卡片的网格：这一页只有电话号码一种形态，卡片式排三列会把
+   「部门名 / 说明 / 号码」挤成三行。单列一行放齐，扫读最快，手机上也不用横向看。 */
+function renderDeptList() {
+  const host = viewDep;
+  if (!CHANNELS) {
+    if (!chLoaded) loadChannels();
+    if (!host.querySelector(".rt-loading")) {
+      host.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "empty rt-loading";
+      p.textContent = "正在载入电话清单…";
+      host.appendChild(p);
+    }
+    return;
+  }
+  if (host.querySelector(".dept-list")) return;   // 已渲染
+
+  let cat = null;
+  for (const c of CHANNELS.categories || []) {
+    if (c.id === "dept") { cat = c; break; }
+  }
+  host.innerHTML = "";
+  if (!cat) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "电话清单暂时不可用，请刷新重试。";
+    host.appendChild(p);
+    return;
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "dept-list";
+
+  for (const ch of cat.channels || []) {
+    const row = document.createElement("div");
+    row.className = "dept-row";
+
+    const name = document.createElement("span");
+    name.className = "dept-name";
+    name.textContent = ch.name;
+    row.appendChild(name);
+
+    const desc = document.createElement("span");
+    desc.className = "dept-desc";
+    desc.textContent = ch.desc || "";
+    row.appendChild(desc);
+
+    const no = document.createElement("span");
+    no.className = "dept-no";
+    no.textContent = ch.value || "";
+    row.appendChild(no);
+
+    if (ch.value) {
+      const go = document.createElement("a");
+      go.className = "dept-go";
+      go.href = "tel:" + ch.value;
+      go.textContent = "拨号";
+      row.appendChild(go);
+    }
+    wrap.appendChild(row);
+  }
+
+  host.appendChild(wrap);
 }
 
 const SECTIONS_ALL = [

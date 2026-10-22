@@ -105,6 +105,36 @@ console.log('=== 3. 深链下导航高亮同步 ===');
 }
 
 console.log('');
+console.log('=== 3b. 部门直拨电话页（单列列表） ===');
+{
+  quiet = true;
+  const { ids } = boot('#/dept');
+  await new Promise((r) => setTimeout(r, 150));
+  quiet = false;
+
+  const dep = ids['view-dept'];
+  const list = dep.querySelector('.dept-list');
+  check('用了单列列表版式', !!list, true);
+
+  const rows = dep.querySelectorAll('.dept-row');
+  console.log('  电话行数: ' + rows.length);
+  check('电话 9 条', rows.length, 9);
+
+  if (rows.length) {
+    const first = rows[0];
+    const name = first.querySelector('.dept-name').textContent;
+    const no = first.querySelector('.dept-no').textContent;
+    console.log('  首行: ' + name + ' / ' + no);
+    check('首行是后勤服务热线', name.indexOf('后勤服务热线') === 0, true);
+    check('首行号码正确', no, '63606384');
+    const go = first.querySelector('.dept-go');
+    check('每行都有 tel: 拨号链接', !!go && String(go.href).indexOf('tel:') === 0, true);
+  }
+
+  check('页面上不出现「待核实」', dep.textContent.indexOf('待核实'), -1);
+  check('不再停在载入提示', dep.querySelectorAll('.rt-loading').length, 0);
+}
+
 console.log('=== 4. 底部标签栏已移除 ===');
 {
   const { ids } = boot('#/');

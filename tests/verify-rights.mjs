@@ -126,7 +126,8 @@ console.log('=== 3. 可用条目：按 kind 给出正确操作 ===');
   console.log('  链接 ' + links.length + ' 个 / 电话 ' + tels.length + ' 个 / 邮箱 ' + mails.length +
     ' 个 / QQ 复制按钮 ' + qqBtns.length + ' 个 / 公众号提示 ' + wx.length + ' 个');
   check('有网页链接渠道', links.length > 0, true);
-  check('有电话渠道（含各部门直拨电话）', tels.length, 12);
+  check('有电话渠道（含各部门直拨电话）', tels.length,
+    real.categories.reduce((a, c) => a + c.channels.filter((x) => x.kind === 'phone').length, 0));
   check('有邮箱渠道', mails.length, 2);
   check('有 QQ 渠道（按钮非链接）', qqBtns.length, 2);
   check('有公众号渠道', wx.length, 1);
