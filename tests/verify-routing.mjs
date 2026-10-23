@@ -126,7 +126,7 @@ console.log('=== 3b. 部门直拨电话页（单列列表） ===');
     const no = first.querySelector('.dept-no').textContent;
     console.log('  首行: ' + name + ' / ' + no);
     check('首行是后勤服务热线', name.indexOf('后勤服务热线') === 0, true);
-    check('首行号码正确', no, '63606384');
+    check('首行号码正确（带区号）', no, '0551-63606384');
     const go = first.querySelector('.dept-go');
     check('每行都有 tel: 拨号链接', !!go && String(go.href).indexOf('tel:') === 0, true);
   }
