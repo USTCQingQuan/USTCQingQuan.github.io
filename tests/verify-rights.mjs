@@ -87,7 +87,7 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
 
   const chans = key.querySelectorAll('.rt-item');
   console.log('  精简页渠道条目数: ' + chans.length);
-  check('精简页渠道数（1+3+2=6）', chans.length, 6);
+  check('精简页渠道数（1+4+2=7）', chans.length, 7);
 
   // 两个视图是独立容器，互不污染：精简页 3 组，完整页仍是全部组
   check('完整页仍是全部组（与数据一致）',
@@ -129,7 +129,9 @@ console.log('=== 3. 可用条目：按 kind 给出正确操作 ===');
   check('有电话渠道（含各部门直拨电话）', tels.length,
     real.categories.reduce((a, c) => a + c.channels.filter((x) => x.kind === 'phone').length, 0));
   check('有邮箱渠道', mails.length, 2);
-  check('有 QQ 渠道（按钮非链接）', qqBtns.length, 2);
+  const qqExpected = real.categories.reduce(
+    (a, c) => a + c.channels.filter((x) => x.kind === 'qq').length, 0);
+  check('有 QQ 渠道（按钮非链接）', qqBtns.length, qqExpected);
   check('有公众号渠道', wx.length, 1);
 
   // 所有 rt-go 必须是 href 或 button，不能是空链接
