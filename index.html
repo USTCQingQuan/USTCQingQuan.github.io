@@ -1394,15 +1394,15 @@ const HOME_GROUPS = [
     label: "常用通道",
     tone: "rights",
     items: [
-      /* label 里的零宽空格是故意的：手机窄格子里让它在「中心」后折行，
-         否则会断成"青权中心权益反 / 馈渠道"，读起来别扭。 */
+      /* label / label2 决定两行怎么断，不交给浏览器折行。
+         「学生会·研会」是 6 个字，正好和下面一行「权益反馈渠道」等宽。 */
       /* 直接跳外部：青春科大智慧团学平台的「权益广场 - 权益反馈」提交页。
          用 href 而不是 to —— 渲染时会自动加 target=_blank 与 rel=noopener。
          没有 n，所以不显示数字角标（原数字是站内渠道数，跟这个外链无关）。 */
       { icon: "🛡️", label: "青权中心", label2: "权益反馈渠道", 
         href: "https://young.ustc.edu.cn/login/sc-wisdom-group-learning/suggestions/Lists/suggestionsList", n: null },
       /* 只到「校学生会 · 研究生会」这一组：权益柜 QQ / 研会 QQ 群 / 权益服务部邮箱 */
-      { icon: "🎓", label: "学生会", label2: "权益反馈渠道", to: "#/union/union",
+      { icon: "🎓", label: "学生会·研会", label2: "权益反馈渠道", to: "#/union/union",
         n: null },
       /* 报修是最高频的操作，直接在首页给入口 */
       { icon: "🔧", label: "校园报修", to: "#/repair",
