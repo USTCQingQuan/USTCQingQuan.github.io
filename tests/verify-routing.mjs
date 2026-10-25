@@ -5,6 +5,8 @@ import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
 
 const { script } = await loadScript('index.html');
 const CHANNELS_RAW = await readFile('channels.json', 'utf8');
+// 部门电话页的期望值直接取自 channels.json —— 改号码/条数不用再改测试
+const DEPT_CH = JSON.parse(CHANNELS_RAW).categories.find((c) => c.id === 'dept').channels;
 const { check, done } = makeChecker();
 
 const IDS = [
@@ -118,15 +120,15 @@ console.log('=== 3b. 部门直拨电话页（单列列表） ===');
 
   const rows = dep.querySelectorAll('.dept-row');
   console.log('  电话行数: ' + rows.length);
-  check('电话 9 条', rows.length, 9);
+  check('电话条数与数据一致', rows.length, DEPT_CH.length);
 
   if (rows.length) {
     const first = rows[0];
     const name = first.querySelector('.dept-name').textContent;
     const no = first.querySelector('.dept-no').textContent;
     console.log('  首行: ' + name + ' / ' + no);
-    check('首行是后勤服务热线', name.indexOf('后勤服务热线') === 0, true);
-    check('首行号码正确（带区号）', no, '0551-63606384');
+    check('首行与数据第一条一致', name, DEPT_CH[0].name);
+    check('首行号码与数据一致', no, DEPT_CH[0].value);
     const go = first.querySelector('.dept-go');
     check('每行都有 tel: 拨号链接', !!go && String(go.href).indexOf('tel:') === 0, true);
   }
