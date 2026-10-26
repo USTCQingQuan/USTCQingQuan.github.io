@@ -535,6 +535,35 @@ body.modal-open { overflow: hidden; }
     .ig-label-2 { font-size: 11.5px; }
   }
 
+  /* ---------- 部门直拨电话：平台卡片 ---------- */
+  .dept-platform {
+    display: flex; align-items: center; gap: 16px;
+    border: 1px solid #d5e3f4; border-radius: 14px;
+    padding: 16px 18px; background: #f7fafd;
+    text-decoration: none; color: inherit; margin-bottom: 4px;
+  }
+  .dept-platform:hover { border-color: var(--primary); background: #f2f7fd; }
+  .dept-platform .dp-main { flex: 1; min-width: 0; }
+  .dept-platform .dp-title { font-size: 14.5px; font-weight: 700; color: var(--ink); }
+  .dept-platform .dp-desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .dept-platform .dp-url {
+    font-family: ui-monospace, Consolas, monospace; font-size: 11.5px;
+    color: var(--ustc-blue-deep); margin-top: 7px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .dept-platform .dp-go {
+    flex: none; font-size: 12.5px; font-weight: 600; color: #fff;
+    background: var(--primary); border-radius: 999px; padding: 8px 18px; white-space: nowrap;
+  }
+  .dept-sec {
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    margin: 20px 0 4px;
+  }
+  @media (max-width: 720px) {
+    .dept-platform { flex-wrap: wrap; gap: 12px; }
+    .dept-platform .dp-go { width: 100%; text-align: center; }
+  }
+
 </style>
 </head>
 <body>
@@ -1194,10 +1223,53 @@ function renderDeptList() {
     return;
   }
 
+  // ① 平台入口：kind=link 的条目渲染成卡片（整块可点）
+  const platforms = (cat.channels || []).filter((c) => c.kind === "link");
+  for (const p of platforms) {
+    const a = document.createElement("a");
+    a.className = "dept-platform";
+    a.href = p.value;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.title = p.value;
+
+    const main = document.createElement("div");
+    main.className = "dp-main";
+    const t = document.createElement("div");
+    t.className = "dp-title";
+    t.textContent = p.name;
+    main.appendChild(t);
+    if (p.desc) {
+      const ds = document.createElement("div");
+      ds.className = "dp-desc";
+      ds.textContent = p.desc;
+      main.appendChild(ds);
+    }
+    const u = document.createElement("div");
+    u.className = "dp-url";
+    u.textContent = String(p.value || "").replace(/^https?:\/\//, "").split("?")[0];
+    main.appendChild(u);
+    a.appendChild(main);
+
+    const go = document.createElement("span");
+    go.className = "dp-go";
+    go.textContent = "打开查询平台 ↗";
+    a.appendChild(go);
+    host.appendChild(a);
+  }
+
+  // ② 常用电话
+  const phones = (cat.channels || []).filter((c) => c.kind !== "link");
+  if (phones.length) {
+    const sec = document.createElement("h3");
+    sec.className = "dept-sec";
+    sec.textContent = "常用电话";
+    host.appendChild(sec);
+  }
+
   const wrap = document.createElement("div");
   wrap.className = "dept-list";
-
-  for (const ch of cat.channels || []) {
+  for (const ch of phones) {
     const row = document.createElement("div");
     row.className = "dept-row";
 
@@ -1205,11 +1277,6 @@ function renderDeptList() {
     name.className = "dept-name";
     name.textContent = ch.name;
     row.appendChild(name);
-
-    const desc = document.createElement("span");
-    desc.className = "dept-desc";
-    desc.textContent = ch.desc || "";
-    row.appendChild(desc);
 
     const no = document.createElement("span");
     no.className = "dept-no";
@@ -1219,13 +1286,12 @@ function renderDeptList() {
     if (ch.value) {
       const go = document.createElement("a");
       go.className = "dept-go";
-      go.href = "tel:" + ch.value;
+      go.href = "tel:" + String(ch.value).replace(/[^0-9+]/g, "");
       go.textContent = "拨号";
       row.appendChild(go);
     }
     wrap.appendChild(row);
   }
-
   host.appendChild(wrap);
 }
 

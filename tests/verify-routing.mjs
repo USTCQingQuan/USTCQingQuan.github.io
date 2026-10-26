@@ -6,7 +6,9 @@ import { setupDom, loadScript, makeChecker } from './dom-stub.mjs';
 const { script } = await loadScript('index.html');
 const CHANNELS_RAW = await readFile('channels.json', 'utf8');
 // 部门电话页的期望值直接取自 channels.json —— 改号码/条数不用再改测试
-const DEPT_CH = JSON.parse(CHANNELS_RAW).categories.find((c) => c.id === 'dept').channels;
+const DEPT_ALL = JSON.parse(CHANNELS_RAW).categories.find((c) => c.id === 'dept').channels;
+const DEPT_CH = DEPT_ALL.filter((c) => c.kind === 'phone');
+const DEPT_PLATFORM = DEPT_ALL.filter((c) => c.kind === 'link');
 const { check, done } = makeChecker();
 
 const IDS = [
@@ -121,6 +123,11 @@ console.log('=== 3b. 部门直拨电话页（单列列表） ===');
   const rows = dep.querySelectorAll('.dept-row');
   console.log('  电话行数: ' + rows.length);
   check('电话条数与数据一致', rows.length, DEPT_CH.length);
+  const plat = dep.querySelector('.dept-platform');
+  check('有平台入口卡片', !!plat, DEPT_PLATFORM.length > 0);
+  if (plat) check('平台卡片指向官方查询平台', String(plat.href).indexOf(DEPT_PLATFORM[0].value) >= 0, true);
+  const sec = dep.querySelector('.dept-sec');
+  check('有「常用电话」小标题', sec ? sec.textContent : '', '常用电话');
 
   if (rows.length) {
     const first = rows[0];
