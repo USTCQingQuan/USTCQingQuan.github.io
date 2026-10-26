@@ -8,6 +8,8 @@ import { setupDom, loadScript, makeChecker, makeNav } from './dom-stub.mjs';
 const { script } = await loadScript('index.html');
 const raw = await readFile('channels.json', 'utf8');
 const real = JSON.parse(raw);
+// 「学生权益反馈渠道」页包含的分组（与 index.html 的 KEY_CAT_IDS 对应）
+const KEY_IDS = ['youth', 'student', 'park', 'intl'];
 
 const { ids } = setupDom([
   'grid', 'empty', 'q', 'freeOnly', 'chips', 'subchips', 'modebar', 'subnav', 'resultBar',
@@ -75,11 +77,13 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
   const names = cats.map((c) => c.querySelector('h3').textContent.replace(/\s+/g, ' ').trim());
   console.log('  精简页分组数: ' + cats.length);
   cats.forEach((c, i) => console.log('    ' + (i + 1) + '. ' + names[i]));
-  check('精简页只显示三组', cats.length, 3);
-  if (cats.length === 3) {
+  const KEY_GROUP_N = real.categories.filter((c) => KEY_IDS.includes(c.id)).length;
+  check('精简页分组数与数据一致', cats.length, KEY_GROUP_N);
+  {
     check('第一组是青权中心', names[0].indexOf('青权中心') === 0, true);
     check('第二组是校学生会·研究生会', names[1].indexOf('校学生会') === 0, true);
     check('第三组是高新园区团工委', names[2].indexOf('高新园区团工委') === 0, true);
+    check('第四组是国际学生事务', names[3].indexOf('国际学生事务') === 0, true);
   }
   const allText = names.join(' ');
   check('不含校园报修', allText.indexOf('校园报修') < 0, true);
@@ -87,13 +91,16 @@ console.log('=== 2b. 学生权益反馈渠道精简页 ===');
 
   const chans = key.querySelectorAll('.rt-item');
   console.log('  精简页渠道条目数: ' + chans.length);
-  check('精简页渠道数（1+4+2=7）', chans.length, 7);
+  const expectKey = real.categories
+    .filter((c) => KEY_IDS.includes(c.id))
+    .reduce((a, c) => a + c.channels.length, 0);
+  check('精简页渠道数与数据一致', chans.length, expectKey);
 
   // 两个视图是独立容器，互不污染：精简页 3 组，完整页仍是全部组
   check('完整页仍是全部组（与数据一致）',
     ids['view-channels'].querySelectorAll('.rt-cat').length, real.categories.length);
-  check('精简页仍是 3 组',
-    ids['view-key'].querySelectorAll('.rt-cat').length, 3);
+  check('精简页分组数与数据一致（复用）',
+    ids['view-key'].querySelectorAll('.rt-cat').length, KEY_GROUP_N);
 }
 
 console.log('');

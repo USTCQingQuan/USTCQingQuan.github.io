@@ -219,6 +219,20 @@
           "verified": "2026-10-16 实测可访问（134ms）"
         }
       ]
+    },
+    {
+      "id": "intl",
+      "name": "国际学生事务",
+      "channels": [
+        {
+          "name": "中国科大国际学院 · 留学生事务",
+          "kind": "link",
+          "value": "https://ic.ustc.edu.cn/?page_id=962",
+          "desc": "国际学生在校事务、住宿与签证、奖助学金等咨询，联系方式一页查全",
+          "status": "ok",
+          "verified": "2026-10-26"
+        }
+      ]
     }
   ]
 }
