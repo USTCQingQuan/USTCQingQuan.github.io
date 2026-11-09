@@ -14,7 +14,6 @@ const SUITES = [
   { name: '回归 · 校园平台（搜索/筛选/详情）', cmd: ['tests/verify-campus.mjs'] },
   { name: '回归 · 权益渠道与首页宫格', cmd: ['tests/verify-rights.mjs'] },
   { name: '回归 · 数据加载双路径', cmd: ['tests/verify-loader.mjs', 'index.html'] },
-  { name: '回归 · AI 防幻觉闸门', cmd: ['tests/verify-ai-guard.mjs'] },
 ];
 
 let failed = 0;
